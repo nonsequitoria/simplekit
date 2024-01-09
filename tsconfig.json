@@ -20,9 +20,14 @@
     "noFallthroughCasesInSwitch": true,
 
     /* for jest */
-    "esModuleInterop": true
-  },
-  "include": ["src"]
+    "esModuleInterop": true,
+
+    "baseUrl": "./src"
+    // "paths": {
+    //   "*": ["./src/*"]
+    // }
+    // },
+  }
 }
 
 // {
