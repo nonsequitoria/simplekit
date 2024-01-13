@@ -15,13 +15,16 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false /* true for final */,
+    "noUnusedParameters": false /* true for final */,
     "noFallthroughCasesInSwitch": true,
 
     /* for jest */
     "esModuleInterop": true,
 
+    /* for this project */
+    "declaration": true,
+    "declarationMap": true,
     "baseUrl": "./src"
     // "paths": {
     //   "*": ["./src/*"]
