@@ -168,14 +168,12 @@ function runloop(eventQueue: FundamentalEvent[], time: number) {
   // draw UI
   if (uiTreeRoot) {
     // uiTreeRoot.doLayout();
-    gc.clearRect(0, 0, canvas.width, canvas.height);
+    gc.clearRect(0, 0, gc.canvas.width, gc.canvas.height);
     uiTreeRoot.draw(gc);
   }
 }
 
-// SimpleKit draws everything in this canvas
-let canvas: HTMLCanvasElement;
-// the canvas rendering context
+// SimpleKit draws everything in this canvas graphics context
 let gc: CanvasRenderingContext2D;
 
 // standard fundamental event translators
@@ -247,13 +245,13 @@ function setSKRoot(root: SKElement) {
 let layoutDirty = false;
 
 function layoutRoot() {
-  if (uiTreeRoot && canvas) {
+  if (uiTreeRoot && gc) {
     // make sure root fills canvas
     uiTreeRoot.x = 0;
     uiTreeRoot.y = 0;
     uiTreeRoot.box.margin = 0; // no margin allowed on root
-    uiTreeRoot.box.width = canvas.width;
-    uiTreeRoot.box.height = canvas.height;
+    uiTreeRoot.box.width = gc.canvas.width;
+    uiTreeRoot.box.height = gc.canvas.height;
     // layout root and all children
     uiTreeRoot.doLayout();
     layoutDirty = false;
