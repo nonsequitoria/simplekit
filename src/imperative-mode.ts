@@ -43,6 +43,7 @@ import {
 } from "./events";
 
 import { SKElement } from "./widget";
+import { checkHtml, setupCanvas } from "common-mode";
 
 // merges b into a, preserves order of each and puts "a" events first if same time
 // assumes a and b are sorted by timestamp prop
@@ -274,67 +275,20 @@ function invalidateLayout() {
 function startSimpleKit(): boolean {
   console.info(`🧰 SimpleKit *Imperative UI Mode* startup`);
 
-  // make sure document body only has one script child
-  if (document.body.children.length !== 1) {
-    console.error(
-      `document body has ${document.body.children.length} children, expecting only a script`
-    );
-    return false;
-  } else if (!document.body.querySelector("body>script")) {
-    console.error(
-      "document body must have only one child which is the main script"
-    );
-    return false;
-  }
+  // check the HTML document hosting SimpleKit
+  if (!checkHtml()) return false;
 
-  // setup the canvas
-  canvas = document.createElement("canvas");
-  document.body.appendChild(canvas);
+  // setup canvas
+  let canvas = setupCanvas();
 
-  // set some styles to make it easier to see the canvas
-  // canvas.style.setProperty("border", "1px solid blue");
-
-  canvas.style.setProperty("background", "blue");
-
-  // method from https://codepen.io/tran2/pen/VYJWZw
-
-  // set style on html
-  document.documentElement.style.setProperty("width", "100%");
-  document.documentElement.style.setProperty("height", "100%");
-  document.documentElement.style.setProperty("margin", "0");
-  document.documentElement.style.setProperty("padding", "0");
-
-  // set style on body
-  document.body.style.setProperty("width", "100%");
-  document.body.style.setProperty("height", "100%");
-  document.body.style.setProperty("margin", "0");
-  document.body.style.setProperty("padding", "0");
-
-  canvas.style.setProperty("width", "100%");
-  canvas.style.setProperty("height", "100%");
-  canvas.style.setProperty("display", "block");
-
-  // make canvas fill the window
-  canvas.width = document.body.clientWidth;
-  canvas.height = document.body.clientHeight;
-  window.addEventListener("resize", () => {
-    canvas.width = document.body.clientWidth;
-    canvas.height = document.body.clientHeight;
-  });
-
-  if (!canvas) {
-    console.warn("Expecting HTML canvas element");
+  // save graphics context to local module variable
+  const graphicsContext = canvas.getContext("2d");
+  // this should never happen, but we need to check
+  if (!graphicsContext) {
+    console.error("Unable to get graphics context from canvas");
     return false;
   }
-
-  const gcc = canvas.getContext("2d");
-  if (!gcc) {
-    console.warn("Unable to find canvas rendering context");
-    return false;
-  }
-  gc = gcc;
-
-  console.log(`created ${canvas.width} by ${canvas.height} canvas`);
+  gc = graphicsContext;
 
   // start the toolkit run loop
   createWindowingSystem(runloop);
