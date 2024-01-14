@@ -137,6 +137,8 @@ function setSKAnimationCallback(animate: AnimationCallback) {
 type AnimationCallback = (time: number) => void;
 let animateCallback: AnimationCallback;
 
+import * as npmPackage from "../package.json";
+
 /**
  * Must be called to once to start the SimpleKit run loop. It adds a
  * single canvas to the body for drawing and creates
@@ -144,7 +146,7 @@ let animateCallback: AnimationCallback;
  * @returns true if successful, false otherwise
  */
 function startSimpleKit(): boolean {
-  console.info(`🧰 SimpleKit *Canvas Mode* startup`);
+  console.info(`🧰 SimpleKit v${npmPackage.version} *Canvas Mode* startup`);
 
   // check the HTML document hosting SimpleKit
   if (!checkHtml()) return false;

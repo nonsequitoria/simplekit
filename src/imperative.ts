@@ -264,6 +264,8 @@ function invalidateLayout() {
   layoutDirty = true;
 }
 
+import * as npmPackage from "../package.json";
+
 /**
  * Must be called to once to start the SimpleKit run loop. It adds a
  * single canvas to the body for drawing and creates
@@ -271,7 +273,9 @@ function invalidateLayout() {
  * @returns true if successful, false otherwise
  */
 function startSimpleKit(): boolean {
-  console.info(`🧰 SimpleKit *Imperative UI Mode* startup`);
+  console.info(
+    `🧰 SimpleKit v${npmPackage.version} *Imperative UI Mode* startup`
+  );
 
   // check the HTML document hosting SimpleKit
   if (!checkHtml()) return false;

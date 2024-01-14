@@ -11,7 +11,7 @@ There are three main ways to use SimpleKit
 
 ### 1. Official npm package
 
-The npm package is updated less frequently than the GitHub repo, but it's still a good way to use SimpleKit if you already have a TypeScript build process setup.
+The npm package is updated less frequently than the GitHub repo, but it's still a good way to use SimpleKit, especially if you already have a TypeScript build process.
 
 Once you have a node project setup, just:
 
@@ -46,7 +46,7 @@ Notes on this approach:
 
 ### 3. Git submodule
 
-Add SimpleKit as a submodule to your project repo. This way it'll be in known folder relative to your project source. So instead, of digging into `node_modules/` you can just examine a folder of your project.
+Add SimpleKit as a submodule to your project repo. This way it'll be in a known folder path relative to your project source, a good place to put it is in the root. So instead, of digging into `node_modules/` you can just examine the simplekit folder of your project.
 
 To import, you can just use a relative path like:
 `import * from "../../simplekit/src/canvas"`
