@@ -1,4 +1,4 @@
-import { insideHitTestRectangle, measureText } from "utility";
+import { insideHitTestRectangle, measureText } from "../utility";
 import { SKElement } from "./element";
 import * as Style from "./style";
 import { SKEvent, SKMouseEvent } from "../events";

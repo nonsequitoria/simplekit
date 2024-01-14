@@ -17,7 +17,7 @@ export {
 // widgets
 export * from "./widget";
 // layout
-export * from "layout";
+export * from "./layout";
 
 //  - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -25,13 +25,13 @@ import {
   FundamentalEvent,
   createWindowingSystem,
   coalesceEvents,
-} from "windowing-system";
+} from "./windowing-system";
 
 // simple simulated UI Kit events
 import { SKEvent, SKKeyboardEvent, SKMouseEvent } from "./events";
 
 // dispatchers
-import { MouseDispatcher, keyboardDispatcher } from "dispatch";
+import { MouseDispatcher, keyboardDispatcher } from "./dispatch";
 
 import {
   EventTranslator,
@@ -43,7 +43,7 @@ import {
 } from "./events";
 
 import { SKElement } from "./widget";
-import { checkHtml, setupCanvas } from "common-mode";
+import { checkHtml, setupCanvas } from "./common-mode";
 
 // merges b into a, preserves order of each and puts "a" events first if same time
 // assumes a and b are sorted by timestamp prop
@@ -290,6 +290,8 @@ function startSimpleKit(): boolean {
 
   // start the toolkit run loop
   createWindowingSystem(runloop);
+
+  console.log("here");
 
   return true;
 }

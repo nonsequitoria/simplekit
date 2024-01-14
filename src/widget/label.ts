@@ -1,4 +1,5 @@
-import { measureText } from "utility";
+import { measureText } from "../utility";
+
 import { SKElement } from "./element";
 import * as Style from "./style";
 

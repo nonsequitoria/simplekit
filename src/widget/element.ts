@@ -1,7 +1,7 @@
 import { SKEvent, SKKeyboardEvent, SKMouseEvent } from "../events";
-import { Drawable } from "utility";
-import { BoxModel } from "./boxmodel";
+import { Drawable } from "../utility";
 
+import { BoxModel } from "./boxmodel";
 import * as Style from "./style";
 
 type EventHandler = (me: SKEvent) => boolean | void;

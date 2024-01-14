@@ -1,6 +1,6 @@
 {
   "name": "simplekit",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A very simple user interface toolkit for teaching UI architecture.",
   "author": "Daniel Vogel",
   "license": "GPL-3.0-only",
@@ -12,23 +12,19 @@
   "type": "module",
   "exports": {
     "./imperative": {
-      "import": "./dist/imperative.js",
-      "require": "./dist/imperative.cjs",
-      "types": "./dist/imperative.d.ts"
+      "import": "./src/imperative-mode.ts",
+      "types": "./src/imperative-mode.ts"
     },
     "./canvas": {
-      "import": "./dist/canvas.js",
-      "require": "./dist/canvas.cjs",
-      "types": "./dist/canvas.d.ts"
+      "import": "./src/canvas-mode.ts",
+      "types": "./src/canvas-mode.ts"
     },
     "./utility": {
-      "import": "./dist/utility.js",
-      "require": "./dist/utility.cjs",
-      "types": "./dist/utility.d.ts"
+      "import": "./src/utility/index.ts",
+      "types": "./src/utility/index.ts"
     }
   },
   "files": [
-    "dist",
     "src"
   ],
   "scripts": {

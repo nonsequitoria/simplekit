@@ -1,8 +1,9 @@
-import { insideHitTestRectangle } from "utility";
-import { SKElement } from "./element";
-import { LayoutMethod } from "layout";
+import { insideHitTestRectangle } from "../utility";
+import { LayoutMethod } from "../layout";
 import { SKMouseEvent } from "../events";
 import { invalidateLayout } from "../imperative-mode";
+
+import { SKElement } from "./element";
 
 export class SKContainer extends SKElement {
   constructor();

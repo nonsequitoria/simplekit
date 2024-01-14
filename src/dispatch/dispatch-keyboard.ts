@@ -1,5 +1,5 @@
 import { SKKeyboardEvent } from "../events";
-import { SKElement } from "widget";
+import { SKElement } from "../widget";
 
 const debug = false;
 

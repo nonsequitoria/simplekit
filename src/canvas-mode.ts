@@ -19,7 +19,7 @@ import {
   FundamentalEvent,
   createWindowingSystem,
   coalesceEvents,
-} from "windowing-system";
+} from "./windowing-system";
 
 // simple simulated UI Kit events
 import { SKEvent } from "./events";

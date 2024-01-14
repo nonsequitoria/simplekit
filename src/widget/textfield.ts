@@ -1,6 +1,6 @@
 import { SKKeyboardEvent, SKMouseEvent } from "../events";
-import { insideHitTestRectangle, measureText } from "utility";
-import { keyboardDispatcher } from "dispatch";
+import { insideHitTestRectangle, measureText } from "../utility";
+import { keyboardDispatcher } from "../dispatch";
 import { SKElement } from "./element";
 import * as Style from "./style";
 
