@@ -291,7 +291,5 @@ function startSimpleKit(): boolean {
   // start the toolkit run loop
   createWindowingSystem(runloop);
 
-  console.log("here");
-
   return true;
 }
