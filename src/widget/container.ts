@@ -1,7 +1,7 @@
 import { insideHitTestRectangle } from "../utility";
 import { LayoutMethod } from "../layout";
 import { SKMouseEvent } from "../events";
-import { invalidateLayout } from "../imperative-mode";
+import { invalidateLayout } from "../imperative";
 
 import { SKElement } from "./element";
 

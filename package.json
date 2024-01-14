@@ -12,12 +12,12 @@
   "type": "module",
   "exports": {
     "./imperative": {
-      "import": "./src/imperative-mode.ts",
-      "types": "./src/imperative-mode.ts"
+      "import": "./src/imperative.ts",
+      "types": "./src/imperative.ts"
     },
     "./canvas": {
-      "import": "./src/canvas-mode.ts",
-      "types": "./src/canvas-mode.ts"
+      "import": "./src/canvas.ts",
+      "types": "./src/canvas.ts"
     },
     "./utility": {
       "import": "./src/utility/index.ts",

@@ -33,7 +33,7 @@ import {
   dragTranslator,
 } from "./events";
 
-import { checkHtml, setupCanvas } from "./common-mode";
+import { checkHtml, setupCanvas } from "./common";
 
 /**
  * The SimpleKit toolkit run loop (for canvas mode)

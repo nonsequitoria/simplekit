@@ -1,4 +1,4 @@
-import { invalidateLayout } from "../imperative-mode";
+import { invalidateLayout } from "../imperative";
 
 type Size = { width: number; height: number };
 

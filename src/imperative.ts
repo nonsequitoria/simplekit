@@ -43,7 +43,7 @@ import {
 } from "./events";
 
 import { SKElement } from "./widget";
-import { checkHtml, setupCanvas } from "./common-mode";
+import { checkHtml, setupCanvas } from "./common";
 
 // merges b into a, preserves order of each and puts "a" events first if same time
 // assumes a and b are sorted by timestamp prop
