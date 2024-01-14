@@ -1,4 +1,4 @@
-export class BoundingBox {
+class BoundingBox {
   constructor(
     public x: number,
     public y: number,

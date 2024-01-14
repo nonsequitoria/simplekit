@@ -1,5 +1,5 @@
 import { SKEvent, SKKeyboardEvent, SKMouseEvent } from "../events";
-import { Drawable } from "../utility";
+// import { Drawable } from "../utility";
 
 import { BoxModel } from "./boxmodel";
 import * as Style from "./style";
@@ -12,7 +12,7 @@ type DispatchRoute = {
   capture: boolean;
 };
 
-export abstract class SKElement implements Drawable {
+export abstract class SKElement {
   // constructor();
   // constructor(x: number, y: number, width?: number, height?: number);
   constructor(public x = 0, public y = 0, width?: number, height?: number) {
