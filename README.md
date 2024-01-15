@@ -7,7 +7,7 @@ A very simple user interface toolkit for teaching UI architecture.
 
 ## Setup
 
-There are three main ways to use SimpleKit
+There are three main ways to use SimpleKit.
 
 ### 1. Official npm package
 
