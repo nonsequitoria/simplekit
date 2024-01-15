@@ -51,7 +51,7 @@ Notes on this approach:
 Add SimpleKit as a submodule to your project repo. This way it'll be in a known folder path relative to your project source, a good place to put it is in the root. So instead, of digging into `node_modules/` you can just examine the simplekit folder of your project.
 
 To import, you can just use a relative path like:
-`import * from "../../simplekit/src/canvas"`
+`import * from "../../simplekit/src/canvas-mode"`
 
 Or, even better, you can setup your build environment to have a path to the simplekit folder. For example in Vite:
 
