@@ -54,6 +54,7 @@ function runloop(eventQueue: FundamentalEvent[], time: number) {
       type: "null",
       timeStamp: time,
     } as FundamentalEvent;
+
     translators.forEach((t) => {
       const translatedEvent = t.update(nullEvent);
       if (translatedEvent) {
@@ -61,10 +62,12 @@ function runloop(eventQueue: FundamentalEvent[], time: number) {
       }
     });
   }
-  // use fundamental events to generate SKEvents
+  // translate fundamental events to generate SKEvents
   while (eventQueue.length > 0) {
     const fundamentalEvent = eventQueue.shift();
+
     if (!fundamentalEvent) continue;
+
     translators.forEach((t) => {
       const translatedEvent = t.update(fundamentalEvent);
       if (translatedEvent) {
@@ -73,16 +76,13 @@ function runloop(eventQueue: FundamentalEvent[], time: number) {
     });
   }
 
-  // dispatch events
-  events.forEach((e) => {
-    // global app dispatch
-    if (eventListener) eventListener(e);
-  });
+  // global dispatch all events
+  if (eventListener) events.forEach((e) => eventListener(e));
 
   // update animations
   if (animateCallback) animateCallback(time);
 
-  // draw on canvas
+  // tell toolkit to draw on canvas
   if (drawCallback) drawCallback(gc);
 }
 
@@ -151,7 +151,7 @@ function startSimpleKit(): boolean {
   // check the HTML document hosting SimpleKit
   if (!checkHtml()) return false;
 
-  // setup canvas and
+  // setup canvas
   let canvas = setupCanvas();
 
   // save graphics context to local module variable
