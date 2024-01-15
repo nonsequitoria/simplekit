@@ -19,9 +19,10 @@ Once you have a node project setup, just:
 
 Notes on this approach:
 
-- Very easy to setup
+- Very easy to setup.
 - A bit less intuitive to navigate SimpleKit source code since its all in a deep `node_modules/` subfolder.
-- You have to remember to update the package
+- You have to remember to update the package.
+- Easy to share the project with someone else, just grab the files and run `npm install`.
 
 ### 2. npm link
 
@@ -41,8 +42,9 @@ Now it will behave as though an official npm package was installed.
 
 Notes on this approach:
 
-- It easier to look at the source code since you can open the SimpleKit repo in a separate VSCode directory.
+- It's easier to look at the source code since you can open the SimpleKit repo in a separate VSCode directory.
 - If you change something in SimpleKit, sometimes VS Code loses track of the linked package types (imports have red squiggles with warnings the type is `any`). A workaround is to run "TypeScript: Restart TS Server" from the Command Palette.
+- You can't easily share your project since a linked global module won't appear in your package.json.
 
 ### 3. Git submodule
 
@@ -51,12 +53,15 @@ Add SimpleKit as a submodule to your project repo. This way it'll be in a known 
 To import, you can just use a relative path like:
 `import * from "../../simplekit/src/canvas"`
 
-Or, you can setup your build environment to have a path to the simplekit folder. For example in Vite:
+Or, even better, you can setup your build environment to have a path to the simplekit folder. For example in Vite:
 
-- (Vite setup TBD) explain how to setup paths in vite config and typescript config.
+- << (Vite config setup TBD) explain how to setup paths in vite config and typescript config.>>
+
+Git doesn't automatically init and update submodules automatically, so you'll need to do it on command line the first time you clone your main repo.
+
+- << git cloning instructions TBD >>
+- << git pulling instructions TBD >>
 
 Notes on this approach:
-
-- VS Code doesn't seem to automatically init and update submodules automatically, so you'll need to do it on command line the first time you clone your main repo. (instructions TBD)
 
 ++
