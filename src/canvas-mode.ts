@@ -37,7 +37,7 @@ import { checkHtml, setupCanvas } from "./common";
 
 /**
  * The SimpleKit toolkit run loop (for canvas mode)
- * @param eventQueue fundamental events from simulated winodwing system
+ * @param eventQueue fundamental events from simulated windowing system
  * @param time the windowing system frame time
  */
 function runloop(eventQueue: FundamentalEvent[], time: number) {

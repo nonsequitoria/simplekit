@@ -1,6 +1,6 @@
 {
   "name": "simplekit",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A very simple user interface toolkit for teaching UI architecture.",
   "author": "Daniel Vogel",
   "license": "GPL-3.0-only",
@@ -11,13 +11,13 @@
   "bugs": "https://github.com/nonsequitoria/simplekit/issues",
   "type": "module",
   "exports": {
-    "./imperative": {
-      "import": "./src/imperative.ts",
-      "types": "./src/imperative.ts"
+    "./imperative-mode": {
+      "import": "./src/imperative-mode.ts",
+      "types": "./src/imperative-mode.ts"
     },
-    "./canvas": {
-      "import": "./src/canvas.ts",
-      "types": "./src/canvas.ts"
+    "./canvas-mode": {
+      "import": "./src/canvas-mode.ts",
+      "types": "./src/canvas-mode.ts"
     },
     "./utility": {
       "import": "./src/utility/index.ts",

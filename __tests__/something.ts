@@ -1,4 +1,4 @@
-import { startSimpleKit } from "canvas";
+import { startSimpleKit } from "canvas-mode";
 
 test("basic test", () => {
   expect(startSimpleKit()).toBe(false);
