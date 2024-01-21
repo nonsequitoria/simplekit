@@ -22,7 +22,9 @@ export interface FundamentalEvent {
 }
 // TODO: FundamentalEvent type could better
 
-function createFundamentalEvent(domEvent: Event): FundamentalEvent | undefined {
+function createFundamentalEvent(
+  domEvent: Event
+): FundamentalEvent | undefined {
   if (domEvent.type == "resize") {
     return {
       type: domEvent.type,
@@ -51,7 +53,9 @@ function createFundamentalEvent(domEvent: Event): FundamentalEvent | undefined {
       key: ke.key,
     };
   } else {
-    console.warn(`event ${domEvent.type} not supported as FundamentalEvent`);
+    console.warn(
+      `event ${domEvent.type} not supported as FundamentalEvent`
+    );
     return;
   }
 }
@@ -94,11 +98,14 @@ export function createWindowingSystem(runLoop: RunLoopHandler) {
   window.addEventListener("resize", saveEvent);
 
   // push a resize event to send on first frame of run loop
-  const initialResizeEvent = createFundamentalEvent(new Event("resize"));
+  const initialResizeEvent = createFundamentalEvent(
+    new Event("resize")
+  );
   if (initialResizeEvent) eventQueue.push(initialResizeEvent);
 
   // the simulated windowing system event loop
   function loop(time: DOMHighResTimeStamp) {
+    skTime = time;
     runLoop(eventQueue, time);
     // schedule to run again
     window.requestAnimationFrame(loop);
@@ -106,3 +113,9 @@ export function createWindowingSystem(runLoop: RunLoopHandler) {
   // start it
   window.requestAnimationFrame(loop);
 }
+
+/**
+ * Global time from windowing system
+ * (when possible, use time from events or animation callback)
+ */
+export let skTime = 0;

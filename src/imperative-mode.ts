@@ -14,8 +14,12 @@ export {
   addSKEventTranslator,
   invalidateLayout,
 };
-// needed for custom translators
-export type { FundamentalEvent } from "./windowing-system";
+export {
+  skTime, // global time from windowing system
+} from "./windowing-system";
+export type {
+  FundamentalEvent, // needed for custom translators
+} from "./windowing-system";
 // widgets
 export * from "./widget";
 // layout
@@ -130,7 +134,9 @@ function runloop(eventQueue: FundamentalEvent[], time: number) {
   // merge any other events
   // (assumes otherEvents sorted by timeStamp prop)
   events =
-    otherEvents.length > 0 ? mergeEventQueues(events, otherEvents) : events;
+    otherEvents.length > 0
+      ? mergeEventQueues(events, otherEvents)
+      : events;
 
   // dispatch events
   events.forEach((e) => {
@@ -193,7 +199,9 @@ const translators: EventTranslator[] = [
  */
 function addSKEventTranslator(translator: EventTranslator) {
   translators.push(translator);
-  console.log(`added event translator, now ${translators.length} translators`);
+  console.log(
+    `added event translator, now ${translators.length} translators`
+  );
 }
 
 /**

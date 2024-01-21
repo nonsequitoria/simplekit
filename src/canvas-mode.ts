@@ -12,8 +12,12 @@ export {
   setSKAnimationCallback,
   addSKEventTranslator,
 };
-// needed for custom translators
-export type { FundamentalEvent } from "./windowing-system";
+export {
+  skTime, // global time from windowing system
+} from "./windowing-system";
+export type {
+  FundamentalEvent, // needed for custom translators
+} from "./windowing-system";
 
 //  - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -106,7 +110,9 @@ const translators: EventTranslator[] = [
  */
 function addSKEventTranslator(translator: EventTranslator) {
   translators.push(translator);
-  console.log(`added event translator, now ${translators.length} translators`);
+  console.log(
+    `added event translator, now ${translators.length} translators`
+  );
 }
 
 /**
@@ -148,7 +154,9 @@ import * as npmPackage from "../package.json";
  * @returns true if successful, false otherwise
  */
 function startSimpleKit(): boolean {
-  console.info(`🧰 SimpleKit v${npmPackage.version} *Canvas Mode* startup`);
+  console.info(
+    `🧰 SimpleKit v${npmPackage.version} *Canvas Mode* startup`
+  );
 
   // check the HTML document hosting SimpleKit
   if (!checkHtml()) return false;
