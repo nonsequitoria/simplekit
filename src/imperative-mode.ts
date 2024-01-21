@@ -78,10 +78,10 @@ function mergeEventQueues(a: SKEvent[], b: SKEvent[]): SKEvent[] {
 
 /**
  * The SimpleKit toolkit run loop (for imperative toolkit mode)
- * @param eventQueue fundamental events from simulated winodwing system
+ * @param eventQueue fundamental events from simulated windowing system
  * @param time the windowing system frame time
  */
-function runloop(eventQueue: FundamentalEvent[], time: number) {
+function runLoop(eventQueue: FundamentalEvent[], time: number) {
   // fundamental event queue coalescing
   coalesceEvents(eventQueue);
 
@@ -303,7 +303,7 @@ function startSimpleKit(): boolean {
   gc = graphicsContext;
 
   // start the toolkit run loop
-  createWindowingSystem(runloop);
+  createWindowingSystem(runLoop);
 
   return true;
 }
