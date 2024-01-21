@@ -72,7 +72,7 @@ export const keypressTranslator = {
 export const clickTranslator = {
   state: "IDLE",
   // parameters for transitions
-  movementThreshold: 50,
+  movementThreshold: 10,
   timeThreshold: 800, // milliseconds
   // for tracking thresholds
   startX: 0,
@@ -157,7 +157,7 @@ export const dblclickTranslator = {
 export const dragTranslator = {
   state: "IDLE",
   // parameters for transitions
-  movementThreshold: 50,
+  movementThreshold: 20,
   // for tracking thresholds
   startX: 0,
   startY: 0,

@@ -12,6 +12,8 @@ export {
   setSKAnimationCallback,
   addSKEventTranslator,
 };
+// needed for custom translators
+export type { FundamentalEvent } from "./windowing-system";
 
 //  - - - - - - - - - - - - - - - - - - - - - - -
 

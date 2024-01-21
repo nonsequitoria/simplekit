@@ -14,6 +14,8 @@ export {
   addSKEventTranslator,
   invalidateLayout,
 };
+// needed for custom translators
+export type { FundamentalEvent } from "./windowing-system";
 // widgets
 export * from "./widget";
 // layout
