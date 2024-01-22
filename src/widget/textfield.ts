@@ -36,13 +36,17 @@ export class SKTextfield extends SKElement {
     const m = measureText(this.text || " ", this.font);
 
     if (!m) {
-      console.warn(`measureText failed in SKTextfield for ${this.text}`);
+      console.warn(
+        `measureText failed in SKTextfield for ${this.text}`
+      );
       return;
     }
 
     this.height =
       height ||
-      m.fontBoundingBoxAscent + m.fontBoundingBoxDescent + this.box.padding * 2;
+      m.fontBoundingBoxAscent +
+        m.fontBoundingBoxDescent +
+        this.box.padding * 2;
 
     this.box.width = width || m.width + this.box.padding * 2;
   }
@@ -65,7 +69,7 @@ export class SKTextfield extends SKElement {
         this.focus = true;
         return true;
         break;
-      case "keypress":
+      case "keydown":
         if (this.focus && ke.key) {
           this._text = this.applyEdit(this.text, ke.key);
         }

@@ -43,7 +43,6 @@ import {
   EventTranslator,
   fundamentalTranslator,
   clickTranslator,
-  keypressTranslator,
   dblclickTranslator,
   dragTranslator,
 } from "./events";
@@ -183,7 +182,6 @@ let gc: CanvasRenderingContext2D;
 // standard fundamental event translators
 const translators: EventTranslator[] = [
   fundamentalTranslator,
-  keypressTranslator,
   clickTranslator,
   dblclickTranslator,
   dragTranslator,

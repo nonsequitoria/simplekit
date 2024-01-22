@@ -47,41 +47,6 @@ export const fundamentalTranslator = {
   },
 };
 
-export const keypressTranslator = {
-  state: "IDLE",
-  // parameters for transitions
-  timeThreshold: 1000, // milliseconds
-  // for tracking thresholds
-  startTime: 0,
-
-  // returns a keypress event if found
-  update(fe: FundamentalEvent): SKKeyboardEvent | undefined {
-    switch (this.state) {
-      case "IDLE":
-        if (fe.type == "keydown") {
-          this.state = "DOWN";
-          this.startTime = fe.timeStamp;
-        }
-        break;
-
-      case "DOWN":
-        if (fe.timeStamp - this.startTime > this.timeThreshold) {
-          this.state = "IDLE";
-        } else if (fe.type == "keyup") {
-          this.state = "IDLE";
-          return new SKKeyboardEvent(
-            "keypress",
-            fe.timeStamp,
-            fe.key
-          );
-        }
-
-        break;
-    }
-    return;
-  },
-};
-
 export const clickTranslator = {
   state: "IDLE",
   // parameters for transitions
