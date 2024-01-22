@@ -14,12 +14,17 @@ export type EventTranslator = {
 };
 
 export const fundamentalTranslator = {
-  update(fe: FundamentalEvent): SKEvent {
+  update(fe: FundamentalEvent): SKEvent | undefined {
     switch (fe.type) {
       case "mousedown":
       case "mouseup":
       case "mousemove":
-        return new SKMouseEvent(fe.type, fe.timeStamp, fe.x || 0, fe.y || 0);
+        return new SKMouseEvent(
+          fe.type,
+          fe.timeStamp,
+          fe.x || 0,
+          fe.y || 0
+        );
         break;
       case "keydown":
       case "keyup":
@@ -32,6 +37,10 @@ export const fundamentalTranslator = {
           document.body.clientWidth,
           document.body.clientHeight
         );
+      // null events are used for translators to check time
+      // but, we don't want to actually emit them
+      case "null":
+        return;
       default:
         return new SKEvent(fe.type, fe.timeStamp);
     }
@@ -60,7 +69,11 @@ export const keypressTranslator = {
           this.state = "IDLE";
         } else if (fe.type == "keyup") {
           this.state = "IDLE";
-          return new SKKeyboardEvent("keypress", fe.timeStamp, fe.key);
+          return new SKKeyboardEvent(
+            "keypress",
+            fe.timeStamp,
+            fe.key
+          );
         }
 
         break;
@@ -103,7 +116,12 @@ export const clickTranslator = {
           this.state = "IDLE";
         } else if (fe.type == "mouseup") {
           this.state = "IDLE";
-          return new SKMouseEvent("click", fe.timeStamp, fe.x || 0, fe.y || 0);
+          return new SKMouseEvent(
+            "click",
+            fe.timeStamp,
+            fe.x || 0,
+            fe.y || 0
+          );
         }
         break;
     }

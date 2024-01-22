@@ -105,20 +105,16 @@ function runLoop(eventQueue: FundamentalEvent[], time: number) {
     });
   }
 
-  // if no fundamental events, send  a null event with time for
-  // translators that trigger events based on time
+  // if no fundamental events, push a single "null" fundamental event
+  // this is because some translators trigger events based on time
+  // (like long press)
   if (eventQueue.length == 0) {
-    const nullEvent = {
+    eventQueue.push({
       type: "null",
       timeStamp: time,
-    } as FundamentalEvent;
-    translators.forEach((t) => {
-      const translatedEvent = t.update(nullEvent);
-      if (translatedEvent) {
-        events.push(translatedEvent);
-      }
-    });
+    } as FundamentalEvent);
   }
+
   // use fundamental events to generate SKEvents
   while (eventQueue.length > 0) {
     const fundamentalEvent = eventQueue.shift();
