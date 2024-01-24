@@ -27,7 +27,7 @@ export function edgeHitTestRectangle(
     mx >= x - s && mx <= x + w + s && my >= y - s && my <= y + h + s;
   // but NOT inside inner rect after subtracting stroke
   const inner =
-    mx >= x + s && mx <= x + w - s && my >= y + s && my <= y + h - s;
+    mx > x + s && mx < x + w - s && my > y + s && my < y + h - s;
   return outer && !inner;
 }
 
@@ -44,7 +44,7 @@ export function hitTestLine(
   const m = point(mx, my);
   const q = closestPoint(m, point(p0x, p0y), point(p1x, p1y));
   const d = distance(m.x, m.y, q.x, q.y);
-  if (d < strokeWidth / 2) return true;
+  if (d <= strokeWidth / 2) return true;
 
   // no hit
   return false;
@@ -59,9 +59,10 @@ export function edgeHitTestPolygon(
   const m = new Point2(mx, my);
   // assume shape is closed, so start with segment
   // from last point to first point
-  let p0 = points.slice(-1)[0];
+  let [p0] = points; // extract first point
   for (let p1 of points) {
-    if (hitTestLine(m.x, m.y, p0.x, p0.y, p1.x, p1.y, strokeWidth)) return true;
+    if (hitTestLine(m.x, m.y, p0.x, p0.y, p1.x, p1.y, strokeWidth))
+      return true;
     p0 = p1;
   }
   return false;
