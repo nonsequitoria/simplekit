@@ -82,7 +82,7 @@ function runLoop(eventQueue: FundamentalEvent[], time: number) {
   // update animations
   if (animateCallback) animateCallback(time);
 
-  // tell toolkit to draw on canvas
+  // draw on canvas
   if (drawCallback) drawCallback(gc);
 }
 

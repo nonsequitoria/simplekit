@@ -1,13 +1,19 @@
 import { measureText } from "../utility";
 
 import { SKElement } from "./element";
-import * as Style from "./style";
+import { Style } from "./style";
 
 export class SKLabel extends SKElement {
   align: "centre" | "left" | "right" = "centre";
   font = Style.font;
 
-  constructor(text: string, x = 0, y = 0, width?: number, height?: number) {
+  constructor(
+    text: string,
+    x = 0,
+    y = 0,
+    width?: number,
+    height?: number
+  ) {
     super(x, y, width, height);
     this.box.padding = Style.textPadding;
     // defaults
@@ -36,7 +42,9 @@ export class SKLabel extends SKElement {
 
     this.box.height =
       height ||
-      m.fontBoundingBoxAscent + m.fontBoundingBoxDescent + this.box.padding * 2;
+      m.fontBoundingBoxAscent +
+        m.fontBoundingBoxDescent +
+        this.box.padding * 2;
 
     this.box.width = width || m.width + this.box.padding * 2;
   }
@@ -71,7 +79,11 @@ export class SKLabel extends SKElement {
         break;
       case "centre":
         gc.textAlign = "center";
-        gc.fillText(this.text, this.box.width / 2, this.box.height / 2);
+        gc.fillText(
+          this.text,
+          this.box.width / 2,
+          this.box.height / 2
+        );
 
         break;
       case "right":

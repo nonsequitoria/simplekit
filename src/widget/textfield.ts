@@ -2,7 +2,7 @@ import { SKKeyboardEvent, SKMouseEvent } from "../events";
 import { insideHitTestRectangle, measureText } from "../utility";
 import { keyboardDispatcher } from "../dispatch";
 import { SKElement } from "./element";
-import * as Style from "./style";
+import { Style } from "./style";
 
 export class SKTextfield extends SKElement {
   state: "idle" | "hover" = "idle";

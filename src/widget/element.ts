@@ -2,7 +2,8 @@ import { SKEvent, SKKeyboardEvent, SKMouseEvent } from "../events";
 // import { Drawable } from "../utility";
 
 import { BoxModel } from "./boxmodel";
-import * as Style from "./style";
+import { Style } from "./style";
+import { Settings } from "../settings";
 
 type EventHandler = (me: SKEvent) => boolean | void;
 
@@ -15,7 +16,12 @@ type DispatchRoute = {
 export abstract class SKElement {
   // constructor();
   // constructor(x: number, y: number, width?: number, height?: number);
-  constructor(public x = 0, public y = 0, width?: number, height?: number) {
+  constructor(
+    public x = 0,
+    public y = 0,
+    width?: number,
+    height?: number
+  ) {
     this.width = width;
     this.height = height;
     // this.width = Math.max(width, Style.minElementSize);
@@ -68,13 +74,22 @@ export abstract class SKElement {
     return handled;
   }
 
-  addEventListener(type: string, handler: EventHandler, capture = false) {
+  addEventListener(
+    type: string,
+    handler: EventHandler,
+    capture = false
+  ) {
     this.dispatchTable.push({ type, handler, capture });
   }
 
-  removeEventListener(type: string, handler: EventHandler, capture = false) {
+  removeEventListener(
+    type: string,
+    handler: EventHandler,
+    capture = false
+  ) {
     this.dispatchTable = this.dispatchTable.filter(
-      (d) => d.type != type && d.handler != handler && d.capture != capture
+      (d) =>
+        d.type != type && d.handler != handler && d.capture != capture
     );
   }
 
@@ -110,7 +125,7 @@ export abstract class SKElement {
   debug = false;
 
   draw(gc: CanvasRenderingContext2D): void {
-    if (Style.debug || this.debug) {
+    if (Settings.debug || this.debug) {
       gc.save();
       gc.translate(this.x, this.y);
       // draw the box model visualization

@@ -1,6 +1,6 @@
 import { insideHitTestRectangle, measureText } from "../utility";
 import { SKElement } from "./element";
-import * as Style from "./style";
+import { Style } from "./style";
 import { SKEvent, SKMouseEvent } from "../events";
 
 export class SKButton extends SKElement {
@@ -8,7 +8,13 @@ export class SKButton extends SKElement {
 
   font = Style.font;
 
-  constructor(text: string, x = 0, y = 0, width?: number, height?: number) {
+  constructor(
+    text: string,
+    x = 0,
+    y = 0,
+    width?: number,
+    height?: number
+  ) {
     super(x, y, width, height);
     this.box.padding = Style.textPadding;
     this.text = text;
@@ -37,7 +43,9 @@ export class SKButton extends SKElement {
 
     this.box.height =
       height ||
-      m.fontBoundingBoxAscent + m.fontBoundingBoxDescent + this.box.padding * 2;
+      m.fontBoundingBoxAscent +
+        m.fontBoundingBoxDescent +
+        this.box.padding * 2;
 
     this.box.width = width || m.width + this.box.padding * 2;
     // enforce a minimum width here (if no width specified)
@@ -107,7 +115,8 @@ export class SKButton extends SKElement {
     // normal background
     gc.beginPath();
     gc.roundRect(this.x, this.y, w, h, 4);
-    gc.fillStyle = this.state == "down" ? Style.highlightColour : "lightgrey";
+    gc.fillStyle =
+      this.state == "down" ? Style.highlightColour : "lightgrey";
     gc.strokeStyle = "black";
     // change fill to show down state
     gc.lineWidth = this.state == "down" ? 4 : 2;

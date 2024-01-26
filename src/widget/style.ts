@@ -1,19 +1,11 @@
 // standard SimpleKit widget style
 
-export const setDebug = (v: boolean) => {
-  debug = v;
+export const Style = {
+  font: "12pt sans-serif",
+  textPadding: 5,
+  widgetHeight: 32,
+  defaultColour: "lightgrey",
+  highlightColour: "lightskyblue",
+  focusColour: "mediumblue",
+  minElementSize: 32,
 };
-export let debug = false;
-
-export let font = "12pt sans-serif";
-
-export let textPadding = 5;
-
-export let widgetHeight = 32;
-
-export let defaultColour = "lightgrey";
-export let highlightColour = "lightskyblue";
-export let focusColour = "mediumblue";
-
-// used to set minWidth and minHeight
-export let minElementSize = 32;

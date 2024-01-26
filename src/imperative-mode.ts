@@ -9,9 +9,10 @@ export {
   startSimpleKit,
   setSKEventListener,
   sendSKEvent,
-  setSKRoot,
   setSKAnimationCallback,
+  setSKDrawCallback,
   addSKEventTranslator,
+  setSKRoot,
   invalidateLayout,
 };
 export {
@@ -24,6 +25,8 @@ export type {
 export * from "./widget";
 // layout
 export * from "./layout";
+// settings
+export * from "./settings";
 
 //  - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -161,6 +164,9 @@ function runLoop(eventQueue: FundamentalEvent[], time: number) {
   // animation
   if (animateCallback) animateCallback(time);
 
+  // draw on canvas
+  if (drawCallback) drawCallback(gc);
+
   // if we have a UI tree, layout widgets if needed
   if (uiTreeRoot && layoutDirty) {
     // console.log(`layout dirty, doing layout`);
@@ -225,6 +231,20 @@ function sendSKEvent(e: SKEvent) {
   otherEvents.push(e);
 }
 
+/**
+ * Sets function to draw graphics each frame
+ * @param draw the draw callback
+ */
+function setSKDrawCallback(draw: DrawCallback) {
+  if (uiTreeRoot) {
+    console.error("No draw callback when widget tree root is set.");
+    return;
+  }
+  drawCallback = draw;
+}
+type DrawCallback = (gc: CanvasRenderingContext2D) => void;
+let drawCallback: DrawCallback | null;
+
 // root of the widget tree
 let uiTreeRoot: SKElement | null;
 
@@ -238,9 +258,15 @@ let mouseDispatcher: MouseDispatcher | null;
  * This is typically set once during startup
  * @param root the root widget, usually a SKContainer
  */
-function setSKRoot(root: SKElement) {
+function setSKRoot(root: SKElement | null) {
   uiTreeRoot = root;
   if (root) {
+    if (drawCallback) {
+      drawCallback = null;
+      console.warn(
+        `Draw callback cleared when setting widget tree root.`
+      );
+    }
     mouseDispatcher = new MouseDispatcher(root);
   } else mouseDispatcher = null;
 }
