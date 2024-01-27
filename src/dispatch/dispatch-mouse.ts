@@ -1,7 +1,10 @@
 import { SKMouseEvent } from "../events";
 import { SKElement, SKContainer } from "../widget";
 
-function copySKMouseEvent(me: SKMouseEvent, type: string = ""): SKMouseEvent {
+function copySKMouseEvent(
+  me: SKMouseEvent,
+  type: string = ""
+): SKMouseEvent {
   return {
     timeStamp: me.timeStamp,
     type: type || me.type,
@@ -19,7 +22,11 @@ export class MouseDispatcher {
   lastElement: SKElement | null = null;
 
   // returns list of elements under mouse (from back to front)
-  buildTargetRoute(mx: number, my: number, element: SKElement): SKElement[] {
+  buildTargetRoute(
+    mx: number,
+    my: number,
+    element: SKElement
+  ): SKElement[] {
     const route: SKElement[] = [];
     // only SKContainers have children to traverse
     if ("children" in element) {
@@ -34,7 +41,7 @@ export class MouseDispatcher {
       );
     }
 
-    if (element.hittest(mx, my)) {
+    if (element.hitTest(mx, my)) {
       return [element, ...route];
     } else {
       return route;
@@ -57,17 +64,22 @@ export class MouseDispatcher {
             );
           }
           // console.log(`enter ${element}`);
-          element.handleMouseEvent(copySKMouseEvent(me, "mouseenter"));
+          element.handleMouseEvent(
+            copySKMouseEvent(me, "mouseenter")
+          );
           this.lastElement = element;
         }
 
         const handled = element.handleMouseEvent(me);
-        if (handled && me.type == "mousedown") this.mouseFocus = element;
+        if (handled && me.type == "mousedown")
+          this.mouseFocus = element;
         return handled;
       });
       if (route.length == 0 && this.lastElement) {
         // console.log(`exit ${lastElement}`);
-        this.lastElement.handleMouseEvent(copySKMouseEvent(me, "mouseexit"));
+        this.lastElement.handleMouseEvent(
+          copySKMouseEvent(me, "mouseexit")
+        );
         // console.log(`enter ${null}`);
         this.lastElement = null;
       }

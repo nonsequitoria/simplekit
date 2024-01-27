@@ -1,26 +1,30 @@
 import { measureText } from "../utility";
 
-import { SKElement } from "./element";
+import { SKElement, SKElementProps } from "./element";
 import { Style } from "./style";
 
-export class SKLabel extends SKElement {
-  align: "centre" | "left" | "right" = "centre";
-  font = Style.font;
+type LabelAlign = "centre" | "left" | "right";
 
-  constructor(
-    text: string,
-    x = 0,
-    y = 0,
-    width?: number,
-    height?: number
-  ) {
-    super(x, y, width, height);
+type SKLabelProps = SKElementProps & {
+  text?: string;
+  align?: LabelAlign;
+};
+
+export class SKLabel extends SKElement {
+  constructor({ text, align, ...elementProps }: SKLabelProps = {}) {
+    super(elementProps);
+
     this.box.padding = Style.textPadding;
+    this.text = text || "?";
+    this.align = align || "centre";
+
     // defaults
     this.fill = "";
     this.border = "";
-    this.text = text;
   }
+
+  font = Style.font;
+  align: LabelAlign;
 
   protected _text = "";
   get text() {
@@ -40,11 +44,7 @@ export class SKLabel extends SKElement {
       return;
     }
 
-    this.box.height =
-      height ||
-      m.fontBoundingBoxAscent +
-        m.fontBoundingBoxDescent +
-        this.box.padding * 2;
+    this.box.height = height || m.height + this.box.padding * 2;
 
     this.box.width = width || m.width + this.box.padding * 2;
   }

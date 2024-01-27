@@ -9,7 +9,12 @@ export class SKContainer extends SKElement {
   constructor();
   constructor(x: number, y: number);
   constructor(x: number, y: number, width: number, height: number);
-  constructor(x: number = 0, y: number = 0, width?: number, height?: number) {
+  constructor(
+    x: number = 0,
+    y: number = 0,
+    width?: number,
+    height?: number
+  ) {
     super(x, y, width, height);
     // console.log(`SKContainer ${this.id} size ${width}x${height}`);
   }
@@ -76,7 +81,7 @@ export class SKContainer extends SKElement {
   //#endregion
 
   // hit test ignores margin
-  hittest(mx: number, my: number): boolean {
+  hitTest(mx: number, my: number): boolean {
     return insideHitTestRectangle(
       mx,
       my,
@@ -99,14 +104,24 @@ export class SKContainer extends SKElement {
     // draw background colour if set
     if (this.fill) {
       gc.fillStyle = this.fill;
-      gc.fillRect(0, 0, this.box.paddingBox.width, this.box.paddingBox.height);
+      gc.fillRect(
+        0,
+        0,
+        this.box.paddingBox.width,
+        this.box.paddingBox.height
+      );
     }
 
     // draw border if set
     if (this.border) {
       gc.strokeStyle = this.border;
       gc.lineWidth = 1;
-      gc.strokeRect(0, 0, box.paddingBox.width, box.paddingBox.height);
+      gc.strokeRect(
+        0,
+        0,
+        box.paddingBox.width,
+        box.paddingBox.height
+      );
     }
 
     gc.restore();
@@ -154,6 +169,9 @@ export class SKContainer extends SKElement {
   //#endregion
 
   public toString(): string {
-    return `SKContainer '${this.fill}'` + (this.id ? ` id '${this.id}'` : "");
+    return (
+      `SKContainer '${this.fill}'` +
+      (this.id ? ` id '${this.id}'` : "")
+    );
   }
 }

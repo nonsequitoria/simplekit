@@ -1,26 +1,23 @@
 import { SKKeyboardEvent, SKMouseEvent } from "../events";
 import { insideHitTestRectangle, measureText } from "../utility";
 import { keyboardDispatcher } from "../dispatch";
-import { SKElement } from "./element";
+import { SKElement, SKElementProps } from "./element";
 import { Style } from "./style";
 
+type SKTextfieldProps = SKElementProps & {
+  text?: string;
+};
+
 export class SKTextfield extends SKElement {
+  constructor({ text, ...elementProps }: SKTextfieldProps = {}) {
+    super(elementProps);
+    this.box.padding = Style.textPadding;
+    this.text = text || "";
+  }
+
   state: "idle" | "hover" = "idle";
   focus = false;
-
   font = Style.font;
-
-  constructor(
-    text: string = "",
-    x = 0,
-    y = 0,
-    width?: number,
-    height?: number
-  ) {
-    super(x, y, width, height);
-    this.box.padding = Style.textPadding;
-    this.text = text;
-  }
 
   protected _text = "";
   get text() {
@@ -42,11 +39,7 @@ export class SKTextfield extends SKElement {
       return;
     }
 
-    this.height =
-      height ||
-      m.fontBoundingBoxAscent +
-        m.fontBoundingBoxDescent +
-        this.box.padding * 2;
+    this.height = height || m.height + this.box.padding * 2;
 
     this.box.width = width || m.width + this.box.padding * 2;
   }
@@ -106,17 +99,6 @@ export class SKTextfield extends SKElement {
         break;
     }
     return false;
-  }
-
-  hitTest(mx: number, my: number): boolean {
-    return insideHitTestRectangle(
-      mx,
-      my,
-      this.x + this.box.margin,
-      this.y + this.box.margin,
-      this.box.width,
-      this.box.height
-    );
   }
 
   draw(gc: CanvasRenderingContext2D) {

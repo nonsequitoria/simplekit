@@ -1,9 +1,9 @@
 import { SKEvent, SKKeyboardEvent, SKMouseEvent } from "../events";
-// import { Drawable } from "../utility";
 
 import { BoxModel } from "./boxmodel";
 import { Settings } from "../settings";
 import { Style } from "./style";
+import { insideHitTestRectangle } from "utility";
 
 type EventHandler = (me: SKEvent) => boolean | void;
 
@@ -13,7 +13,7 @@ type DispatchRoute = {
   capture: boolean;
 };
 
-type SKElementProps = {
+export type SKElementProps = {
   x?: number;
   y?: number;
   width?: number;
@@ -120,8 +120,15 @@ export abstract class SKElement {
 
   //#endregion
 
-  hitTest(x: number, y: number) {
-    return false;
+  hitTest(mx: number, my: number): boolean {
+    return insideHitTestRectangle(
+      mx,
+      my,
+      this.x,
+      this.y,
+      this.box.paddingBox.width,
+      this.box.paddingBox.height
+    );
   }
 
   // background colour

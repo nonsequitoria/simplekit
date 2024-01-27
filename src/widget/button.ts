@@ -1,24 +1,19 @@
 import { insideHitTestRectangle, measureText } from "../utility";
-import { SKElement } from "./element";
+import { SKElement, SKElementProps } from "./element";
 import { Style } from "./style";
 import { SKEvent, SKMouseEvent } from "../events";
 
+type SKButtonProps = SKElementProps & { text?: string };
+
 export class SKButton extends SKElement {
-  state: "idle" | "hover" | "down" = "idle";
+  constructor({ text, ...elementProps }: SKButtonProps = {}) {
+    super(elementProps);
+    this.text = text || "?";
+    this.box.padding = Style.textPadding;
+  }
 
   font = Style.font;
-
-  constructor(
-    text: string,
-    x = 0,
-    y = 0,
-    width?: number,
-    height?: number
-  ) {
-    super(x, y, width, height);
-    this.box.padding = Style.textPadding;
-    this.text = text;
-  }
+  state: "idle" | "hover" | "down" = "idle";
 
   protected _text = "";
   get text() {
@@ -41,11 +36,7 @@ export class SKButton extends SKElement {
       return;
     }
 
-    this.box.height =
-      height ||
-      m.fontBoundingBoxAscent +
-        m.fontBoundingBoxDescent +
-        this.box.padding * 2;
+    this.box.height = height || m.height + this.box.padding * 2;
 
     this.box.width = width || m.width + this.box.padding * 2;
     // enforce a minimum width here (if no width specified)
@@ -79,17 +70,6 @@ export class SKButton extends SKElement {
         break;
     }
     return false;
-  }
-
-  hitTest(mx: number, my: number): boolean {
-    return insideHitTestRectangle(
-      mx,
-      my,
-      this.x,
-      this.y,
-      this.box.paddingBox.width,
-      this.box.paddingBox.height
-    );
   }
 
   draw(gc: CanvasRenderingContext2D) {
