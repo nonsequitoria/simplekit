@@ -8,8 +8,8 @@ type SKButtonProps = SKElementProps & { text?: string };
 export class SKButton extends SKElement {
   constructor({ text, ...elementProps }: SKButtonProps = {}) {
     super(elementProps);
-    this.text = text || "?";
     this.box.padding = Style.textPadding;
+    this.text = text || "?";
   }
 
   font = Style.font;

@@ -3,19 +3,13 @@ import { LayoutMethod } from "../layout";
 import { SKMouseEvent } from "../events";
 import { invalidateLayout } from "../imperative-mode";
 
-import { SKElement } from "./element";
+import { SKElement, SKElementProps } from "./element";
+
+type SKContainerProps = SKElementProps & {};
 
 export class SKContainer extends SKElement {
-  constructor();
-  constructor(x: number, y: number);
-  constructor(x: number, y: number, width: number, height: number);
-  constructor(
-    x: number = 0,
-    y: number = 0,
-    width?: number,
-    height?: number
-  ) {
-    super(x, y, width, height);
+  constructor(elementProps: SKContainerProps = {}) {
+    super(elementProps);
     // console.log(`SKContainer ${this.id} size ${width}x${height}`);
   }
 
@@ -161,9 +155,10 @@ export class SKContainer extends SKElement {
       );
 
       this._children.forEach((el) => el.doLayout());
-    } else if (this._children.length > 0) {
-      console.warn(`${this.id} has children but no layout method`);
     }
+    // else if (this._children.length > 0) {
+    //   console.warn(`${this.id} has children but no layout method`);
+    // }
   }
 
   //#endregion

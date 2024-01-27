@@ -3,7 +3,7 @@ import { SKEvent, SKKeyboardEvent, SKMouseEvent } from "../events";
 import { BoxModel } from "./boxmodel";
 import { Settings } from "../settings";
 import { Style } from "./style";
-import { insideHitTestRectangle } from "utility";
+import { insideHitTestRectangle } from "../utility";
 
 type EventHandler = (me: SKEvent) => boolean | void;
 
