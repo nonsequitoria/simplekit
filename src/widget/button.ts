@@ -81,7 +81,7 @@ export class SKButton extends SKElement {
     return false;
   }
 
-  hittest(mx: number, my: number): boolean {
+  hitTest(mx: number, my: number): boolean {
     return insideHitTestRectangle(
       mx,
       my,

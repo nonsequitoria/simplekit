@@ -2,8 +2,8 @@ import { SKEvent, SKKeyboardEvent, SKMouseEvent } from "../events";
 // import { Drawable } from "../utility";
 
 import { BoxModel } from "./boxmodel";
-import { Style } from "./style";
 import { Settings } from "../settings";
+import { Style } from "./style";
 
 type EventHandler = (me: SKEvent) => boolean | void;
 
@@ -13,20 +13,29 @@ type DispatchRoute = {
   capture: boolean;
 };
 
+type SKElementProps = {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+};
+
 export abstract class SKElement {
-  // constructor();
-  // constructor(x: number, y: number, width?: number, height?: number);
-  constructor(
-    public x = 0,
-    public y = 0,
-    width?: number,
-    height?: number
-  ) {
+  constructor({
+    x = 0,
+    y = 0,
+    width = Style.minElementSize,
+    height = Style.minElementSize,
+  }: SKElementProps = {}) {
+    this.x = x;
+    this.y = y;
     this.width = width;
     this.height = height;
-    // this.width = Math.max(width, Style.minElementSize);
-    // this.height = Math.max(height, Style.minElementSize);
   }
+
+  // top-left corner of element bounding box
+  x = 0;
+  y = 0;
 
   protected _width: number | undefined;
   set width(w: number | undefined) {
@@ -111,7 +120,7 @@ export abstract class SKElement {
 
   //#endregion
 
-  hittest(x: number, y: number) {
+  hitTest(x: number, y: number) {
     return false;
   }
 
