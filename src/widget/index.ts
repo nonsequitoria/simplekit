@@ -4,3 +4,5 @@ export * from "./container";
 export * from "./button";
 export * from "./textfield";
 export * from "./label";
+export * from "./slider";
+export * from "./thumb";
