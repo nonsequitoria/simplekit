@@ -1,6 +1,10 @@
 import { SKMouseEvent } from "../events";
 import { SKElement, SKContainer } from "../widget";
 
+const debug = false;
+
+if (debug) console.log("load dispatch-mouse module");
+
 function copySKMouseEvent(
   me: SKMouseEvent,
   type: string = ""
@@ -41,15 +45,12 @@ function buildTargetRoute(
   }
 }
 
-// element with mouse focus
-let mouseFocus: SKElement | null = null;
-
 // dispatch mouse events to elements
 export function mouseDispatch(me: SKMouseEvent, root: SKElement) {
   // focus dispatch
-  if (mouseFocus) {
-    mouseFocus.handleMouseEvent(me);
-    if (me.type == "mouseup") mouseFocus = null;
+  if (focusedElement) {
+    focusedElement.handleMouseEvent(me);
+    if (me.type == "mouseup") focusedElement = null;
     return;
   }
 
@@ -95,6 +96,15 @@ function updateEnterExit(me: SKMouseEvent, el?: SKElement) {
     }
     lastElementEntered = el;
   }
+}
+
+// mouse focus
+let focusedElement: SKElement | null = null;
+
+export function requestMouseFocus(element: SKElement) {
+  if (focusedElement == element) return;
+  focusedElement = element;
+  if (debug) console.log(`gained mouse focus ${focusedElement}`);
 }
 
 //#region old dispatch code
