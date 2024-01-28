@@ -3,42 +3,33 @@ import { SKElement } from "../widget";
 
 const debug = false;
 
-class KeyboardDispatcher {
-  focusedElement: SKElement | null = null;
+if (debug) console.log("load dispatch-keyboard module");
 
-  constructor() {
-    if (debug) console.log("new KeyboardDispatcher");
-  }
+let focusedElement: SKElement | null = null;
 
-  requestFocus(element: SKElement) {
-    if (this.focusedElement == element) return;
-    if (this.focusedElement) {
-      const ke = {
-        type: "focusout",
-        timeStamp: performance.now(),
-        key: null,
-      } as SKKeyboardEvent;
-      this.focusedElement.handleKeyboardEvent(ke);
-      if (debug) console.log(`lost focus ${this.focusedElement}`);
-    }
-    const ke = {
-      type: "focusin",
+export function requestKeyboardFocus(element: SKElement) {
+  if (focusedElement == element) return;
+  if (focusedElement) {
+    focusedElement.handleKeyboardEvent({
+      type: "focusout",
       timeStamp: performance.now(),
       key: null,
-    } as SKKeyboardEvent;
-    element.handleKeyboardEvent(ke);
-    this.focusedElement = element;
-    if (debug) console.log(`gained focus ${this.focusedElement}`);
+    } as SKKeyboardEvent);
+    if (debug) console.log(`lost keyboard focus ${focusedElement}`);
   }
-
-  dispatch(ke: SKKeyboardEvent) {
-    if (!this.focusedElement) {
-      if (debug) console.log(`keyboardDispatch ${ke} no focus`);
-      return;
-    }
-    if (debug) console.log(`keyboardDispatch ${ke} ${this.focusedElement}`);
-    this.focusedElement.handleKeyboardEvent(ke);
-  }
+  element.handleKeyboardEvent({
+    type: "focusin",
+    timeStamp: performance.now(),
+    key: null,
+  } as SKKeyboardEvent);
+  focusedElement = element;
+  if (debug) console.log(`gained keyboard focus ${focusedElement}`);
 }
 
-export const keyboardDispatcher = new KeyboardDispatcher();
+export function keyboardDispatch(ke: SKKeyboardEvent) {
+  if (debug)
+    console.log(
+      `keyboardDispatch ${ke} ${focusedElement || "no focus"}`
+    );
+  focusedElement?.handleKeyboardEvent(ke);
+}

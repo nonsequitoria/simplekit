@@ -40,7 +40,7 @@ import {
 import { SKEvent, SKKeyboardEvent, SKMouseEvent } from "./events";
 
 // dispatchers
-import { mouseDispatch, keyboardDispatcher } from "./dispatch";
+import { mouseDispatch, keyboardDispatch } from "./dispatch";
 
 import {
   EventTranslator,
@@ -148,12 +148,10 @@ function runLoop(eventQueue: FundamentalEvent[], time: number) {
 
     // widget dispatchers
     if (e instanceof SKMouseEvent && uiTreeRoot) {
-      // const me = e as SKMouseEvent;
       mouseDispatch(e, uiTreeRoot);
     }
     if (e instanceof SKKeyboardEvent) {
-      const ke = e as SKKeyboardEvent;
-      keyboardDispatcher.dispatch(ke);
+      keyboardDispatch(e);
     }
 
     // global app dispatch

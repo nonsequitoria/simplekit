@@ -1,6 +1,6 @@
 import { SKKeyboardEvent, SKMouseEvent } from "../events";
-import { insideHitTestRectangle, measureText } from "../utility";
-import { keyboardDispatcher } from "../dispatch";
+import { measureText } from "../utility";
+import { requestKeyboardFocus } from "../dispatch";
 import { SKElement, SKElementProps } from "./element";
 import { Style } from "./style";
 
@@ -88,7 +88,7 @@ export class SKTextfield extends SKElement {
         return true;
         break;
       case "click":
-        keyboardDispatcher.requestFocus(this);
+        requestKeyboardFocus(this);
         return true;
         break;
       case "mousedown":
