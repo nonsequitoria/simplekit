@@ -40,7 +40,7 @@ import {
 import { SKEvent, SKKeyboardEvent, SKMouseEvent } from "./events";
 
 // dispatchers
-import { MouseDispatcher, keyboardDispatcher } from "./dispatch";
+import { mouseDispatch, keyboardDispatcher } from "./dispatch";
 
 import {
   EventTranslator,
@@ -147,10 +147,9 @@ function runLoop(eventQueue: FundamentalEvent[], time: number) {
     }
 
     // widget dispatchers
-
-    if (mouseDispatcher && e instanceof SKMouseEvent) {
-      const me = e as SKMouseEvent;
-      mouseDispatcher.dispatch(me);
+    if (e instanceof SKMouseEvent && uiTreeRoot) {
+      // const me = e as SKMouseEvent;
+      mouseDispatch(e, uiTreeRoot);
     }
     if (e instanceof SKKeyboardEvent) {
       const ke = e as SKKeyboardEvent;
@@ -251,7 +250,7 @@ let drawCallback: DrawCallback | null;
 // root of the widget tree
 let uiTreeRoot: SKElement | null;
 
-let mouseDispatcher: MouseDispatcher | null;
+// let mouseDispatcher: MouseDispatcher | null;
 // import { global } from "./global";
 // let keyboardDispatcher = new KeyboardDispatcher();
 // global.keyboardDispatcher = keyboardDispatcher;
@@ -270,8 +269,9 @@ function setSKRoot(root: SKElement | null) {
         `Draw callback cleared when setting widget tree root.`
       );
     }
-    mouseDispatcher = new MouseDispatcher(root);
-  } else mouseDispatcher = null;
+    // mouseDispatcher = new MouseDispatcher();
+  }
+  // else mouseDispatcher = null;
 }
 
 // flag to tell SimpleKit to run layout process next frame
