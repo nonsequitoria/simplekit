@@ -145,7 +145,6 @@ export class SKTextfield extends SKElement {
     if (this.focus) {
       const cursorX = this.box.padding + this.textWidth + 1;
       const cursorHeight = this.box.height - Style.textPadding;
-      console.log(cursorX, cursorHeight);
       gc.beginPath();
       gc.moveTo(cursorX, Style.textPadding / 2);
       gc.lineTo(cursorX, cursorHeight);
