@@ -98,38 +98,3 @@ export function requestMouseFocus(element: SKElement) {
   focusedElement = element;
   if (debug) console.log(`gained mouse focus ${focusedElement}`);
 }
-
-//#region old dispatch code
-
-// route.every((element) => {
-//   if (me.type == "mousemove" && this.lastElement != element) {
-//     console.log(`exit ${this.lastElement}`);
-//     if (this.lastElement) {
-//       this.lastElement.handleMouseEvent(
-//         copySKMouseEvent(me, "mouseexit")
-//       );
-//     }
-//     console.log(`enter ${element}`);
-//     element.handleMouseEvent(copySKMouseEvent(me, "mouseenter"));
-//     this.lastElement = element;
-//   }
-
-//   const handled = element.handleMouseEvent(me);
-
-//   if (handled && me.type == "mousedown")
-//     this.mouseFocus = element;
-//   return handled;
-// });
-
-// mouse event outside of any element, send mouseexit
-// NOT NEEDED since root element always covers entire canvas
-// if (route.length == 0 && this.lastElement) {
-//   // console.log(`exit ${lastElement}`);
-//   this.lastElement.handleMouseEvent(
-//     copySKMouseEvent(me, "mouseexit")
-//   );
-//   // console.log(`enter ${null}`);
-//   this.lastElement = null;
-// }
-
-//#endregion
