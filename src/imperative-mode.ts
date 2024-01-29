@@ -27,6 +27,8 @@ export * from "./widget";
 export * from "./layout";
 // settings
 export * from "./settings";
+// dispatch
+export { requestKeyboardFocus, requestMouseFocus } from "./dispatch";
 
 //  - - - - - - - - - - - - - - - - - - - - - - -
 
