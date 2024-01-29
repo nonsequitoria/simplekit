@@ -5,7 +5,7 @@ import { SKEvent, SKMouseEvent } from "../events";
 
 import { requestMouseFocus } from "../dispatch";
 
-type SKButtonProps = SKElementProps & { text?: string };
+export type SKButtonProps = SKElementProps & { text?: string };
 
 export class SKButton extends SKElement {
   constructor({ text, ...elementProps }: SKButtonProps = {}) {

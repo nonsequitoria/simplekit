@@ -5,18 +5,6 @@ const debug = false;
 
 if (debug) console.log("load dispatch-mouse module");
 
-function copySKMouseEvent(
-  me: SKMouseEvent,
-  type: string = ""
-): SKMouseEvent {
-  return {
-    timeStamp: me.timeStamp,
-    type: type || me.type,
-    x: me.x,
-    y: me.y,
-  } as SKMouseEvent;
-}
-
 // returns list of elements under mouse (from back to front)
 function buildTargetRoute(
   mx: number,
@@ -50,7 +38,10 @@ export function mouseDispatch(me: SKMouseEvent, root: SKElement) {
   // focus dispatch
   if (focusedElement) {
     focusedElement.handleMouseEvent(me);
-    if (me.type == "mouseup") focusedElement = null;
+    if (me.type == "mouseup") {
+      if (debug) console.log(`lost mouse focus ${focusedElement}`);
+      focusedElement = null;
+    }
     return;
   }
 
@@ -86,13 +77,14 @@ function updateEnterExit(me: SKMouseEvent, el?: SKElement) {
   if (el != lastElementEntered) {
     if (lastElementEntered) {
       console.log(`exit ${lastElementEntered}`);
-      lastElementEntered.handleMouseEvent(
-        copySKMouseEvent(me, "mouseexit")
-      );
+      lastElementEntered.handleMouseEvent({
+        ...me,
+        type: "mouseexit",
+      });
     }
     if (el) {
       console.log(`enter ${el}`);
-      el.handleMouseEvent(copySKMouseEvent(me, "mouseenter"));
+      el.handleMouseEvent({ ...me, type: "mouseenter" });
     }
     lastElementEntered = el;
   }

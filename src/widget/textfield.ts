@@ -4,7 +4,7 @@ import { requestKeyboardFocus } from "../dispatch";
 import { SKElement, SKElementProps } from "./element";
 import { Style } from "./style";
 
-type SKTextfieldProps = SKElementProps & {
+export type SKTextfieldProps = SKElementProps & {
   text?: string;
 };
 
@@ -41,7 +41,7 @@ export class SKTextfield extends SKElement {
 
     this.height = height || m.height + this.box.padding * 2;
     this.box.width = width || m.width + this.box.padding * 2;
-
+    // need to store this for cursor position
     this.textWidth = m.width;
   }
 
@@ -67,7 +67,7 @@ export class SKTextfield extends SKElement {
         break;
       case "keydown":
         if (this.focus && ke.key) {
-          this._text = this.applyEdit(this.text, ke.key);
+          this.text = this.applyEdit(this.text, ke.key);
         }
         return this.dispatch({
           source: this,
@@ -132,7 +132,7 @@ export class SKTextfield extends SKElement {
     gc.stroke();
     // clip text if it's wider than text area
     // TODO: could scroll text if it's wider than text area
-    gc.clip();
+    // gc.clip();
 
     // text
     gc.font = Style.font;
@@ -143,11 +143,12 @@ export class SKTextfield extends SKElement {
 
     // simple cursor
     if (this.focus) {
-      const cursorX = this.x + this.box.padding + this.textWidth + 1;
+      const cursorX = this.box.padding + this.textWidth + 1;
       const cursorHeight = this.box.height - Style.textPadding;
+      console.log(cursorX, cursorHeight);
       gc.beginPath();
-      gc.moveTo(cursorX, this.y + Style.textPadding / 2);
-      gc.lineTo(cursorX, this.y + cursorHeight);
+      gc.moveTo(cursorX, Style.textPadding / 2);
+      gc.lineTo(cursorX, cursorHeight);
       gc.lineWidth = 1;
       gc.strokeStyle = "black";
       gc.stroke();
