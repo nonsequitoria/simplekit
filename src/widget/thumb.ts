@@ -1,8 +1,3 @@
-import {
-  insideHitTestCircle,
-  insideHitTestRectangle,
-  measureText,
-} from "../utility";
 import { SKElement, SKElementProps } from "./element";
 import { Style } from "./style";
 import { SKEvent, SKMouseEvent } from "../events";

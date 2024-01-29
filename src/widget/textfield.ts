@@ -40,9 +40,12 @@ export class SKTextfield extends SKElement {
     }
 
     this.height = height || m.height + this.box.padding * 2;
-
     this.box.width = width || m.width + this.box.padding * 2;
+
+    this.textWidth = m.width;
   }
+
+  textWidth = 0;
 
   protected applyEdit(text: string, key: string): string {
     if (key == "Backspace") {
@@ -127,16 +130,9 @@ export class SKTextfield extends SKElement {
     gc.lineWidth = 1;
     gc.strokeStyle = this.focus ? "mediumblue" : "black";
     gc.stroke();
-    gc.clip(); // clip text if it's wider than text area
-
-    // highlight
-    // gc.fillStyle = SKStyle.highlightColor;
-    // gc.fillRect(
-    //   this.x + padding,
-    //   this.y + padding / 2,
-    //   50,
-    //   this.height - padding
-    // );
+    // clip text if it's wider than text area
+    // TODO: could scroll text if it's wider than text area
+    gc.clip();
 
     // text
     gc.font = Style.font;
@@ -144,6 +140,18 @@ export class SKTextfield extends SKElement {
     gc.textBaseline = "middle";
     gc.textAlign = "left";
     gc.fillText(this.text, this.box.padding, h / 2);
+
+    // simple cursor
+    if (this.focus) {
+      const cursorX = this.x + this.box.padding + this.textWidth + 1;
+      const cursorHeight = this.box.height - Style.textPadding;
+      gc.beginPath();
+      gc.moveTo(cursorX, this.y + Style.textPadding / 2);
+      gc.lineTo(cursorX, this.y + cursorHeight);
+      gc.lineWidth = 1;
+      gc.strokeStyle = "black";
+      gc.stroke();
+    }
 
     gc.restore();
 

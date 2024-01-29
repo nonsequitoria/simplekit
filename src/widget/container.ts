@@ -10,7 +10,6 @@ type SKContainerProps = SKElementProps & {};
 export class SKContainer extends SKElement {
   constructor(elementProps: SKContainerProps = {}) {
     super(elementProps);
-    // console.log(`SKContainer ${this.id} size ${width}x${height}`);
   }
 
   //#region managing children
