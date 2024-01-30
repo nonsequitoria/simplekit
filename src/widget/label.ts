@@ -11,12 +11,16 @@ type SKLabelProps = SKElementProps & {
 };
 
 export class SKLabel extends SKElement {
-  constructor({ text, align, ...elementProps }: SKLabelProps = {}) {
+  constructor({
+    text = "?",
+    align = "centre",
+    ...elementProps
+  }: SKLabelProps = {}) {
     super(elementProps);
 
     this.box.padding = Style.textPadding;
-    this.text = text || "?";
-    this.align = align || "centre";
+    this.text = text;
+    this.align = align;
 
     // defaults
     this.fill = "";

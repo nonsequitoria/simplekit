@@ -18,6 +18,8 @@ export type SKElementProps = {
   y?: number;
   width?: number;
   height?: number;
+  fill?: string;
+  border?: string;
 };
 
 export abstract class SKElement {
@@ -26,11 +28,15 @@ export abstract class SKElement {
     y = 0,
     width = Style.minElementSize,
     height = Style.minElementSize,
+    fill = "",
+    border = "",
   }: SKElementProps = {}) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
+    this.fill = fill;
+    this.border = border;
   }
 
   // top-left corner of element bounding box
@@ -132,9 +138,9 @@ export abstract class SKElement {
   }
 
   // background colour
-  fill = "";
+  fill;
   // border colour (assume 1 px solid)
-  border = "";
+  border;
 
   // for debugging
   id = "";

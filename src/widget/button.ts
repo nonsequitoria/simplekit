@@ -8,10 +8,10 @@ import { requestMouseFocus } from "../dispatch";
 export type SKButtonProps = SKElementProps & { text?: string };
 
 export class SKButton extends SKElement {
-  constructor({ text, ...elementProps }: SKButtonProps = {}) {
+  constructor({ text = "", ...elementProps }: SKButtonProps = {}) {
     super(elementProps);
     this.box.padding = Style.textPadding;
-    this.text = text || "?";
+    this.text = text;
   }
 
   font = Style.font;

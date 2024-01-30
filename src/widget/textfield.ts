@@ -9,10 +9,10 @@ export type SKTextfieldProps = SKElementProps & {
 };
 
 export class SKTextfield extends SKElement {
-  constructor({ text, ...elementProps }: SKTextfieldProps = {}) {
+  constructor({ text = "", ...elementProps }: SKTextfieldProps = {}) {
     super(elementProps);
     this.box.padding = Style.textPadding;
-    this.text = text || "";
+    this.text = text;
   }
 
   state: "idle" | "hover" = "idle";
