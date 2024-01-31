@@ -104,7 +104,7 @@ export abstract class SKElement {
   ) {
     this.bindingTable = this.bindingTable.filter(
       (d) =>
-        d.type != type && d.handler != handler && d.capture != capture
+        !(d.type == type && d.handler == handler && d.capture == capture)
     );
   }
 
