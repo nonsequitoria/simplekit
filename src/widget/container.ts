@@ -43,7 +43,7 @@ export class SKContainer extends SKElement {
 
     switch (me.type) {
       case "click":
-        return this.dispatch(
+        return this.sendEvent(
           {
             source: this,
             timeStamp: me.timeStamp,
@@ -61,7 +61,7 @@ export class SKContainer extends SKElement {
 
     switch (me.type) {
       case "click":
-        return this.dispatch({
+        return this.sendEvent({
           source: this,
           timeStamp: me.timeStamp,
           type: "action",

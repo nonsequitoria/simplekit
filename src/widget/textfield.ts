@@ -69,7 +69,7 @@ export class SKTextfield extends SKElement {
         if (this.focus && ke.key) {
           this.text = this.applyEdit(this.text, ke.key);
         }
-        return this.dispatch({
+        return this.sendEvent({
           source: this,
           timeStamp: ke.timeStamp,
           type: "textchanged",

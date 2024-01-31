@@ -7,7 +7,7 @@ import { insideHitTestRectangle } from "../utility";
 
 type EventHandler = (me: SKEvent) => boolean | void;
 
-type DispatchRoute = {
+type BindingRoute = {
   type: string; // event type
   handler: EventHandler;
   capture: boolean;
@@ -75,13 +75,13 @@ export abstract class SKElement {
   // layout placeholder
   doLayout(width?: number, height?: number) {}
 
-  //#region event dispatching
+  //#region widget event binding
 
-  private dispatchTable: DispatchRoute[] = [];
+  private bindingTable: BindingRoute[] = [];
 
-  protected dispatch(e: SKEvent, capture = false): boolean {
+  protected sendEvent(e: SKEvent, capture = false): boolean {
     let handled = false;
-    this.dispatchTable.forEach((d) => {
+    this.bindingTable.forEach((d) => {
       if (d.type == e.type && d.capture == capture) {
         handled ||= d.handler(e) as boolean;
       }
@@ -94,7 +94,7 @@ export abstract class SKElement {
     handler: EventHandler,
     capture = false
   ) {
-    this.dispatchTable.push({ type, handler, capture });
+    this.bindingTable.push({ type, handler, capture });
   }
 
   removeEventListener(
@@ -102,7 +102,7 @@ export abstract class SKElement {
     handler: EventHandler,
     capture = false
   ) {
-    this.dispatchTable = this.dispatchTable.filter(
+    this.bindingTable = this.bindingTable.filter(
       (d) =>
         d.type != type && d.handler != handler && d.capture != capture
     );

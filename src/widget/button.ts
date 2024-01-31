@@ -57,7 +57,7 @@ export class SKButton extends SKElement {
       case "mouseup":
         this.state = "hover";
         // return true if a listener was registered
-        return this.dispatch({
+        return this.sendEvent({
           source: this,
           timeStamp: me.timeStamp,
           type: "action",
