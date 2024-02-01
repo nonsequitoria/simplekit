@@ -54,18 +54,18 @@ export function mouseDispatch(me: SKMouseEvent, root: SKElement) {
     updateEnterExit(me, topElement);
   }
 
-  // capture
-  const stopPropagation = !route.every((element) => {
+  // capture propagation
+  const stopPropagation = route.some((element) => {
     const handled = element.handleMouseEventCapture(me);
-    return !handled;
+    return handled;
   });
 
   if (stopPropagation) return;
 
-  // bubble
-  route.reverse().every((element) => {
+  // bubble propagation
+  route.reverse().some((element) => {
     const handled = element.handleMouseEvent(me);
-    return !handled;
+    return handled;
   });
 }
 
