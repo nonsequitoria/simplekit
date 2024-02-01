@@ -1,10 +1,17 @@
 import { SKElement } from "../widget/element";
 
 // export * from "./layouts";
-export * from "./fixed";
-export * from "./centred";
-export * from "./wrap";
-export * from "./fill";
+import { makeFixedLayout } from "./fixed";
+import { makeCentredLayout } from "./centred";
+import { makeWrapRowLayout } from "./wrap";
+import { makeFillRowLayout } from "./fill";
+
+export const Layout = {
+  makeFixedLayout,
+  makeCentredLayout,
+  makeWrapRowLayout,
+  makeFillRowLayout,
+};
 
 export type Size = { width: number; height: number };
 
