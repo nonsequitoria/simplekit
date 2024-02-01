@@ -76,14 +76,14 @@ let lastElementEntered: SKElement | undefined;
 function updateEnterExit(me: SKMouseEvent, el?: SKElement) {
   if (el != lastElementEntered) {
     if (lastElementEntered) {
-      console.log(`exit ${lastElementEntered}`);
+      if (debug) console.log(`exit ${lastElementEntered}`);
       lastElementEntered.handleMouseEvent({
         ...me,
         type: "mouseexit",
       });
     }
     if (el) {
-      console.log(`enter ${el}`);
+      if (debug) console.log(`enter ${el}`);
       el.handleMouseEvent({ ...me, type: "mouseenter" });
     }
     lastElementEntered = el;
