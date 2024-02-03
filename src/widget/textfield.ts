@@ -132,7 +132,7 @@ export class SKTextfield extends SKElement {
     gc.stroke();
     // clip text if it's wider than text area
     // TODO: could scroll text if it's wider than text area
-    // gc.clip();
+    gc.clip();
 
     // text
     gc.font = Style.font;

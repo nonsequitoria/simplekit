@@ -144,9 +144,9 @@ export class SKContainer extends SKElement {
     if (this._layoutMethod && this._children.length > 0) {
       // run the layout method
       // (it returns new bounds, but we ignore it for now)
-      console.log(
-        `${this.id} layout in ${this.box.contentBox.width}x${this.box.contentBox.height}`
-      );
+      // console.log(
+      //   `${this.id} layout in ${this.box.contentBox.width}x${this.box.contentBox.height}`
+      // );
       this._layoutMethod(
         this.box.contentBox.width,
         this.box.contentBox.height,
