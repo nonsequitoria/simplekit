@@ -1,7 +1,7 @@
 import { startSimpleKit } from "canvas-mode";
 
 test("basic test", () => {
-  expect(startSimpleKit()).toBe(false);
+  expect(startSimpleKit()).toBe(undefined);
 });
 
 test("placeholder test", () => {
