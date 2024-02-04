@@ -20,8 +20,10 @@ export function centredLayout(
 
   // stacks all children in the centre of the container
   elements.forEach((el) => {
-    if (el.fillHeight) el.box.fullWidth = boundsWidth;
-    if (el.fillWidth) el.box.fullHeight = boundsHeight;
+    // elements can fill the width or height of the parent
+    if (el.fillWidth) el.box.fullWidth = boundsWidth;
+    if (el.fillHeight) el.box.fullHeight = boundsHeight;
+
     // centre element
     el.x = boundsWidth / 2 - el.box.fullWidth / 2;
     el.y = boundsHeight / 2 - el.box.fullHeight / 2;

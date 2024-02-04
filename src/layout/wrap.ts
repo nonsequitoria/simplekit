@@ -1,15 +1,19 @@
 import { SKElement } from "../widget";
 import { LayoutMethod, Size } from ".";
 
+type WrapLayoutProps = {
+  gap?: number;
+};
+
 export function makeWrapRowLayout(
-  params: { gap: number } = { gap: 0 }
+  props?: WrapLayoutProps
 ): LayoutMethod {
   return (
     boundsWidth: number,
     boundsHeight: number,
     elements: SKElement[]
   ) => {
-    return wrapRowLayout(boundsWidth, boundsHeight, elements, params);
+    return wrapRowLayout(boundsWidth, boundsHeight, elements, props);
   };
 }
 
@@ -18,7 +22,7 @@ export function wrapRowLayout(
   boundsWidth: number,
   boundsHeight: number,
   elements: SKElement[],
-  params: { gap: number }
+  { gap = 0 }: WrapLayoutProps = {}
 ): Size {
   const newBounds: Size = { width: 0, height: 0 };
 
@@ -33,7 +37,7 @@ export function wrapRowLayout(
     } else if (x + el.box.fullWidth > boundsWidth) {
       // wrap to next row and clear rowHeight
       x = 0;
-      y += rowHeight + params.gap;
+      y += rowHeight + gap;
       rowHeight = 0;
     }
 
@@ -43,7 +47,7 @@ export function wrapRowLayout(
     // update the row height
     rowHeight = Math.max(rowHeight, el.box.fullHeight);
     // get x ready for next element
-    x += el.box.fullWidth + params.gap;
+    x += el.box.fullWidth + gap;
 
     // update bounds that were actually used
     newBounds.width = Math.max(newBounds.width, el.box.width);

@@ -2,7 +2,11 @@ import { SKElement } from "../widget";
 import { LayoutMethod, Size } from ".";
 
 export function makeFixedLayout(): LayoutMethod {
-  return (boundsWidth: number, boundsHeight: number, elements: SKElement[]) => {
+  return (
+    boundsWidth: number,
+    boundsHeight: number,
+    elements: SKElement[]
+  ) => {
     return fixedLayout(boundsWidth, boundsHeight, elements);
   };
 }
@@ -11,7 +15,6 @@ function fixedLayout(
   boundsWidth: number,
   boundsHeight: number,
   elements: SKElement[]
-  // params: {}
 ): Size {
   const newBounds: Size = { width: 0, height: 0 };
 
@@ -29,7 +32,10 @@ function fixedLayout(
     // update bounds that were actually used
     // note, we ignore margins for fixed layout
     newBounds.width = Math.max(newBounds.width, el.x + el.box.width);
-    newBounds.height = Math.max(newBounds.height, el.y + el.box.height);
+    newBounds.height = Math.max(
+      newBounds.height,
+      el.y + el.box.height
+    );
   });
 
   return newBounds;

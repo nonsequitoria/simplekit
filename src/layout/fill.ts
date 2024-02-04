@@ -1,15 +1,19 @@
 import { SKElement } from "../widget";
 import { LayoutMethod, Size } from ".";
 
+type FillLayoutProps = {
+  gap?: number;
+};
+
 export function makeFillRowLayout(
-  params: { gap: number } = { gap: 0 }
+  props?: FillLayoutProps
 ): LayoutMethod {
   return (
     boundsWidth: number,
     boundsHeight: number,
     elements: SKElement[]
   ) => {
-    return fillRowLayout(boundsWidth, boundsHeight, elements, params);
+    return fillRowLayout(boundsWidth, boundsHeight, elements, props);
   };
 }
 
@@ -17,10 +21,9 @@ function fillRowLayout(
   boundsWidth: number,
   boundsHeight: number,
   elements: SKElement[],
-  params: { gap: number }
+  { gap = 0 }: FillLayoutProps = {}
 ): Size {
   const newBounds: Size = { width: 0, height: 0 };
-  const gap = params.gap;
 
   // get total "basis" width
   const basisTotal = elements.reduce(
