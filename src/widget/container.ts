@@ -1,5 +1,5 @@
 import { insideHitTestRectangle } from "../utility";
-import { LayoutMethod } from "../layout";
+import { LayoutMethod, Size } from "../layout";
 import { SKMouseEvent } from "../events";
 import { invalidateLayout } from "../imperative-mode";
 
@@ -73,26 +73,11 @@ export class SKContainer extends SKElement {
 
   //#endregion
 
-  // hit test ignores margin
-  hitTest(mx: number, my: number): boolean {
-    return insideHitTestRectangle(
-      mx,
-      my,
-      this.x + this.box.margin,
-      this.y + this.box.margin,
-      this.box.paddingBox.width,
-      this.box.paddingBox.height
-    );
-  }
-
   draw(gc: CanvasRenderingContext2D) {
-    // to avoid typing "this" so much
-    const box = this.box;
-
     gc.save();
     // set coordinate system to padding box
     gc.translate(this.x, this.y);
-    gc.translate(this.box.margin, this.box.margin);
+    gc.translate(this.margin, this.margin);
 
     // draw background colour if set
     if (this.fill) {
@@ -100,8 +85,8 @@ export class SKContainer extends SKElement {
       gc.fillRect(
         0,
         0,
-        this.box.paddingBox.width,
-        this.box.paddingBox.height
+        this.paddingBox.width,
+        this.paddingBox.height
       );
     }
 
@@ -112,8 +97,8 @@ export class SKContainer extends SKElement {
       gc.strokeRect(
         0,
         0,
-        box.paddingBox.width,
-        box.paddingBox.height
+        this.paddingBox.width,
+        this.paddingBox.height
       );
     }
 
@@ -126,8 +111,8 @@ export class SKContainer extends SKElement {
     gc.save();
     // set coordinate system to container content box
     gc.translate(this.x, this.y);
-    gc.translate(box.margin, box.margin);
-    gc.translate(box.padding, box.padding);
+    gc.translate(this.margin, this.margin);
+    gc.translate(this.padding, this.padding);
     // draw children
     this._children.forEach((el) => el.draw(gc));
     gc.restore();
@@ -140,20 +125,24 @@ export class SKContainer extends SKElement {
     this._layoutMethod = lm;
   }
 
-  doLayout() {
+  doLayout(width?: number, height?: number): Size {
+    super.doLayout(width, height);
     if (this._layoutMethod && this._children.length > 0) {
       // run the layout method
       // (it returns new bounds, but we ignore it for now)
       // console.log(
       //   `${this.id} layout in ${this.box.contentBox.width}x${this.box.contentBox.height}`
       // );
-      this._layoutMethod(
-        this.box.contentBox.width,
-        this.box.contentBox.height,
+      const size = this._layoutMethod(
+        this.contentBox.width,
+        this.contentBox.height,
         this._children
       );
 
       this._children.forEach((el) => el.doLayout());
+      return size;
+    } else {
+      return { width: this.widthLayout, height: this.heightLayout };
     }
     // else if (this._children.length > 0) {
     //   console.warn(`${this.id} has children but no layout method`);
@@ -165,7 +154,8 @@ export class SKContainer extends SKElement {
   public toString(): string {
     return (
       `SKContainer '${this.fill}'` +
-      (this.id ? ` id '${this.id}'` : "")
+      (this.id ? ` id '${this.id}' ` : " ") +
+      this.boxModelToString()
     );
   }
 }

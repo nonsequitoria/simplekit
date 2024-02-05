@@ -168,7 +168,7 @@ function runLoop(eventQueue: FundamentalEvent[], time: number) {
 
   // if we have a UI tree, layout widgets if needed
   if (uiTreeRoot && layoutDirty) {
-    // console.log(`layout dirty, doing layout`);
+    console.log(`layout dirty, doing layout`);
     layoutRoot();
     layoutDirty = false;
   }
@@ -269,9 +269,7 @@ function setSKRoot(root: SKElement | null) {
         `Draw callback cleared when setting widget tree root.`
       );
     }
-    // mouseDispatcher = new MouseDispatcher();
   }
-  // else mouseDispatcher = null;
 }
 
 // flag to tell SimpleKit to run layout process next frame
@@ -282,11 +280,12 @@ function layoutRoot() {
     // make sure root fills canvas
     uiTreeRoot.x = 0;
     uiTreeRoot.y = 0;
-    uiTreeRoot.box.margin = 0; // no margin allowed on root
-    uiTreeRoot.box.width = gc.canvas.width;
-    uiTreeRoot.box.height = gc.canvas.height;
+    uiTreeRoot.margin = 0; // no margin allowed on root
+    // uiTreeRoot.width = gc.canvas.width;
+    // uiTreeRoot.height = gc.canvas.height;
     // layout root and all children
-    uiTreeRoot.doLayout();
+    uiTreeRoot.doLayout(gc.canvas.width, gc.canvas.height);
+    // console.log(uiTreeRoot.toString());
     layoutDirty = false;
   }
 }

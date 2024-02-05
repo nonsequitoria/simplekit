@@ -1,9 +1,12 @@
 import { SKEvent, SKKeyboardEvent, SKMouseEvent } from "../events";
 
-import { BoxModel } from "./boxmodel";
 import { Settings } from "../settings";
 import { Style } from "./style";
 import { insideHitTestRectangle } from "../utility";
+
+import { invalidateLayout } from "../imperative-mode";
+
+import { Size } from "../layout";
 
 type EventHandler = (me: SKEvent) => boolean | void;
 
@@ -26,8 +29,8 @@ export abstract class SKElement {
   constructor({
     x = 0,
     y = 0,
-    width = Style.minElementSize,
-    height = Style.minElementSize,
+    width = undefined,
+    height = undefined,
     fill = "",
     border = "",
   }: SKElementProps = {}) {
@@ -45,10 +48,10 @@ export abstract class SKElement {
 
   protected _width: number | undefined;
   set width(w: number | undefined) {
-    if (w !== undefined) w = Math.max(w, 0);
-    this._width = w;
-    // if no width specified, use 0
-    this.box.width = w || 0;
+    if (w !== this._width) {
+      this._width = w;
+      this.recalculateBasis();
+    }
   }
   get width(): number | undefined {
     return this._width;
@@ -56,24 +59,160 @@ export abstract class SKElement {
 
   protected _height: number | undefined;
   set height(h: number | undefined) {
-    if (h !== undefined) h = Math.max(h, 0);
-    this._height = h;
-    // if no height specified, use 0
-    this.box.height = h || 0;
+    if (h !== this._height) {
+      this._height = h;
+      this.recalculateBasis();
+    }
   }
   get height(): number | undefined {
     return this._height;
   }
 
-  box: BoxModel = new BoxModel();
+  // box: BoxModel = new BoxModel(this.recalculateBasis);
+
+  //#region basis and layout calculation
+
+  // basis size calculation flag
+  _recalculateBasis = false;
+  recalculateBasis() {
+    this._recalculateBasis = true;
+  }
+
+  widthBasis = 0;
+  heightBasis = 0;
+
+  // calculate minimum size of element
+  calculateBasis(): [number, number] {
+    if (this._recalculateBasis) {
+      const w = Math.max(this.width || 0, 2 * this.padding);
+      this.widthBasis = w + 2 * this.margin;
+      const h = Math.max(this.height || 0, 2 * this.padding);
+      this.heightBasis = h + 2 * this.margin;
+      this._recalculateBasis = false;
+      this.recalculateLayout = true;
+    }
+    return [this.widthBasis, this.heightBasis];
+  }
 
   // proportion to grow and shrink in some layouts
   // (0 means do not grow or shrink)
   fillWidth = 0;
   fillHeight = 0;
 
-  // layout placeholder
-  doLayout(width?: number, height?: number) {}
+  // layout calculation flag
+  recalculateLayout = false;
+
+  widthLayout = 0;
+  heightLayout = 0;
+
+  // do layout for element using available width and height
+  doLayout(width?: number, height?: number): Size {
+    console.log(`doLayout ${this.id}`);
+    if (this.recalculateLayout || width || height) {
+      const [w, h] = this.calculateBasis();
+      this.widthLayout = width || w;
+      this.heightLayout = height || h;
+      this.recalculateLayout = false;
+    }
+    return { width: this.widthLayout, height: this.heightLayout };
+  }
+
+  //#endregion
+
+  //#region box model
+
+  // margin
+  private _margin = 0;
+  set margin(m: number) {
+    if (m !== this.margin) {
+      m = Math.max(0, m);
+      this._margin = m;
+      this.recalculateBasis();
+    }
+  }
+  get margin() {
+    return this._margin;
+  }
+  get marginBox(): Size {
+    return {
+      width: this.contentWidth + 2 * this.padding + 2 * this.margin,
+      height: this.contentHeight + 2 * this.padding + 2 * this.margin,
+    };
+  }
+
+  // padding
+  private _padding = 0;
+  set padding(p: number) {
+    if (p !== this.padding) {
+      p = Math.max(0, p);
+      this._padding = p;
+      this.recalculateBasis();
+    }
+  }
+  get padding() {
+    return this._padding;
+  }
+  get paddingBox(): Size {
+    return {
+      width: this.contentWidth + 2 * this.padding,
+      height: this.contentHeight + 2 * this.padding,
+    };
+  }
+
+  // content size
+  get contentWidth() {
+    return this.widthLayout - 2 * this.padding - 2 * this.margin;
+  }
+  get contentHeight() {
+    return this.heightLayout - 2 * this.padding - 2 * this.margin;
+  }
+  get contentBox(): Size {
+    return { width: this.contentWidth, height: this.contentHeight };
+  }
+
+  // draw box model for debugging
+  drawBoxModel(gc: CanvasRenderingContext2D) {
+    gc.save();
+    gc.lineWidth = 1;
+
+    // margin
+    if (this.margin > 0) {
+      gc.strokeStyle = "red";
+      gc.setLineDash([2, 2]);
+      gc.strokeRect(
+        0,
+        0,
+        this.marginBox.width,
+        this.marginBox.height
+      );
+    }
+
+    // padding
+    if (this.padding > 0) {
+      gc.strokeStyle = "green";
+      gc.setLineDash([2, 2]);
+      gc.strokeRect(
+        this.margin,
+        this.margin,
+        this.paddingBox.width,
+        this.paddingBox.height
+      );
+    }
+
+    // content
+    gc.strokeStyle = "blue";
+    gc.setLineDash([2, 2]);
+    gc.strokeRect(
+      this.margin + this.padding,
+      this.margin + this.padding,
+      this.contentBox.width,
+      this.contentBox.height
+    );
+
+    gc.restore();
+  }
+
+  //#endregion
 
   //#region widget event binding
 
@@ -104,7 +243,11 @@ export abstract class SKElement {
   ) {
     this.bindingTable = this.bindingTable.filter(
       (d) =>
-        !(d.type == type && d.handler == handler && d.capture == capture)
+        !(
+          d.type == type &&
+          d.handler == handler &&
+          d.capture == capture
+        )
     );
   }
 
@@ -130,10 +273,10 @@ export abstract class SKElement {
     return insideHitTestRectangle(
       mx,
       my,
-      this.x,
-      this.y,
-      this.box.paddingBox.width,
-      this.box.paddingBox.height
+      this.x + this.margin,
+      this.y + this.margin,
+      this.paddingBox.width,
+      this.paddingBox.height
     );
   }
 
@@ -151,7 +294,7 @@ export abstract class SKElement {
       gc.save();
       gc.translate(this.x, this.y);
       // draw the box model visualization
-      this.box.draw(gc);
+      this.drawBoxModel(gc);
 
       // display element id
       gc.strokeStyle = "white";
@@ -164,6 +307,19 @@ export abstract class SKElement {
       gc.fillText(this.id, 2, 2);
       gc.restore();
     }
+  }
+
+  public boxModelToString(): string {
+    // const s = JSON.stringify({
+    //   margin: this.margin,
+    //   padding: this.padding,
+    //   marginBox: this.marginBox,
+    //   paddingBox: this.paddingBox,
+    //   contentBox: this.contentBox,
+    //   width: this.widthLayout,
+    //   this.height
+    // }
+    return `width:${this._width} height:${this._height} margin:${this.margin} padding:${this.padding} basis:${this.widthBasis}x${this.heightBasis} layout: ${this.widthLayout}x${this.heightLayout}`;
   }
 
   public toString(): string {

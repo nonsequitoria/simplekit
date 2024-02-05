@@ -18,8 +18,8 @@ function buildTargetRoute(
       route.push(
         ...buildTargetRoute(
           // translate to child coord system
-          mx - element.x - element.box.padding - element.box.margin,
-          my - element.y - element.box.padding - element.box.margin,
+          mx - element.x - element.padding - element.margin,
+          my - element.y - element.padding - element.margin,
           child
         )
       )
