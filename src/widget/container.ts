@@ -126,20 +126,32 @@ export class SKContainer extends SKElement {
   }
 
   doLayout(width?: number, height?: number): Size {
-    super.doLayout(width, height);
-    if (this._layoutMethod && this._children.length > 0) {
+    let recalculate = this._recalculateBasis;
+    let size = super.doLayout(width, height);
+    this._recalculateBasis = recalculate;
+    if (this._children.length > 0) {
+      this._children.forEach((el) => el.calculateBasis());
+      // do initial layout of children (might change after this container layout)
+      this._children.forEach((el) => el.doLayout());
       // run the layout method
       // (it returns new bounds, but we ignore it for now)
       // console.log(
       //   `${this.id} layout in ${this.box.contentBox.width}x${this.box.contentBox.height}`
       // );
-      const size = this._layoutMethod(
-        this.contentBox.width,
-        this.contentBox.height,
-        this._children
-      );
+      if (this._layoutMethod) {
+        size = this._layoutMethod(
+          this.contentBox.width,
+          this.contentBox.height,
+          this._children
+        );
+        // this.widthLayout = Math.max(size.width, this.widthBasis);
+        // this.heightLayout = Math.max(size.height, this.heightBasis);
 
-      this._children.forEach((el) => el.doLayout());
+        // do final layout of children
+        // (using size assigned by this container)
+        this._children.forEach((el) => el.doLayout());
+      }
+
       return size;
     } else {
       return { width: this.widthLayout, height: this.heightLayout };

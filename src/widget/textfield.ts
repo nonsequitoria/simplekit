@@ -11,7 +11,7 @@ export type SKTextfieldProps = SKElementProps & {
 export class SKTextfield extends SKElement {
   constructor({ text = "", ...elementProps }: SKTextfieldProps = {}) {
     super(elementProps);
-    this.box.padding = Style.textPadding;
+    this.padding = Style.textPadding;
     this.text = text;
   }
 
@@ -39,8 +39,8 @@ export class SKTextfield extends SKElement {
       return;
     }
 
-    this.height = height || m.height + this.box.padding * 2;
-    this.box.width = width || m.width + this.box.padding * 2;
+    this.height = height || m.height + this.padding * 2;
+    this.width = width || m.width + this.padding * 2;
     // need to store this for cursor position
     this.textWidth = m.width;
   }
@@ -105,13 +105,13 @@ export class SKTextfield extends SKElement {
   }
 
   draw(gc: CanvasRenderingContext2D) {
-    const w = this.box.width;
-    const h = this.box.height;
+    const w = this.paddingBox.width;
+    const h = this.paddingBox.height;
 
     gc.save();
 
     gc.translate(this.x, this.y);
-    gc.translate(this.box.margin, this.box.margin);
+    gc.translate(this.margin, this.margin);
 
     // thick highlight rect
     if (this.state == "hover") {
@@ -139,12 +139,12 @@ export class SKTextfield extends SKElement {
     gc.fillStyle = "black";
     gc.textBaseline = "middle";
     gc.textAlign = "left";
-    gc.fillText(this.text, this.box.padding, h / 2);
+    gc.fillText(this.text, this.padding, h / 2);
 
     // simple cursor
     if (this.focus) {
-      const cursorX = this.box.padding + this.textWidth + 1;
-      const cursorHeight = this.box.height - Style.textPadding;
+      const cursorX = this.padding + this.textWidth + 1;
+      const cursorHeight = h - Style.textPadding;
       gc.beginPath();
       gc.moveTo(cursorX, Style.textPadding / 2);
       gc.lineTo(cursorX, cursorHeight);

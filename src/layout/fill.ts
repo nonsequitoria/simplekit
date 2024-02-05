@@ -32,8 +32,18 @@ function fillRowLayout(
   );
 
   // calculate remaining space to distribute elements
-  const remaining =
-    boundsWidth - basisTotal - (elements.length - 1) * gap;
+  const available = boundsWidth - (elements.length - 1) * gap;
+  const remaining = available - basisTotal;
+
+  console.log(
+    ` fillRowLayout children:${elements.length} basisTotal:${available} remaining:${remaining}`
+  );
+
+  if (remaining < 0) {
+    console.warn(
+      `fillRowLayout: not enough space (container:${boundsWidth} < children:${basisTotal}) `
+    );
+  }
 
   // get total fill proportion
   const fillTotal = elements.reduce(
@@ -74,6 +84,10 @@ function fillRowLayout(
   const lastEl = elements.slice(-1)[0];
   newBounds.width = lastEl.x + lastEl.widthLayout;
   newBounds.height = rowHeight;
+
+  console.log(
+    ` fillRowLayout newBounds:${newBounds.width}x${newBounds.height} `
+  );
 
   return newBounds;
 }

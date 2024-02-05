@@ -18,7 +18,7 @@ export class SKLabel extends SKElement {
   }: SKLabelProps = {}) {
     super(elementProps);
 
-    this.box.padding = Style.textPadding;
+    this.padding = Style.textPadding;
     this.text = text;
     this.align = align;
 
@@ -48,26 +48,29 @@ export class SKLabel extends SKElement {
       return;
     }
 
-    this.box.height = height || m.height + this.box.padding * 2;
+    this.height = height || m.height + this.padding * 2;
 
-    this.box.width = width || m.width + this.box.padding * 2;
+    this.width = width || m.width + this.padding * 2;
   }
 
   draw(gc: CanvasRenderingContext2D) {
     gc.save();
 
+    const w = this.paddingBox.width;
+    const h = this.paddingBox.height;
+
     gc.translate(this.x, this.y);
-    gc.translate(this.box.margin, this.box.margin);
+    gc.translate(this.margin, this.margin);
 
     if (this.fill) {
       gc.fillStyle = this.fill;
-      gc.fillRect(0, 0, this.box.width, this.box.height);
+      gc.fillRect(0, 0, w, h);
     }
 
     if (this.border) {
       gc.strokeStyle = this.border;
       gc.lineWidth = 1;
-      gc.strokeRect(0, 0, this.box.width, this.box.height);
+      gc.strokeRect(0, 0, w, h);
     }
 
     // render text
@@ -78,25 +81,17 @@ export class SKLabel extends SKElement {
     switch (this.align) {
       case "left":
         gc.textAlign = "left";
-        gc.fillText(this.text, this.box.padding, this.box.height / 2);
+        gc.fillText(this.text, this.padding, h / 2);
 
         break;
       case "centre":
         gc.textAlign = "center";
-        gc.fillText(
-          this.text,
-          this.box.width / 2,
-          this.box.height / 2
-        );
+        gc.fillText(this.text, w / 2, h / 2);
 
         break;
       case "right":
         gc.textAlign = "right";
-        gc.fillText(
-          this.text,
-          this.box.width - this.box.padding,
-          this.box.height / 2
-        );
+        gc.fillText(this.text, w - this.padding, h / 2);
 
         break;
     }

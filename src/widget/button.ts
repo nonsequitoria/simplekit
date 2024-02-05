@@ -10,7 +10,7 @@ export type SKButtonProps = SKElementProps & { text?: string };
 export class SKButton extends SKElement {
   constructor({ text = "", ...elementProps }: SKButtonProps = {}) {
     super(elementProps);
-    this.box.padding = Style.textPadding;
+    this.padding = Style.textPadding;
     this.text = text;
   }
 
@@ -38,11 +38,11 @@ export class SKButton extends SKElement {
       return;
     }
 
-    this.box.height = height || m.height + this.box.padding * 2;
+    this.height = height || m.height + this.padding * 2;
 
-    this.box.width = width || m.width + this.box.padding * 2;
+    this.width = width || m.width + this.padding * 2;
     // enforce a minimum width here (if no width specified)
-    if (!width) this.box.width = Math.max(this.box.width, 80);
+    if (!width) this.width = Math.max(this.width, 80);
   }
 
   handleMouseEvent(me: SKMouseEvent) {
@@ -77,14 +77,13 @@ export class SKButton extends SKElement {
 
   draw(gc: CanvasRenderingContext2D) {
     // to save typing "this" so much
-    const box = this.box;
 
     gc.save();
 
-    const w = box.paddingBox.width;
-    const h = box.paddingBox.height;
+    const w = this.paddingBox.width;
+    const h = this.paddingBox.height;
 
-    gc.translate(this.box.margin, this.box.margin);
+    gc.translate(this.margin, this.margin);
 
     // thick highlight rect
     if (this.state == "hover" || this.state == "down") {

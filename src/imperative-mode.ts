@@ -167,10 +167,10 @@ function runLoop(eventQueue: FundamentalEvent[], time: number) {
   if (drawCallback) drawCallback(gc);
 
   // if we have a UI tree, layout widgets if needed
-  if (uiTreeRoot && layoutDirty) {
-    console.log(`layout dirty, doing layout`);
+  if (uiTreeRoot && layoutRequested) {
+    console.log(`*** LAYOUT REQUESTED ***`);
     layoutRoot();
-    layoutDirty = false;
+    layoutRequested = false;
   }
 
   // draw UI
@@ -273,7 +273,7 @@ function setSKRoot(root: SKElement | null) {
 }
 
 // flag to tell SimpleKit to run layout process next frame
-let layoutDirty = false;
+let layoutRequested = false;
 
 function layoutRoot() {
   if (uiTreeRoot && gc) {
@@ -286,14 +286,14 @@ function layoutRoot() {
     // layout root and all children
     uiTreeRoot.doLayout(gc.canvas.width, gc.canvas.height);
     // console.log(uiTreeRoot.toString());
-    layoutDirty = false;
+    layoutRequested = false;
   }
 }
 
 // widgets will call this to tell SimpleKit to run layout process next frame
 function invalidateLayout() {
   // console.log(`invalidateLayout`);
-  layoutDirty = true;
+  layoutRequested = true;
 }
 
 import * as npmPackage from "../package.json";

@@ -76,13 +76,16 @@ export abstract class SKElement {
   _recalculateBasis = false;
   recalculateBasis() {
     this._recalculateBasis = true;
+    invalidateLayout();
   }
 
   widthBasis = 0;
   heightBasis = 0;
 
-  // calculate minimum size of element
+  // calculate minimum layout size of element
+  // (total minimum size including margin and padding)
   calculateBasis(): [number, number] {
+    const recalc = this._recalculateBasis;
     if (this._recalculateBasis) {
       const w = Math.max(this.width || 0, 2 * this.padding);
       this.widthBasis = w + 2 * this.margin;
@@ -91,6 +94,11 @@ export abstract class SKElement {
       this._recalculateBasis = false;
       this.recalculateLayout = true;
     }
+    console.log(
+      ` calculateBasis ${this.id} ${recalc ? "CALC" : ""} => ${
+        this.widthBasis
+      }x${this.heightBasis}`
+    );
     return [this.widthBasis, this.heightBasis];
   }
 
@@ -114,6 +122,9 @@ export abstract class SKElement {
       this.heightLayout = height || h;
       this.recalculateLayout = false;
     }
+    console.log(
+      ` SKElement ${this.id} ${this.widthLayout}x${this.heightLayout}`
+    );
     return { width: this.widthLayout, height: this.heightLayout };
   }
 
@@ -133,12 +144,14 @@ export abstract class SKElement {
   get margin() {
     return this._margin;
   }
-  get marginBox(): Size {
-    return {
-      width: this.contentWidth + 2 * this.padding + 2 * this.margin,
-      height: this.contentHeight + 2 * this.padding + 2 * this.margin,
-    };
-  }
+  // get marginBox(): Size {
+  //   return {
+  //     // width: this.contentWidth + 2 * this.padding + 2 * this.margin,
+  //     // height: this.contentHeight + 2 * this.padding + 2 * this.margin,
+  //     width: this.widthLayout,
+  //     height: this.heightLayout,
+  //   };
+  // }
 
   // padding
   private _padding = 0;
@@ -154,20 +167,16 @@ export abstract class SKElement {
   }
   get paddingBox(): Size {
     return {
-      width: this.contentWidth + 2 * this.padding,
-      height: this.contentHeight + 2 * this.padding,
+      width: this.widthLayout - 2 * this.margin,
+      height: this.heightLayout - 2 * this.margin,
     };
   }
 
-  // content size
-  get contentWidth() {
-    return this.widthLayout - 2 * this.padding - 2 * this.margin;
-  }
-  get contentHeight() {
-    return this.heightLayout - 2 * this.padding - 2 * this.margin;
-  }
   get contentBox(): Size {
-    return { width: this.contentWidth, height: this.contentHeight };
+    return {
+      width: this.widthLayout - 2 * this.margin - 2 * this.padding,
+      height: this.heightLayout - 2 * this.margin - 2 * this.padding,
+    };
   }
 
   // draw box model for debugging
@@ -179,12 +188,7 @@ export abstract class SKElement {
     if (this.margin > 0) {
       gc.strokeStyle = "red";
       gc.setLineDash([2, 2]);
-      gc.strokeRect(
-        0,
-        0,
-        this.marginBox.width,
-        this.marginBox.height
-      );
+      gc.strokeRect(0, 0, this.widthLayout, this.heightLayout);
     }
 
     // padding
@@ -319,7 +323,7 @@ export abstract class SKElement {
     //   width: this.widthLayout,
     //   this.height
     // }
-    return `width:${this._width} height:${this._height} margin:${this.margin} padding:${this.padding} basis:${this.widthBasis}x${this.heightBasis} layout: ${this.widthLayout}x${this.heightLayout}`;
+    return `width:${this._width} height:${this._height} margin:${this.margin} padding:${this.padding} basis:${this.widthBasis}x${this.heightBasis} layout:${this.widthLayout}x${this.heightLayout}`;
   }
 
   public toString(): string {
