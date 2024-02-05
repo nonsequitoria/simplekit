@@ -168,7 +168,7 @@ function runLoop(eventQueue: FundamentalEvent[], time: number) {
 
   // if we have a UI tree, layout widgets if needed
   if (uiTreeRoot && layoutRequested) {
-    console.log(`*** LAYOUT REQUESTED ***`);
+    if (Settings.debugLayout) console.log(`*** LAYOUT REQUESTED ***`);
     layoutRoot();
     layoutRequested = false;
   }
@@ -297,6 +297,7 @@ function invalidateLayout() {
 }
 
 import * as npmPackage from "../package.json";
+import { Settings } from "./settings";
 
 /**
  * Must be called to once to start the SimpleKit run loop. It adds a

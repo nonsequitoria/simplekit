@@ -94,11 +94,12 @@ export abstract class SKElement {
       this._recalculateBasis = false;
       this.recalculateLayout = true;
     }
-    console.log(
-      ` calculateBasis ${this.id} ${recalc ? "CALC" : ""} => ${
-        this.widthBasis
-      }x${this.heightBasis}`
-    );
+    if (Settings.debugLayout)
+      console.log(
+        ` calculateBasis ${this.id} ${recalc ? "CALC" : ""} => ${
+          this.widthBasis
+        }x${this.heightBasis}`
+      );
     return [this.widthBasis, this.heightBasis];
   }
 
@@ -115,16 +116,17 @@ export abstract class SKElement {
 
   // do layout for element using available width and height
   doLayout(width?: number, height?: number): Size {
-    console.log(`doLayout ${this.id}`);
+    if (Settings.debugLayout) console.log(`doLayout ${this.id}`);
     if (this.recalculateLayout || width || height) {
       const [w, h] = this.calculateBasis();
       this.widthLayout = width || w;
       this.heightLayout = height || h;
       this.recalculateLayout = false;
     }
-    console.log(
-      ` SKElement ${this.id} ${this.widthLayout}x${this.heightLayout}`
-    );
+    if (Settings.debugLayout)
+      console.log(
+        ` SKElement ${this.id} ${this.widthLayout}x${this.heightLayout}`
+      );
     return { width: this.widthLayout, height: this.heightLayout };
   }
 

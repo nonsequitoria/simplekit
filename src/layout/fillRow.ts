@@ -1,5 +1,6 @@
 import { SKElement } from "../widget";
 import { LayoutMethod, Size } from ".";
+import { Settings } from "../settings";
 
 type FillLayoutProps = {
   gap?: number;
@@ -35,9 +36,10 @@ function fillRowLayout(
   const available = boundsWidth - (elements.length - 1) * gap;
   const remaining = available - basisTotal;
 
-  console.log(
-    ` fillRowLayout children:${elements.length} basisTotal:${available} remaining:${remaining}`
-  );
+  if (Settings.debugLayout)
+    console.log(
+      ` fillRowLayout children:${elements.length} basisTotal:${available} remaining:${remaining}`
+    );
 
   if (remaining < 0) {
     console.warn(
@@ -85,9 +87,10 @@ function fillRowLayout(
   newBounds.width = lastEl.x + lastEl.widthLayout;
   newBounds.height = rowHeight;
 
-  console.log(
-    ` fillRowLayout newBounds:${newBounds.width}x${newBounds.height} `
-  );
+  if (Settings.debugLayout)
+    console.log(
+      ` fillRowLayout newBounds:${newBounds.width}x${newBounds.height} `
+    );
 
   return newBounds;
 }
