@@ -12,6 +12,8 @@ export class SKButton extends SKElement {
     super(elementProps);
     this.padding = Style.textPadding;
     this.text = text;
+    this.calculateBasis();
+    this.doLayout();
   }
 
   font = Style.font;
