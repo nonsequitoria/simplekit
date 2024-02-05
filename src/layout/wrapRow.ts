@@ -31,10 +31,10 @@ export function wrapRowLayout(
   let rowHeight = 0;
 
   elements.forEach((el) => {
-    if (el.box.fullWidth > boundsWidth) {
+    if (el.widthLayout > boundsWidth) {
       // warn if element overflows
       console.warn(`element ${el.toString()} horizontal overflow`);
-    } else if (x + el.box.fullWidth > boundsWidth) {
+    } else if (x + el.widthLayout > boundsWidth) {
       // wrap to next row and clear rowHeight
       x = 0;
       y += rowHeight + gap;
@@ -45,12 +45,12 @@ export function wrapRowLayout(
     el.x = x;
     el.y = y;
     // update the row height
-    rowHeight = Math.max(rowHeight, el.box.fullHeight);
+    rowHeight = Math.max(rowHeight, el.heightLayout);
     // get x ready for next element
-    x += el.box.fullWidth + gap;
+    x += el.widthLayout + gap;
 
     // update bounds that were actually used
-    newBounds.width = Math.max(newBounds.width, el.box.width);
+    newBounds.width = Math.max(newBounds.width, el.widthLayout);
     newBounds.height = Math.max(newBounds.height, y + rowHeight);
   });
 

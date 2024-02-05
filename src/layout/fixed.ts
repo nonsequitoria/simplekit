@@ -23,18 +23,21 @@ function fixedLayout(
     if (
       el.x < 0 ||
       el.y < 0 ||
-      el.x + el.box.width > boundsWidth ||
-      el.y + el.box.height > boundsHeight
+      el.x + el.widthLayout > boundsWidth ||
+      el.y + el.heightLayout > boundsHeight
     ) {
       console.warn(`element ${el.toString()} outside parent bounds`);
     }
 
     // update bounds that were actually used
     // note, we ignore margins for fixed layout
-    newBounds.width = Math.max(newBounds.width, el.x + el.box.width);
+    newBounds.width = Math.max(
+      newBounds.width,
+      el.x + el.widthLayout
+    );
     newBounds.height = Math.max(
       newBounds.height,
-      el.y + el.box.height
+      el.y + el.heightLayout
     );
   });
 

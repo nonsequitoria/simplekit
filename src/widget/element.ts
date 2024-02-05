@@ -144,14 +144,12 @@ export abstract class SKElement {
   get margin() {
     return this._margin;
   }
-  // get marginBox(): Size {
-  //   return {
-  //     // width: this.contentWidth + 2 * this.padding + 2 * this.margin,
-  //     // height: this.contentHeight + 2 * this.padding + 2 * this.margin,
-  //     width: this.widthLayout,
-  //     height: this.heightLayout,
-  //   };
-  // }
+  get marginBox(): Size {
+    return {
+      width: this.widthLayout,
+      height: this.heightLayout,
+    };
+  }
 
   // padding
   private _padding = 0;

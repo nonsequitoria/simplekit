@@ -3,8 +3,8 @@ import { SKElement } from "../widget/element";
 // export * from "./layouts";
 import { makeFixedLayout } from "./fixed";
 import { makeCentredLayout } from "./centred";
-import { makeWrapRowLayout } from "./wrap";
-import { makeFillRowLayout } from "./fill";
+import { makeWrapRowLayout } from "./wrapRow";
+import { makeFillRowLayout } from "./fillRow";
 
 export const Layout = {
   makeFixedLayout,
