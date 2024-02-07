@@ -41,7 +41,7 @@ function fillRowLayout(
       ` fillRowLayout children:${elements.length} basisTotal:${available} remaining:${remaining}`
     );
 
-  if (remaining < 0) {
+  if (Settings.layoutWarnings && remaining < 0) {
     console.warn(
       `fillRowLayout: not enough space (container:${boundsWidth} < children:${basisTotal}) `
     );

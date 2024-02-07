@@ -1,5 +1,6 @@
 import { SKElement } from "../widget";
 import { LayoutMethod, Size } from ".";
+import { Settings } from "../settings";
 
 export function makeCentredLayout(): LayoutMethod {
   return (
@@ -30,10 +31,11 @@ export function centredLayout(
 
     // warn if element is outside bounds
     if (
-      el.x < 0 ||
-      el.y < 0 ||
-      el.x + el.widthLayout > boundsWidth ||
-      el.y + el.heightLayout > boundsHeight
+      Settings.layoutWarnings &&
+      (el.x < 0 ||
+        el.y < 0 ||
+        el.x + el.widthLayout > boundsWidth ||
+        el.y + el.heightLayout > boundsHeight)
     ) {
       console.warn(`element ${el.toString()} outside parent bounds`);
     }
