@@ -1,30 +1,54 @@
 /**
- * Checks if HTML document hosting SimpleKit is setup correctly
+ * Checks that HTML document hosting SimpleKit is setup correctly
  * @returns true if good, false otherwise
  */
 export function checkHtml() {
   let isGood = true;
-  // document body checks
+  // only one child in body
   if (document.body.children.length !== 1) {
     console.error(
-      `document body has ${document.body.children.length} children, expecting 1`
+      `document body has ${document.body.children.length} children, must have 1`
     );
     isGood = false;
   }
-  if (!document.body.querySelector("body>script")) {
-    console.error("document body must have a script");
+  // the single child in body must be a script
+  if (!document.querySelector("body>script")) {
+    console.error("document body must be a single <script> element");
     isGood = false;
   }
-  // document head check
-  if (document.head.querySelector("link, style")) {
-    console.error("document head must not have link or style tags");
+  // no style tags
+  if (document.querySelector("link[rel=stylesheet]")) {
+    console.error("no <style> tags allowed");
     isGood = false;
+  }
+  // only script tag in head is vite/client
+  const scripts = document.querySelectorAll(
+    "head>script"
+  ) as NodeListOf<HTMLScriptElement>;
+  console.log(scripts);
+  if (scripts.length > 1 || !scripts[0].src.includes("vite/client")) {
+    console.error(
+      "only 1 <script> tag allowed in head for Vite client"
+    );
+    isGood = false;
+  }
+  // no link tags other than a favicon link[rel=icon]
+  if (document.querySelector("link:not([rel=icon])")) {
+    console.error(
+      `only <link> allowed is 1 <link rel="icon" ...> in head`
+    );
+    isGood = false;
+  }
+  if (!isGood) {
+    console.log(
+      "🛑 SimpleKit will not run with issues above. Fix HTML page hosting SimpleKit and/or disable browser plug-ins."
+    );
   }
   return isGood;
 }
 
 export function setupCanvas(colour = "whitesmoke") {
-  // SimnpleKit will draw everything in this single canvas
+  // SimpleKit will draw everything in this single canvas
   let canvas = document.createElement("canvas");
   document.body.appendChild(canvas);
 
