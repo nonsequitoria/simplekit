@@ -60,8 +60,6 @@ Or, even better, you can setup your build environment to have a path to the simp
 Git doesn't automatically init and update submodules automatically, so you'll need to do it on command line the first time you clone your main repo.
 
 - << git cloning instructions TBD >>
-- << git pulling instructions TBD >>
 
-Notes on this approach:
 
-++++
+
