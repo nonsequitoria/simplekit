@@ -25,7 +25,6 @@ export function checkHtml() {
   const scripts = document.querySelectorAll(
     "head>script"
   ) as NodeListOf<HTMLScriptElement>;
-  console.log(scripts);
   if (scripts.length > 1 || !scripts[0].src.includes("vite/client")) {
     console.error(
       "only 1 <script> tag allowed in head for Vite client"
