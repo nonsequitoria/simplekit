@@ -141,18 +141,18 @@ let animateCallback: AnimationCallback;
 import * as npmPackage from "../package.json";
 
 /**
- * Must be called to once to start the SimpleKit run loop. It adds a
+ * Must be called once to start the SimpleKit run loop. It adds a
  * single canvas to the body for drawing and creates
  * the simulated windowing system to call the SimpleKit run loop
- * @returns [width, height] canvas size if successful, undefined otherwise
+ * @returns { width, height } canvas size if successful, false otherwise
  */
-function startSimpleKit(): [number, number] | undefined {
+function startSimpleKit(): { width: number; height: number } | false {
   console.info(
     `🧰 SimpleKit v${npmPackage.version} *Canvas Mode* startup`
   );
 
   // check the HTML document hosting SimpleKit
-  if (!checkHtml()) return undefined;
+  if (!checkHtml()) return false;
 
   // setup canvas
   let canvas = setupCanvas();
@@ -162,12 +162,12 @@ function startSimpleKit(): [number, number] | undefined {
   // this should never happen, but we need to check
   if (!graphicsContext) {
     console.error("Unable to get graphics context from canvas");
-    return undefined;
+    return false;
   }
   gc = graphicsContext;
 
   // start the toolkit run loop
   createWindowingSystem(runLoop);
 
-  return [gc.canvas.width, gc.canvas.height];
+  return { width: gc.canvas.width, height: gc.canvas.height };
 }
