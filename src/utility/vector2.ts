@@ -1,11 +1,5 @@
 export class Point2 {
-  x: number;
-  y: number;
-
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
-  }
+  constructor(public x: number, public y: number) {}
 
   add(v: Vector2): Point2 {
     return new Point2(this.x + v.x, this.y + v.y);
@@ -25,13 +19,7 @@ export function point(x: number, y: number): Point2 {
 }
 
 export class Vector2 {
-  x: number;
-  y: number;
-
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
-  }
+  constructor(public x: number, public y: number) {}
 
   normalize(): Vector2 {
     const v = new Vector2(this.x, this.y);
@@ -74,7 +62,3 @@ export class Vector2 {
 export function vector(x: number, y: number): Vector2 {
   return new Vector2(x, y);
 }
-
-// export function vectorFromPoints(p0: Point2, p1: Point2): Vector2 {
-//   return new Vector2(p1.x - p0.x, p1.y - p0.y);
-// }
