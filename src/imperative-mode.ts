@@ -255,12 +255,15 @@ let uiTreeRoot: SKElement | null;
 // let keyboardDispatcher = new KeyboardDispatcher();
 // global.keyboardDispatcher = keyboardDispatcher;
 
+let newRoot = false;
+
 /**
  * Sets the root of the widget tree that describes the UI.
  * This is typically set once during startup
  * @param root the root widget, usually a SKContainer
  */
 function setSKRoot(root: SKElement | null) {
+  newRoot = true;
   uiTreeRoot = root;
   if (root) {
     if (drawCallback) {
@@ -280,10 +283,21 @@ function layoutRoot() {
     // make sure root fills canvas
     uiTreeRoot.x = 0;
     uiTreeRoot.y = 0;
-    uiTreeRoot.margin = 0; // no margin allowed on root
+    if (uiTreeRoot.margin != 0) {
+      console.warn(
+        `No margin allowed for root widget, setting margin to 0.`
+      );
+      uiTreeRoot.margin = 0; // no margin allowed on root
+    }
     // uiTreeRoot.width = gc.canvas.width;
     // uiTreeRoot.height = gc.canvas.height;
     // layout root and all children
+    if (newRoot) {
+      console.log(`🌳🌳 NEW ROOT LAYOUT`);
+      // uiTreeRoot.doLayout(gc.canvas.width, gc.canvas.height);
+      console.log(`🌳🌳`);
+      newRoot = false;
+    }
     uiTreeRoot.doLayout(gc.canvas.width, gc.canvas.height);
     // console.log(uiTreeRoot.toString());
     layoutRequested = false;
@@ -292,7 +306,6 @@ function layoutRoot() {
 
 // widgets will call this to tell SimpleKit to run layout process next frame
 function invalidateLayout() {
-  // console.log(`invalidateLayout`);
   layoutRequested = true;
 }
 

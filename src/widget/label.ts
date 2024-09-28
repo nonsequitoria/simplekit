@@ -74,7 +74,7 @@ export class SKLabel extends SKElement {
     }
 
     // render text
-    gc.font = Style.font;
+    gc.font = this.font;
     gc.fillStyle = "black";
     gc.textBaseline = "middle";
 

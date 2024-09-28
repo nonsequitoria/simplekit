@@ -28,7 +28,7 @@ function fillRowLayout(
 
   // get total "basis" width
   const basisTotal = elements.reduce(
-    (acc, el) => acc + el.widthBasis,
+    (acc, el) => acc + el.minLayoutWidth,
     0
   );
 
@@ -58,33 +58,43 @@ function fillRowLayout(
   let y = 0;
   let rowHeight = 0;
 
+  // update default size
+  console.log(`🤔 calc sizes START`);
+  elements.forEach((el) => {
+    el.updateSize();
+  });
+  console.log(`🤔 calc sizes DONE`);
+
   elements.forEach((el) => {
     // set element position
     el.x = x;
     el.y = y;
 
     // calculate element size
-    let w = el.widthBasis;
+    let w = el.minLayoutWidth;
     // expand or shrink element if fillWidth > 0
     if (fillTotal > 0) {
       w += (el.fillWidth / fillTotal) * remaining;
     }
-    // set element size
-    el.widthLayout = w;
 
     // elements can expand vertically too
+    let h = el.minLayoutHeight;
     if (el.fillHeight > 0) {
-      el.heightLayout = boundsHeight;
+      h = boundsHeight;
     }
+
+    // layout the element in the allotted space
+    el.doLayout(w, h);
+
     // update row height
-    rowHeight = Math.max(rowHeight, el.heightLayout);
+    rowHeight = Math.max(rowHeight, el.layoutHeight);
     // ready for next x position
     x += w + gap;
   });
 
   // calculate bounds used for layout
   const lastEl = elements.slice(-1)[0];
-  newBounds.width = lastEl.x + lastEl.widthLayout;
+  newBounds.width = lastEl.x + lastEl.layoutWidth;
   newBounds.height = rowHeight;
 
   if (Settings.debugLayout)

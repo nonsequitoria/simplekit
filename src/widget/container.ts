@@ -4,14 +4,17 @@ import { SKMouseEvent } from "../events";
 import { invalidateLayout } from "../imperative-mode";
 
 import { SKElement, SKElementProps } from "./element";
+import { makeFixedLayout } from "../layout/fixed";
 
 type SKContainerProps = SKElementProps & {};
 
 export class SKContainer extends SKElement {
   constructor(elementProps: SKContainerProps = {}) {
     super(elementProps);
-    this.calculateBasis();
-    this.doLayout();
+    this._layoutMethod = makeFixedLayout();
+
+    // this.updateMinLayoutSize();
+    // this.doLayout();
   }
 
   //#region managing children
@@ -122,41 +125,40 @@ export class SKContainer extends SKElement {
 
   //#region layout children
 
-  protected _layoutMethod: LayoutMethod | undefined;
-  set layoutMethod(lm: LayoutMethod) {
-    this._layoutMethod = lm;
+  protected _layoutMethod: LayoutMethod;
+  set layoutMethod(lm: LayoutMethod | undefined) {
+    this._layoutMethod = lm || makeFixedLayout();
+    invalidateLayout();
   }
 
   doLayout(width?: number, height?: number): Size {
-    let recalculate = this._recalculateBasis;
-    let size = super.doLayout(width, height);
-    this._recalculateBasis = recalculate;
-    if (this._children.length > 0) {
-      this._children.forEach((el) => el.calculateBasis());
-      // do initial layout of children (might change after this container layout)
-      this._children.forEach((el) => el.doLayout());
-      // run the layout method
-      // (it returns new bounds, but we ignore it for now)
-      // console.log(
-      //   `${this.id} layout in ${this.box.contentBox.width}x${this.box.contentBox.height}`
-      // );
-      if (this._layoutMethod) {
-        size = this._layoutMethod(
-          this.contentBox.width,
-          this.contentBox.height,
-          this._children
-        );
-        // this.widthLayout = Math.max(size.width, this.widthBasis);
-        // this.heightLayout = Math.max(size.height, this.heightBasis);
+    super.doLayout(width, height);
 
-        // do final layout of children
-        // (using size assigned by this container)
-        this._children.forEach((el) => el.doLayout());
-      }
+    if (this._children.length > 0) {
+      // this._children.forEach((el) => el.updateMinLayoutSize());
+      // do initial layout of children (might change after this container layout)
+      console.log(`1️⃣ ${this.id} layout`);
+      // this._children.forEach((el) => el.doLayout());
+      // run the layout method
+      const size = this._layoutMethod(
+        this.contentBox.width,
+        this.contentBox.height,
+        this._children
+      );
+      console.log(
+        `${this.id} layout bounding box is ${size.width} x ${size.height}`
+      );
+      this.contentWidth = width || size.width;
+      this.contentHeight = size.height;
+
+      // do final layout of children
+      // (using size assigned by this container)
+      // console.log(`2️⃣ ${this.id} layout`);
+      // this._children.forEach((el) => el.doLayout());
 
       return size;
     } else {
-      return { width: this.widthLayout, height: this.heightLayout };
+      return { width: this.layoutWidth, height: this.layoutHeight };
     }
     // else if (this._children.length > 0) {
     //   console.warn(`${this.id} has children but no layout method`);

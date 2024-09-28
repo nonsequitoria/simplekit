@@ -50,7 +50,7 @@ export abstract class SKElement {
   set width(w: number | undefined) {
     if (w !== this._width) {
       this._width = w;
-      this.recalculateBasis();
+      this.sizeChanged();
     }
   }
   get width(): number | undefined {
@@ -61,7 +61,7 @@ export abstract class SKElement {
   set height(h: number | undefined) {
     if (h !== this._height) {
       this._height = h;
-      this.recalculateBasis();
+      this.sizeChanged();
     }
   }
   get height(): number | undefined {
@@ -70,37 +70,41 @@ export abstract class SKElement {
 
   // box: BoxModel = new BoxModel(this.recalculateBasis);
 
-  //#region basis and layout calculation
+  //#region size and layout calculations
 
-  // basis size calculation flag
-  _recalculateBasis = false;
-  recalculateBasis() {
-    this._recalculateBasis = true;
+  // size calculation flag
+  private recalculateSize = false;
+  sizeChanged() {
+    this.recalculateSize = true;
     invalidateLayout();
   }
 
-  widthBasis = 0;
-  heightBasis = 0;
+  contentWidth = 0;
+  contentHeight = 0;
+
+  updateContentSize() {}
+
+  minLayoutWidth = 0;
+  minLayoutHeight = 0;
 
   // calculate minimum layout size of element
   // (total minimum size including margin and padding)
-  calculateBasis(): [number, number] {
-    const recalc = this._recalculateBasis;
-    if (this._recalculateBasis) {
-      const w = Math.max(this.width || 0, 2 * this.padding);
-      this.widthBasis = w + 2 * this.margin;
-      const h = Math.max(this.height || 0, 2 * this.padding);
-      this.heightBasis = h + 2 * this.margin;
-      this._recalculateBasis = false;
-      this.recalculateLayout = true;
-    }
+  updateMinLayoutSize() {
+    let w = Math.max(
+      this.width || this.contentWidth || 0,
+      2 * this.padding
+    );
+    this.minLayoutWidth = w + 2 * this.margin;
+    const h = Math.max(
+      this.height || this.contentHeight || 0,
+      2 * this.padding
+    );
+    this.minLayoutHeight = h + 2 * this.margin;
+
     if (Settings.debugLayout)
       console.log(
-        ` calculateBasis ${this.id} ${recalc ? "CALC" : ""} => ${
-          this.widthBasis
-        }x${this.heightBasis}`
+        ` updateMinLayoutSize ${this.id} => ${this.minLayoutWidth} x ${this.minLayoutHeight}`
       );
-    return [this.widthBasis, this.heightBasis];
   }
 
   // proportion to grow and shrink in some layouts
@@ -108,26 +112,31 @@ export abstract class SKElement {
   fillWidth = 0;
   fillHeight = 0;
 
-  // layout calculation flag
-  recalculateLayout = false;
+  layoutWidth = 0;
+  layoutHeight = 0;
 
-  widthLayout = 0;
-  heightLayout = 0;
-
-  // do layout for element using available width and height
-  doLayout(width?: number, height?: number): Size {
-    if (Settings.debugLayout) console.log(`doLayout ${this.id}`);
-    if (this.recalculateLayout || width || height) {
-      const [w, h] = this.calculateBasis();
-      this.widthLayout = width || w;
-      this.heightLayout = height || h;
-      this.recalculateLayout = false;
+  updateSize() {
+    if (this.recalculateSize) {
+      console.log(` 💨💨 recalculateSize 💨💨 ${this.id}`);
+      this.updateContentSize();
+      this.updateMinLayoutSize();
+      this.recalculateSize = false;
     }
+  }
+
+  // simple layout using minLayoutSize
+  doLayout(width?: number, height?: number): Size {
+    if (Settings.debugLayout)
+      console.log(`💨 doLayout ${this.id} in ${width} x ${height}`);
+
+    this.updateSize();
+    this.layoutWidth = width || this.minLayoutWidth;
+    this.layoutHeight = height || this.minLayoutHeight;
     if (Settings.debugLayout)
       console.log(
-        ` SKElement ${this.id} ${this.widthLayout}x${this.heightLayout}`
+        ` SKElement ${this.id} ${this.layoutWidth} x ${this.layoutHeight}`
       );
-    return { width: this.widthLayout, height: this.heightLayout };
+    return { width: this.layoutWidth, height: this.layoutHeight };
   }
 
   //#endregion
@@ -140,7 +149,7 @@ export abstract class SKElement {
     if (m !== this.margin) {
       m = Math.max(0, m);
       this._margin = m;
-      this.recalculateBasis();
+      this.sizeChanged();
     }
   }
   get margin() {
@@ -148,8 +157,8 @@ export abstract class SKElement {
   }
   get marginBox(): Size {
     return {
-      width: this.widthLayout,
-      height: this.heightLayout,
+      width: this.layoutWidth,
+      height: this.layoutHeight,
     };
   }
 
@@ -159,7 +168,7 @@ export abstract class SKElement {
     if (p !== this.padding) {
       p = Math.max(0, p);
       this._padding = p;
-      this.recalculateBasis();
+      this.sizeChanged();
     }
   }
   get padding() {
@@ -167,15 +176,15 @@ export abstract class SKElement {
   }
   get paddingBox(): Size {
     return {
-      width: this.widthLayout - 2 * this.margin,
-      height: this.heightLayout - 2 * this.margin,
+      width: this.layoutWidth - 2 * this.margin,
+      height: this.layoutHeight - 2 * this.margin,
     };
   }
 
   get contentBox(): Size {
     return {
-      width: this.widthLayout - 2 * this.margin - 2 * this.padding,
-      height: this.heightLayout - 2 * this.margin - 2 * this.padding,
+      width: this.layoutWidth - 2 * this.margin - 2 * this.padding,
+      height: this.layoutHeight - 2 * this.margin - 2 * this.padding,
     };
   }
 
@@ -188,7 +197,7 @@ export abstract class SKElement {
     if (this.margin > 0) {
       gc.strokeStyle = "red";
       gc.setLineDash([2, 2]);
-      gc.strokeRect(0, 0, this.widthLayout, this.heightLayout);
+      gc.strokeRect(0, 0, this.layoutWidth, this.layoutHeight);
     }
 
     // padding
@@ -323,7 +332,7 @@ export abstract class SKElement {
     //   width: this.widthLayout,
     //   this.height
     // }
-    return `width:${this._width} height:${this._height} margin:${this.margin} padding:${this.padding} basis:${this.widthBasis}x${this.heightBasis} layout:${this.widthLayout}x${this.heightLayout}`;
+    return `width:${this._width} height:${this._height} margin:${this.margin} padding:${this.padding} basis:${this.minLayoutWidth}x${this.minLayoutHeight} layout:${this.layoutWidth}x${this.layoutHeight}`;
   }
 
   public toString(): string {

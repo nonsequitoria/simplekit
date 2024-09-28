@@ -19,25 +19,25 @@ function fixedLayout(
   const newBounds: Size = { width: 0, height: 0 };
 
   elements.forEach((el) => {
+    el.doLayout(el.width, el.height);
     // warn if element is outside bounds
     if (
       el.x < 0 ||
       el.y < 0 ||
-      el.x + el.widthLayout > boundsWidth ||
-      el.y + el.heightLayout > boundsHeight
+      el.x + el.layoutWidth > boundsWidth ||
+      el.y + el.layoutHeight > boundsHeight
     ) {
       console.warn(`element ${el.toString()} outside parent bounds`);
     }
 
     // update bounds that were actually used
-    // note, we ignore margins for fixed layout
     newBounds.width = Math.max(
       newBounds.width,
-      el.x + el.widthLayout
+      el.x + el.layoutWidth
     );
     newBounds.height = Math.max(
       newBounds.height,
-      el.y + el.heightLayout
+      el.y + el.layoutHeight
     );
   });
 

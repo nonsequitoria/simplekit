@@ -135,7 +135,7 @@ export class SKTextfield extends SKElement {
     gc.clip();
 
     // text
-    gc.font = Style.font;
+    gc.font = this.font;
     gc.fillStyle = "black";
     gc.textBaseline = "middle";
     gc.textAlign = "left";
