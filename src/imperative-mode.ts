@@ -252,6 +252,7 @@ let uiTreeRoot: SKElement | null;
  * @param root the root widget, usually a SKContainer
  */
 function setSKRoot(root: SKElement | null) {
+  newRoot = true;
   uiTreeRoot = root;
   if (root) {
     invalidateLayout();
