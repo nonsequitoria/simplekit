@@ -167,11 +167,13 @@ export class SKContainer extends SKElement {
 
   //#endregion
 
-  public toString(): string {
-    return (
-      `SKContainer '${this.fill}'` +
-      (this.id ? ` id '${this.id}' ` : " ") +
-      this.boxModelToString()
-    );
+  public toString(short = true): string {
+    const out =
+      `SKContainer '${this.fill}'` + (this.id ? ` '${this.id}'` : "");
+    if (short) {
+      return out;
+    } else {
+      return out + " " + this.boxModelToString();
+    }
   }
 }
