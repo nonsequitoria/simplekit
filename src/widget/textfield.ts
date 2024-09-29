@@ -56,6 +56,8 @@ export class SKTextfield extends SKElement {
   }
 
   handleKeyboardEvent(ke: SKKeyboardEvent) {
+    if (super.handleKeyboardEvent(ke)) return true;
+
     switch (ke.type) {
       case "focusout":
         this.focus = false;
@@ -81,6 +83,8 @@ export class SKTextfield extends SKElement {
   }
 
   handleMouseEvent(me: SKMouseEvent) {
+    if (super.handleMouseEvent(me)) return true;
+
     switch (me.type) {
       case "mouseenter":
         this.state = "hover";

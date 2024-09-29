@@ -1,7 +1,10 @@
+import { SKKeyboardEvent } from "events";
 import { measureText } from "../utility";
 
-import { SKElement, SKElementProps } from "./element";
+import { EventHandler, SKElement, SKElementProps } from "./element";
 import { Style } from "./style";
+import { SKMouseEvent } from "events";
+import { SKEvent } from "events";
 
 type LabelAlign = "centre" | "left" | "right";
 
@@ -51,6 +54,30 @@ export class SKLabel extends SKElement {
     this.height = height || m.height + this.padding * 2;
 
     this.width = width || m.width + this.padding * 2;
+  }
+
+  // no events on a label
+  handleKeyboardEvent(ke: SKKeyboardEvent): boolean {
+    return false;
+  }
+
+  // no events on a label
+  handleMouseEvent(me: SKMouseEvent): boolean {
+    return false;
+  }
+
+  // no events on a label
+  handleMouseEventCapture(me: SKMouseEvent): boolean {
+    return false;
+  }
+
+  addEventListener(
+    type: string,
+    handler: EventHandler,
+    capture?: boolean
+  ): void {
+    // no events on a label
+    console.warn(`SKLabel does not support events`);
   }
 
   draw(gc: CanvasRenderingContext2D) {
