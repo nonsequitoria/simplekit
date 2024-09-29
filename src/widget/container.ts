@@ -47,7 +47,7 @@ export class SKContainer extends SKElement {
     // console.log(`${this.toString()} capture ${me.type}`);
 
     switch (me.type) {
-      case "click":
+      case "mouseup":
         return this.sendEvent(
           {
             source: this,
@@ -64,8 +64,10 @@ export class SKContainer extends SKElement {
   handleMouseEvent(me: SKMouseEvent) {
     // console.log(`${this.toString()} bubble ${me.type}`);
 
+    if (super.handleMouseEvent(me)) return true;
+
     switch (me.type) {
-      case "click":
+      case "mouseup":
         return this.sendEvent({
           source: this,
           timeStamp: me.timeStamp,

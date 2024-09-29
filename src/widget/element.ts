@@ -8,7 +8,7 @@ import { invalidateLayout } from "../imperative-mode";
 
 import { Size } from "../layout";
 
-type EventHandler = (me: SKEvent) => boolean | void;
+export type EventHandler = (me: SKEvent) => boolean | void;
 
 type BindingRoute = {
   type: string; // event type
@@ -269,15 +269,15 @@ export abstract class SKElement {
   //#region event handling
 
   handleKeyboardEvent(ke: SKKeyboardEvent): boolean {
-    return false;
+    return this.sendEvent(ke);
   }
 
-  handleMouseEvent(ms: SKMouseEvent): boolean {
-    return false;
+  handleMouseEvent(me: SKMouseEvent): boolean {
+    return this.sendEvent(me);
   }
 
-  handleMouseEventCapture(ms: SKMouseEvent): boolean {
-    return false;
+  handleMouseEventCapture(me: SKMouseEvent): boolean {
+    return this.sendEvent(me, true);
   }
 
   //#endregion
