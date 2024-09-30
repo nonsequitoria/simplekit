@@ -1,10 +1,10 @@
-import { SKKeyboardEvent } from "events";
+import { SKKeyboardEvent } from "../events";
 import { measureText } from "../utility";
 
 import { EventHandler, SKElement, SKElementProps } from "./element";
 import { Style } from "./style";
-import { SKMouseEvent } from "events";
-import { SKEvent } from "events";
+import { SKMouseEvent } from "../events";
+import { SKEvent } from "../events";
 
 type LabelAlign = "centre" | "left" | "right";
 
