@@ -38,44 +38,25 @@ export class SKContainer extends SKElement {
 
   //#endregion
 
-  //#region event handling
+  // //#region event handling
 
-  handleMouseEventCapture(me: SKMouseEvent) {
-    // console.log(`${this.toString()} capture ${me.type}`);
+  // handleMouseEventCapture(me: SKMouseEvent) {
+  //   // console.log(`${this.toString()} capture ${me.type}`);
 
-    switch (me.type) {
-      case "mouseup":
-        return this.sendEvent(
-          {
-            source: this,
-            timeStamp: me.timeStamp,
-            type: "action",
-          },
-          true
-        );
-        break;
-    }
-    return false;
-  }
+  //   if (super.handleMouseEventCapture(me)) return true;
 
-  handleMouseEvent(me: SKMouseEvent) {
-    // console.log(`${this.toString()} bubble ${me.type}`);
+  //   return false;
+  // }
 
-    if (super.handleMouseEvent(me)) return true;
+  // handleMouseEvent(me: SKMouseEvent) {
+  //   // console.log(`${this.toString()} bubble ${me.type}`);
 
-    switch (me.type) {
-      case "mouseup":
-        return this.sendEvent({
-          source: this,
-          timeStamp: me.timeStamp,
-          type: "action",
-        });
-        break;
-    }
-    return false;
-  }
+  //   if (super.handleMouseEvent(me)) return true;
 
-  //#endregion
+  //   return false;
+  // }
+
+  // //#endregion
 
   draw(gc: CanvasRenderingContext2D) {
     gc.save();
