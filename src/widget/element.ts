@@ -4,7 +4,10 @@ import { Settings } from "../settings";
 import { Style } from "./style";
 import { insideHitTestRectangle } from "../utility";
 
-import { invalidateLayout } from "../imperative-mode";
+import {
+  invalidateLayout,
+  requestKeyboardFocus,
+} from "../imperative-mode";
 
 import { Size } from "../layout";
 
@@ -273,6 +276,10 @@ export abstract class SKElement {
   }
 
   handleMouseEvent(me: SKMouseEvent): boolean {
+    if (me.type === "mousedown") {
+      requestKeyboardFocus();
+    }
+
     return this.sendEvent(me);
   }
 

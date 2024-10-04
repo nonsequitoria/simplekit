@@ -60,32 +60,34 @@ export class SKButton extends SKElement {
   handleMouseEvent(me: SKMouseEvent) {
     // console.log(`${this.text} ${me.type}`);
 
-    if (super.handleMouseEvent(me)) return true;
-
     switch (me.type) {
       case "mousedown":
         this.state = "down";
         requestMouseFocus(this);
-        return true;
+        // return true;
         break;
       case "mouseup":
         this.state = "hover";
         // return true if a listener was registered
-        return this.sendEvent({
-          source: this,
-          timeStamp: me.timeStamp,
-          type: "action",
-        } as SKEvent);
+        if (
+          this.sendEvent({
+            source: this,
+            timeStamp: me.timeStamp,
+            type: "action",
+          } as SKEvent)
+        )
+          return true;
         break;
       case "mouseenter":
         this.state = "hover";
-        return true;
         break;
       case "mouseexit":
         this.state = "idle";
-        return true;
         break;
     }
+
+    if (super.handleMouseEvent(me)) return true;
+
     return false;
   }
 

@@ -7,7 +7,13 @@ if (debug) console.log("load dispatch-keyboard module");
 
 let focusedElement: SKElement | null = null;
 
-export function requestKeyboardFocus(element: SKElement) {
+export function requestKeyboardFocus(
+  element: SKElement | null = null
+) {
+  // console.log(
+  //   `requestKeyboardFocus ${element}, was ${focusedElement}`
+  // );
+
   // nothing to do if already focused
   if (focusedElement == element) return;
   // if send focusout to old element if there was one
@@ -20,13 +26,16 @@ export function requestKeyboardFocus(element: SKElement) {
     if (debug) console.log(`lost keyboard focus ${focusedElement}`);
   }
   // send focus in to new element
-  element.handleKeyboardEvent({
-    type: "focusin",
-    timeStamp: performance.now(),
-    key: null,
-  } as SKKeyboardEvent);
+  if (element) {
+    element.handleKeyboardEvent({
+      type: "focusin",
+      timeStamp: performance.now(),
+      key: null,
+    } as SKKeyboardEvent);
+    if (debug) console.log(`gained keyboard focus ${focusedElement}`);
+  }
+
   focusedElement = element;
-  if (debug) console.log(`gained keyboard focus ${focusedElement}`);
 }
 
 /**
