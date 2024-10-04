@@ -56,55 +56,53 @@ export class SKTextfield extends SKElement {
   }
 
   handleKeyboardEvent(ke: SKKeyboardEvent) {
-    if (super.handleKeyboardEvent(ke)) return true;
-
     switch (ke.type) {
       case "focusout":
         this.focus = false;
-        return true;
         break;
       case "focusin":
         this.focus = true;
-        return true;
         break;
       case "keydown":
         if (this.focus && ke.key) {
           this.text = this.applyEdit(this.text, ke.key);
         }
-        return this.sendEvent({
-          source: this,
-          timeStamp: ke.timeStamp,
-          type: "textchanged",
-        });
+        if (
+          this.sendEvent({
+            source: this,
+            timeStamp: ke.timeStamp,
+            type: "textchanged",
+          })
+        )
+          return true;
         break;
     }
+
+    if (super.handleKeyboardEvent(ke)) return true;
 
     return false;
   }
 
   handleMouseEvent(me: SKMouseEvent) {
-    if (super.handleMouseEvent(me)) return true;
-
     switch (me.type) {
       case "mouseenter":
         this.state = "hover";
-        return true;
         break;
       case "mouseexit":
         this.state = "idle";
-        return true;
         break;
       case "click":
+        break;
+      case "mousedown":
         requestKeyboardFocus(this);
         return true;
         break;
-      case "mousedown":
-        return false;
-        break;
       case "mouseup":
-        return false;
         break;
     }
+
+    if (super.handleMouseEvent(me)) return true;
+
     return false;
   }
 

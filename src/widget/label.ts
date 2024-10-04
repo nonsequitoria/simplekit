@@ -5,6 +5,7 @@ import { EventHandler, SKElement, SKElementProps } from "./element";
 import { Style } from "./style";
 import { SKMouseEvent } from "../events";
 import { SKEvent } from "../events";
+import { requestKeyboardFocus } from "../dispatch";
 
 type LabelAlign = "centre" | "left" | "right";
 
@@ -61,8 +62,13 @@ export class SKLabel extends SKElement {
     return false;
   }
 
-  // no events on a label
+  // no events on a label except for clearing focus
   handleMouseEvent(me: SKMouseEvent): boolean {
+    // clear focus
+    if (me.type === "mousedown") {
+      requestKeyboardFocus(null);
+    }
+
     return false;
   }
 
