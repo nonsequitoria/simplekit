@@ -12,9 +12,6 @@ export class SKContainer extends SKElement {
   constructor(elementProps: SKContainerProps = {}) {
     super(elementProps);
     this._layoutMethod = makeFixedLayout();
-
-    // this.updateMinLayoutSize();
-    // this.doLayout();
   }
 
   //#region managing children
@@ -40,26 +37,6 @@ export class SKContainer extends SKElement {
   }
 
   //#endregion
-
-  // //#region event handling
-
-  // handleMouseEventCapture(me: SKMouseEvent) {
-  //   // console.log(`${this.toString()} capture ${me.type}`);
-
-  //   if (super.handleMouseEventCapture(me)) return true;
-
-  //   return false;
-  // }
-
-  // handleMouseEvent(me: SKMouseEvent) {
-  //   // console.log(`${this.toString()} bubble ${me.type}`);
-
-  //   if (super.handleMouseEvent(me)) return true;
-
-  //   return false;
-  // }
-
-  // //#endregion
 
   draw(gc: CanvasRenderingContext2D) {
     gc.save();
@@ -109,30 +86,39 @@ export class SKContainer extends SKElement {
   //#region layout children
 
   protected _layoutMethod: LayoutMethod;
-  set layoutMethod(lm: LayoutMethod | undefined) {
-    this._layoutMethod = lm || makeFixedLayout();
+  set layoutMethod(method: LayoutMethod | "default") {
+    this._layoutMethod =
+      method !== "default" ? method : makeFixedLayout();
     invalidateLayout();
   }
 
-  doLayout(width?: number, height?: number): Size {
-    super.doLayout(width, height);
+  measure(): void {
+    if (this._children.length > 0) {
+      const size = this._layoutMethod(
+        this.contentBox.width,
+        this.contentBox.height,
+        this._children,
+        true
+      );
+      this.contentWidth = size.width;
+      this.contentHeight = size.height;
+    }
+    super.measure();
+  }
 
+  layout(width: number, height: number): Size {
     if (this._children.length > 0) {
       // this._children.forEach((el) => el.updateMinLayoutSize());
       // do initial layout of children (might change after this container layout)
       console.log(`1️⃣ ${this.id} layout`);
       // this._children.forEach((el) => el.doLayout());
       // run the layout method
-      const size = this._layoutMethod(
-        this.contentBox.width,
-        this.contentBox.height,
-        this._children
-      );
+      const size = this._layoutMethod(width, height, this._children);
       console.log(
         `${this.id} layout bounding box is ${size.width} x ${size.height}`
       );
-      this.contentWidth = width || size.width;
-      this.contentHeight = size.height;
+      this.layoutWidth = size.width;
+      this.layoutHeight = size.height;
 
       // do final layout of children
       // (using size assigned by this container)
@@ -141,7 +127,9 @@ export class SKContainer extends SKElement {
 
       return size;
     } else {
-      return { width: this.layoutWidth, height: this.layoutHeight };
+      const size = super.layout(width, height);
+      return size;
+      // return { width: this.layoutWidth, height: this.layoutHeight };
     }
     // else if (this._children.length > 0) {
     //   console.warn(`${this.id} has children but no layout method`);

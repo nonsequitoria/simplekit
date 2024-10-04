@@ -298,9 +298,13 @@ function layoutRoot() {
       console.log(`🌳🌳`);
       newRoot = false;
     }
-    uiTreeRoot.doLayout(gc.canvas.width, gc.canvas.height);
+    // measure pass
+    uiTreeRoot.measure();
+    // layout pass
+    uiTreeRoot.layout(gc.canvas.width, gc.canvas.height);
+
     // console.log(uiTreeRoot.toString());
-    layoutRequested = false;
+    // layoutRequested = false;
   }
 }
 

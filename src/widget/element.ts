@@ -87,6 +87,7 @@ export abstract class SKElement {
 
   updateContentSize() {}
 
+  // intrinsic size of element
   minLayoutWidth = 0;
   minLayoutHeight = 0;
 
@@ -110,35 +111,46 @@ export abstract class SKElement {
       );
   }
 
+  // calculate the intrinsic size of the element
+  measure() {
+    // if (this.recalculateSize) {
+    console.log(` 💨💨 recalculateSize 💨💨 ${this.id}`);
+    this.updateContentSize();
+    this.updateMinLayoutSize();
+    // this.recalculateSize = false;
+    // }
+  }
+
   // proportion to grow and shrink in some layouts
   // (0 means do not grow or shrink)
-  fillWidth = 0;
+  private _fillWidth = 0;
+  public get fillWidth() {
+    return this._fillWidth;
+  }
+  public set fillWidth(value) {
+    // this.recalculateSize = true;
+    invalidateLayout();
+    this._fillWidth = value;
+  }
+
   fillHeight = 0;
 
+  // size after layout
   layoutWidth = 0;
   layoutHeight = 0;
 
-  updateSize() {
-    if (this.recalculateSize) {
-      console.log(` 💨💨 recalculateSize 💨💨 ${this.id}`);
-      this.updateContentSize();
-      this.updateMinLayoutSize();
-      this.recalculateSize = false;
-    }
-  }
-
-  // simple layout using minLayoutSize
-  doLayout(width?: number, height?: number): Size {
+  layout(width?: number, height?: number): Size {
     if (Settings.debugLayout)
       console.log(`💨 doLayout ${this.id} in ${width} x ${height}`);
 
-    this.updateSize();
     this.layoutWidth = width || this.minLayoutWidth;
     this.layoutHeight = height || this.minLayoutHeight;
+
     if (Settings.debugLayout)
       console.log(
         ` SKElement ${this.id} ${this.layoutWidth} x ${this.layoutHeight}`
       );
+
     return { width: this.layoutWidth, height: this.layoutHeight };
   }
 
