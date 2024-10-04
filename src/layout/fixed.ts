@@ -19,7 +19,7 @@ function fixedLayout(
   const newBounds: Size = { width: 0, height: 0 };
 
   elements.forEach((el) => {
-    el.doLayout(el.width, el.height);
+    el.layout(el.width, el.height);
     // warn if element is outside bounds
     if (
       el.x < 0 ||

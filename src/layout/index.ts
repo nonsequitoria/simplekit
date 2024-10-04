@@ -18,5 +18,6 @@ export type Size = { width: number; height: number };
 export type LayoutMethod = (
   boundsWidth: number,
   boundsHeight: number,
-  elements: SKElement[]
+  elements: SKElement[],
+  isMeasuring?: boolean
 ) => Size;
