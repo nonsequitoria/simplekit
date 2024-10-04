@@ -111,6 +111,11 @@ export class SKLabel extends SKElement {
     gc.fillStyle = "black";
     gc.textBaseline = "middle";
 
+    // clipping rectangle
+    gc.beginPath();
+    gc.rect(0, 0, w, h);
+    gc.clip();
+
     switch (this.align) {
       case "left":
         gc.textAlign = "left";
