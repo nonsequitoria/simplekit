@@ -144,7 +144,7 @@ function runLoop(eventQueue: FundamentalEvent[], time: number) {
     if (e.type == "resize" && uiTreeRoot) {
       // console.log(`resize event ${events.length}`);
       // should be safe to invalidate, then update layout after all events processed
-      invalidateLayout();
+      // invalidateLayout();
       // layoutRoot(); // can force layout if bugs show up
     }
 
@@ -250,22 +250,15 @@ let drawCallback: DrawCallback | null;
 // root of the widget tree
 let uiTreeRoot: SKElement | null;
 
-// let mouseDispatcher: MouseDispatcher | null;
-// import { global } from "./global";
-// let keyboardDispatcher = new KeyboardDispatcher();
-// global.keyboardDispatcher = keyboardDispatcher;
-
-let newRoot = false;
-
 /**
  * Sets the root of the widget tree that describes the UI.
  * This is typically set once during startup
  * @param root the root widget, usually a SKContainer
  */
 function setSKRoot(root: SKElement | null) {
-  newRoot = true;
   uiTreeRoot = root;
   if (root) {
+    invalidateLayout();
     if (drawCallback) {
       drawCallback = null;
       console.warn(
@@ -280,39 +273,26 @@ let layoutRequested = false;
 
 function layoutRoot() {
   if (uiTreeRoot && gc) {
-    // make sure root fills canvas
-    uiTreeRoot.x = 0;
-    uiTreeRoot.y = 0;
-    if (uiTreeRoot.margin != 0) {
+    // no margin allowed on root
+    if (uiTreeRoot.margin !== 0) {
       console.warn(
         `No margin allowed for root widget, setting margin to 0.`
       );
-      uiTreeRoot.margin = 0; // no margin allowed on root
+      uiTreeRoot.margin = 0;
     }
-    // uiTreeRoot.width = gc.canvas.width;
-    // uiTreeRoot.height = gc.canvas.height;
-    // layout root and all children
-    if (newRoot) {
-      // console.log(`🌳🌳 NEW ROOT LAYOUT`);
-      // uiTreeRoot.doLayout(gc.canvas.width, gc.canvas.height);
-      // console.log(`🌳🌳`);
-      newRoot = false;
-    }
-    // measure pass
-    uiTreeRoot.measure();
-    // layout pass
-    const padding = 0; //uiTreeRoot.padding * 2;
-    uiTreeRoot.layout(
-      gc.canvas.width - padding,
-      gc.canvas.height - padding
-    );
 
-    // console.log(uiTreeRoot.toString());
-    // layoutRequested = false;
+    // layout the root and all children
+
+    // 1. measure pass to calculate "minimum size" of all widgets
+    uiTreeRoot.measure();
+    // 2. layout pass to position and set size of all widgets
+    uiTreeRoot.layout(gc.canvas.width, gc.canvas.height);
+
+    layoutRequested = false;
   }
 }
 
-// widgets will call this to tell SimpleKit to run layout process next frame
+// widgets call this to tell SimpleKit to run layout process next frame
 function invalidateLayout() {
   layoutRequested = true;
 }
@@ -321,7 +301,7 @@ import * as npmPackage from "../package.json";
 import { Settings } from "./settings";
 
 /**
- * Must be called to once to start the SimpleKit run loop. It adds a
+ * Must be called once to start the SimpleKit run loop. It adds a
  * single canvas to the body for drawing and creates
  * the simulated windowing system to call the SimpleKit run loop
  * @returns true if successful, false otherwise
