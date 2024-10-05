@@ -85,40 +85,47 @@ export abstract class SKElement {
   contentWidth = 0;
   contentHeight = 0;
 
-  updateContentSize() {}
+  updateContentSize() {
+    if (Settings.debugLayout)
+      console.log(
+        ` content ${this.id} -> ${this.contentWidth} x ${this.contentHeight}`
+      );
+  }
 
   // intrinsic size of element
   minLayoutWidth = 0;
   minLayoutHeight = 0;
 
-  // calculate minimum layout size of element
-  // (total minimum size including margin and padding)
-  updateMinLayoutSize() {
-    let w = Math.max(
-      this.width || this.contentWidth || 0,
-      2 * this.padding
-    );
-    this.minLayoutWidth = w + 2 * this.margin;
-    const h = Math.max(
-      this.height || this.contentHeight || 0,
-      2 * this.padding
-    );
-    this.minLayoutHeight = h + 2 * this.margin;
-
-    if (Settings.debugLayout)
-      console.log(
-        ` updateMinLayoutSize ${this.id} => ${this.minLayoutWidth} x ${this.minLayoutHeight}`
-      );
-  }
-
   // calculate the intrinsic size of the element
   measure() {
     // if (this.recalculateSize) {
-    console.log(` 💨💨 recalculateSize 💨💨 ${this.id}`);
+    // console.log(` 💨💨 recalculateSize 💨💨 ${this.id}`);
+
+    console.log(``);
     this.updateContentSize();
-    this.updateMinLayoutSize();
+
+    // calculate intrinsic size
+    this.minLayoutWidth = this.width ?? this.contentWidth ?? 0;
+    this.minLayoutWidth += 2 * this.padding;
+    this.minLayoutWidth += 2 * this.margin;
+
+    this.minLayoutHeight = this.height ?? this.contentHeight ?? 0;
+    this.minLayoutHeight += 2 * this.padding;
+    this.minLayoutHeight += 2 * this.margin;
+
+    // this.minLayoutWidth = w + 2 * this.margin;
+    // const h = Math.max(
+    //   this.height || this.contentHeight || 0,
+    //   2 * this.padding
+    // );
+    // this.minLayoutHeight = h + 2 * this.margin;
+
     // this.recalculateSize = false;
     // }
+    if (Settings.debugLayout)
+      console.log(
+        `1️⃣ measure ${this.id} -> ${this.minLayoutWidth} x ${this.minLayoutHeight}`
+      );
   }
 
   // proportion to grow and shrink in some layouts
@@ -141,10 +148,22 @@ export abstract class SKElement {
 
   layout(width?: number, height?: number): Size {
     if (Settings.debugLayout)
-      console.log(`💨 doLayout ${this.id} in ${width} x ${height}`);
+      console.log(`2️⃣ layout ${this.id} in ${width} x ${height}`);
 
-    this.layoutWidth = width || this.minLayoutWidth;
-    this.layoutHeight = height || this.minLayoutHeight;
+    this.layoutWidth = width ?? this.minLayoutWidth;
+    this.layoutHeight = height ?? this.minLayoutHeight;
+
+    // if (width === undefined) {
+    //   this.layoutWidth = this.minLayoutWidth;
+    // } else {
+    //   this.layoutWidth = width - 2 * this.padding; // + 2 * this.margin;
+    // }
+
+    // if (height === undefined) {
+    //   this.layoutHeight = this.minLayoutHeight;
+    // } else {
+    //   this.layoutHeight = height + 2 * this.padding; // + 2 * this.margin;
+    // }
 
     if (Settings.debugLayout)
       console.log(

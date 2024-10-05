@@ -51,7 +51,7 @@ function fillRowLayout(
     );
 
     // calculate bounds used for layout
-    newBounds.width = totalWidth;
+    newBounds.width = totalWidth + (elements.length - 1) * gap;
     newBounds.height = totalHeight;
   } else {
     // get total "basis" width
