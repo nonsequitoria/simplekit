@@ -53,8 +53,8 @@ export class SKButton extends SKElement {
       return;
     }
 
-    this.contentHeight = m.height + this.padding * 2;
-    this.contentWidth = m.width + this.padding * 2;
+    this.contentHeight = m.height;
+    this.contentWidth = m.width;
   }
 
   handleMouseEvent(me: SKMouseEvent) {

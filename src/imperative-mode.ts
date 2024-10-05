@@ -293,15 +293,19 @@ function layoutRoot() {
     // uiTreeRoot.height = gc.canvas.height;
     // layout root and all children
     if (newRoot) {
-      console.log(`🌳🌳 NEW ROOT LAYOUT`);
+      // console.log(`🌳🌳 NEW ROOT LAYOUT`);
       // uiTreeRoot.doLayout(gc.canvas.width, gc.canvas.height);
-      console.log(`🌳🌳`);
+      // console.log(`🌳🌳`);
       newRoot = false;
     }
     // measure pass
     uiTreeRoot.measure();
     // layout pass
-    uiTreeRoot.layout(gc.canvas.width, gc.canvas.height);
+    const padding = 0; //uiTreeRoot.padding * 2;
+    uiTreeRoot.layout(
+      gc.canvas.width - padding,
+      gc.canvas.height - padding
+    );
 
     // console.log(uiTreeRoot.toString());
     // layoutRequested = false;

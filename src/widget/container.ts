@@ -95,8 +95,8 @@ export class SKContainer extends SKElement {
   measure(): void {
     if (this._children.length > 0) {
       const size = this._layoutMethod(
-        this.contentBox.width,
-        this.contentBox.height,
+        this.paddingBox.width,
+        this.paddingBox.height,
         this._children,
         true
       );
@@ -110,31 +110,34 @@ export class SKContainer extends SKElement {
     if (this._children.length > 0) {
       // this._children.forEach((el) => el.updateMinLayoutSize());
       // do initial layout of children (might change after this container layout)
-      console.log(`1️⃣ ${this.id} layout`);
       // this._children.forEach((el) => el.doLayout());
       // run the layout method
-      const size = this._layoutMethod(width, height, this._children);
+      const w = width - this.padding * 2 - this.margin * 2;
+      const h = height - this.padding * 2 - this.margin * 2;
+      const size = this._layoutMethod(w, h, this._children);
       console.log(
-        `${this.id} layout bounding box is ${size.width} x ${size.height}`
+        `${this.id} layout bounding box is ${width} x ${height}`
       );
-      this.layoutWidth = size.width;
-      this.layoutHeight = size.height;
+      // this.layoutWidth = width + this.margin * 2;
+      // this.layoutHeight = height + this.margin * 2;
 
       // do final layout of children
       // (using size assigned by this container)
       // console.log(`2️⃣ ${this.id} layout`);
       // this._children.forEach((el) => el.doLayout());
 
-      return size;
-    } else {
-      const size = super.layout(width, height);
-      return size;
-      // return { width: this.layoutWidth, height: this.layoutHeight };
+      // return size;
     }
-    // else if (this._children.length > 0) {
-    //   console.warn(`${this.id} has children but no layout method`);
-    // }
+
+    // } else {
+
+    const size = super.layout(width, height);
+    return size;
+    // return { width: this.layoutWidth, height: this.layoutHeight };
   }
+  // else if (this._children.length > 0) {
+  //   console.warn(`${this.id} has children but no layout method`);
+  // }
 
   //#endregion
 
