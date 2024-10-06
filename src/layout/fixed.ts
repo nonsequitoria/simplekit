@@ -1,5 +1,6 @@
 import { SKElement } from "../widget";
 import { LayoutMethod, Size } from ".";
+import { Settings } from "../settings";
 
 export class FixedLayout implements LayoutMethod {
   measure(elements: SKElement[]) {
@@ -20,10 +21,6 @@ export class FixedLayout implements LayoutMethod {
       );
     });
 
-    // newBounds.width += 50;
-    console.log(
-      `🔥 FixedLayout measure ${newBounds.width} x ${newBounds.height}`
-    );
     return newBounds;
   }
 
@@ -36,10 +33,11 @@ export class FixedLayout implements LayoutMethod {
 
       // warn if element is outside bounds
       if (
-        el.x < 0 ||
-        el.y < 0 ||
-        el.x + el.layoutWidth > width ||
-        el.y + el.layoutHeight > height
+        Settings.layoutWarnings &&
+        (el.x < 0 ||
+          el.y < 0 ||
+          el.x + el.layoutWidth > width ||
+          el.y + el.layoutHeight > height)
       ) {
         console.warn(
           `element ${el.toString()} outside parent bounds`

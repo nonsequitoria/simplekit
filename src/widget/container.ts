@@ -3,6 +3,7 @@ import { invalidateLayout } from "../imperative-mode";
 
 import { SKElement, SKElementProps } from "./element";
 import { FixedLayout } from "../layout/fixed";
+import { Settings } from "../settings";
 
 type SKContainerProps = SKElementProps & {};
 
@@ -63,9 +64,6 @@ export class SKContainer extends SKElement {
 
       // run the layout method
       this._layoutMethod.layout(w, h, this._children);
-      console.log(
-        `${this.id} layout bounding box is ${width} x ${height}`
-      );
     }
 
     // now layout the container itself
