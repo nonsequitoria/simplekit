@@ -48,17 +48,19 @@ export class FillRowLayout implements LayoutMethod {
       0
     );
 
-    // num of elements with fillWidth > 0
-    const fillElementNum = elements.length - fixedElements.length;
-
     // calculate space to distribute elements
     const available = width - (elements.length - 1) * this.gap;
     const remaining = available - fixedElementsWidth;
 
-    if (Settings.debugLayout)
+    if (Settings.debugLayout) {
       console.log(
-        ` fillRowLayout children:${elements.length} basisTotal:${available} remaining:${remaining}`
+        ` FillRowLayout: ${
+          fixedElements.length
+        } fixed elements need ${fixedElementsWidth}px, ${
+          elements.length - fixedElements.length
+        } elements to fill ${remaining}px`
       );
+    }
 
     if (Settings.layoutWarnings && remaining < 0) {
       console.warn(
