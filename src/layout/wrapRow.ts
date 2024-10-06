@@ -1,5 +1,6 @@
 import { SKElement } from "../widget";
 import { LayoutMethod, Size } from ".";
+import { Settings } from "../settings";
 
 type WrapLayoutProps = {
   gap?: number;
@@ -48,7 +49,7 @@ export class WrapRowLayout implements LayoutMethod {
       // layout the element
       el.layout(el.width, el.height);
 
-      if (el.layoutWidth > width) {
+      if (Settings.layoutWarnings && el.layoutWidth > width) {
         // warn if element overflows
         console.warn(`element ${el.toString()} horizontal overflow`);
       } else if (x + el.layoutWidth > width) {
@@ -73,7 +74,7 @@ export class WrapRowLayout implements LayoutMethod {
     });
 
     // warn if rows of elements overflow
-    if (newBounds.height > height) {
+    if (Settings.layoutWarnings && newBounds.height > height) {
       console.warn(`vertical overflow`);
     }
 

@@ -15,6 +15,7 @@ export const Layout = {
 
 export type Size = { width: number; height: number };
 
+// using strategy pattern for swapping layout methods
 export interface LayoutMethod {
   measure: (elements: SKElement[]) => Size;
   layout: (
