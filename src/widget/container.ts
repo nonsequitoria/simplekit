@@ -5,12 +5,21 @@ import { SKElement, SKElementProps } from "./element";
 import { FixedLayout } from "../layout/fixed";
 import { Settings } from "../settings";
 
-type SKContainerProps = SKElementProps & {};
+type SKContainerProps = SKElementProps & {
+  layoutMethod?: LayoutMethod | "default";
+};
 
 export class SKContainer extends SKElement {
-  constructor(elementProps: SKContainerProps = {}) {
+  constructor({
+    layoutMethod = "default",
+    ...elementProps
+  }: SKContainerProps = {}) {
     super(elementProps);
-    this._layoutMethod = new FixedLayout();
+
+    this._layoutMethod =
+      layoutMethod !== "default"
+        ? layoutMethod
+        : new Layout.FixedLayout();
   }
 
   //#region managing children

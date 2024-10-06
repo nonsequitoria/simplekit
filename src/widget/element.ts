@@ -20,29 +20,47 @@ type BindingRoute = {
 };
 
 export type SKElementProps = {
+  id?: string;
+  debug?: boolean;
   x?: number;
   y?: number;
   width?: number;
   height?: number;
   fill?: string;
   border?: string;
+  padding?: number;
+  margin?: number;
+  fillWidth?: number;
+  fillHeight?: number;
 };
 
 export abstract class SKElement {
   constructor({
+    id = "",
+    debug = false,
     x = 0,
     y = 0,
     width = undefined,
     height = undefined,
     fill = "",
     border = "",
+    padding = 0,
+    margin = 0,
+    fillWidth = 0,
+    fillHeight = 0,
   }: SKElementProps = {}) {
+    this.id = id;
+    this.debug = debug;
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
     this.fill = fill;
     this.border = border;
+    this.padding = padding;
+    this.margin = margin;
+    this.fillWidth = fillWidth;
+    this.fillHeight = fillHeight;
   }
 
   // top-left corner of element bounding box
@@ -88,7 +106,7 @@ export abstract class SKElement {
   //#region size and layout calculations
 
   // size calculation flag
-  private recalculateSize = false;
+  protected recalculateSize = false;
   sizeChanged() {
     this.recalculateSize = true;
     invalidateLayout();
