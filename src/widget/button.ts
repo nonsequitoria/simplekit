@@ -44,9 +44,9 @@ export class SKButton extends SKElement {
     // need this if w or h not specified
     const m = measureText(this.text, this._font);
 
-    console.log(
-      `SKButton setContentSize ${this.text} ${m?.width} x ${m?.height}`
-    );
+    // console.log(
+    //   `SKButton setContentSize ${this.text} ${m?.width} x ${m?.height}`
+    // );
 
     if (!m) {
       console.warn(`measureText failed in SKButton for ${this.text}`);

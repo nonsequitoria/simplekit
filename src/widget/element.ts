@@ -101,27 +101,27 @@ export abstract class SKElement {
     // if (this.recalculateSize) {
     // console.log(` 💨💨 recalculateSize 💨💨 ${this.id}`);
 
-    console.log(``);
     this.updateContentSize();
 
     // calculate intrinsic size
-    this.minLayoutWidth = this.width ?? this.contentWidth ?? 0;
-    this.minLayoutWidth += 2 * this.padding;
+    if (this.width) {
+      this.minLayoutWidth = Math.max(this.width, 2 * this.padding);
+    } else if (this.contentWidth) {
+      this.minLayoutWidth = this.contentWidth + 2 * this.padding;
+    } else {
+      this.minLayoutWidth = 2 * this.padding;
+    }
     this.minLayoutWidth += 2 * this.margin;
 
-    this.minLayoutHeight = this.height ?? this.contentHeight ?? 0;
-    this.minLayoutHeight += 2 * this.padding;
+    if (this.height) {
+      this.minLayoutHeight = Math.max(this.height, 2 * this.padding);
+    } else if (this.contentHeight) {
+      this.minLayoutHeight = this.contentHeight + 2 * this.padding;
+    } else {
+      this.minLayoutHeight = 2 * this.padding;
+    }
     this.minLayoutHeight += 2 * this.margin;
 
-    // this.minLayoutWidth = w + 2 * this.margin;
-    // const h = Math.max(
-    //   this.height || this.contentHeight || 0,
-    //   2 * this.padding
-    // );
-    // this.minLayoutHeight = h + 2 * this.margin;
-
-    // this.recalculateSize = false;
-    // }
     if (Settings.debugLayout)
       console.log(
         `1️⃣ measure ${this.id} -> ${this.minLayoutWidth} x ${this.minLayoutHeight}`

@@ -5,59 +5,78 @@ type WrapLayoutProps = {
   gap?: number;
 };
 
-export function makeWrapRowLayout(
-  props?: WrapLayoutProps
-): LayoutMethod {
-  return (
-    boundsWidth: number,
-    boundsHeight: number,
-    elements: SKElement[]
-  ) => {
-    return wrapRowLayout(boundsWidth, boundsHeight, elements, props);
-  };
-}
-
-// places elements in rows, wrapping to next row as needed
-export function wrapRowLayout(
-  boundsWidth: number,
-  boundsHeight: number,
-  elements: SKElement[],
-  { gap = 0 }: WrapLayoutProps = {}
-): Size {
-  const newBounds: Size = { width: 0, height: 0 };
-
-  let x = 0;
-  let y = 0;
-  let rowHeight = 0;
-
-  elements.forEach((el) => {
-    if (el.layoutWidth > boundsWidth) {
-      // warn if element overflows
-      console.warn(`element ${el.toString()} horizontal overflow`);
-    } else if (x + el.layoutWidth > boundsWidth) {
-      // wrap to next row and clear rowHeight
-      x = 0;
-      y += rowHeight + gap;
-      rowHeight = 0;
-    }
-
-    // set the element position
-    el.x = x;
-    el.y = y;
-    // update the row height
-    rowHeight = Math.max(rowHeight, el.layoutHeight);
-    // get x ready for next element
-    x += el.layoutWidth + gap;
-
-    // update bounds that were actually used
-    newBounds.width = Math.max(newBounds.width, el.layoutWidth);
-    newBounds.height = Math.max(newBounds.height, y + rowHeight);
-  });
-
-  // warn if rows of elements overflow
-  if (newBounds.height > boundsHeight) {
-    console.warn(`vertical overflow`);
+export class WrapRowLayout implements LayoutMethod {
+  constructor({ gap = 0 }: WrapLayoutProps = {}) {
+    this.gap = gap;
   }
 
-  return newBounds;
+  private gap: number;
+
+  measure(elements: SKElement[]) {
+    // measure all children first
+    elements.forEach((el) => {
+      el.measure();
+    });
+
+    // find the widest element
+    const minWidth = elements.reduce(
+      (acc, el) => Math.max(acc, el.minLayoutWidth),
+      0
+    );
+
+    // find the tallest element
+    const minHeight = elements.reduce(
+      (acc, el) => Math.max(acc, el.minLayoutHeight),
+      0
+    );
+
+    // return minimum layout size
+    return {
+      width: minWidth,
+      height: minHeight,
+    };
+  }
+
+  layout(width: number, height: number, elements: SKElement[]) {
+    const newBounds: Size = { width: 0, height: 0 };
+
+    let x = 0;
+    let y = 0;
+    let rowHeight = 0;
+
+    elements.forEach((el) => {
+      // layout the element
+      el.layout(el.width, el.height);
+
+      if (el.layoutWidth > width) {
+        // warn if element overflows
+        console.warn(`element ${el.toString()} horizontal overflow`);
+      } else if (x + el.layoutWidth > width) {
+        // wrap to next row and clear rowHeight
+        x = 0;
+        y += rowHeight + this.gap;
+        rowHeight = 0;
+      }
+
+      // set the element position
+      el.x = x;
+      el.y = y;
+
+      // update the row height
+      rowHeight = Math.max(rowHeight, el.layoutHeight);
+      // get x ready for next element
+      x += el.layoutWidth + this.gap;
+
+      // update bounds that were actually used
+      newBounds.width = Math.max(newBounds.width, el.layoutWidth);
+      newBounds.height = Math.max(newBounds.height, y + rowHeight);
+    });
+
+    // warn if rows of elements overflow
+    if (newBounds.height > height) {
+      console.warn(`vertical overflow`);
+    }
+
+    return newBounds;
+  }
 }

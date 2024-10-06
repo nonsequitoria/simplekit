@@ -1,23 +1,25 @@
 import { SKElement } from "../widget/element";
 
-// export * from "./layouts";
-import { makeFixedLayout } from "./fixed";
-import { makeCentredLayout } from "./centred";
-import { makeWrapRowLayout } from "./wrapRow";
-import { makeFillRowLayout } from "./fillRow";
+import { FixedLayout } from "./fixed";
+import { CentredLayout } from "./centred";
+import { WrapRowLayout } from "./wrapRow";
+import { FillRowLayout } from "./fillRow";
 
+// keep layout methods in one place
 export const Layout = {
-  makeFixedLayout,
-  makeCentredLayout,
-  makeWrapRowLayout,
-  makeFillRowLayout,
+  FixedLayout,
+  CentredLayout,
+  WrapRowLayout,
+  FillRowLayout,
 };
 
 export type Size = { width: number; height: number };
 
-export type LayoutMethod = (
-  boundsWidth: number,
-  boundsHeight: number,
-  elements: SKElement[],
-  isMeasuring?: boolean
-) => Size;
+export interface LayoutMethod {
+  measure: (elements: SKElement[]) => Size;
+  layout: (
+    width: number,
+    height: number,
+    elements: SKElement[]
+  ) => Size;
+}

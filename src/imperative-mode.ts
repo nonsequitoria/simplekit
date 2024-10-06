@@ -142,10 +142,7 @@ function runLoop(eventQueue: FundamentalEvent[], time: number) {
   events.forEach((e) => {
     // handle resize for layout
     if (e.type == "resize" && uiTreeRoot) {
-      // console.log(`resize event ${events.length}`);
-      // should be safe to invalidate, then update layout after all events processed
-      // invalidateLayout();
-      // layoutRoot(); // can force layout if bugs show up
+      invalidateLayout();
     }
 
     // widget dispatchers
