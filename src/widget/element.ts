@@ -9,7 +9,7 @@ import {
   requestKeyboardFocus,
 } from "../imperative-mode";
 
-import { Size } from "../layout";
+import { Size, sizeToString } from "../layout";
 
 export type EventHandler = (me: SKEvent) => boolean | void;
 
@@ -100,9 +100,15 @@ export abstract class SKElement {
   // some widgets may need to update content size
   // (e.g. to measure text in a button, or size of children after layout)
   updateContentSize() {
-    if (Settings.debugLayout)
+    if (
+      Settings.debugLayout &&
+      (this.contentWidth || this.contentHeight)
+    )
       console.log(
-        ` content ${this.id} -> ${this.contentWidth} x ${this.contentHeight}`
+        `   content '${this.id}' -> ${sizeToString(
+          this.contentWidth,
+          this.contentHeight
+        )}`
       );
   }
 
@@ -141,7 +147,10 @@ export abstract class SKElement {
 
     if (Settings.debugLayout)
       console.log(
-        `1️⃣ measure ${this.id} -> ${this.intrinsicWidth} x ${this.intrinsicHeight}`
+        `1️⃣ measure '${this.id}' -> ${sizeToString(
+          this.intrinsicWidth,
+          this.intrinsicHeight
+        )}`
       );
   }
 
@@ -176,15 +185,12 @@ export abstract class SKElement {
 
   layout(width?: number, height?: number): Size {
     if (Settings.debugLayout)
-      console.log(`2️⃣ layout ${this.id} in ${width} x ${height}`);
+      console.log(
+        `2️⃣ layout '${this.id}' in ${sizeToString(width, height)}`
+      );
 
     this._layoutWidth = width ?? this.intrinsicWidth;
     this._layoutHeight = height ?? this.intrinsicHeight;
-
-    if (Settings.debugLayout)
-      console.log(
-        ` SKElement ${this.id} ${this.layoutWidth} x ${this.layoutHeight}`
-      );
 
     return { width: this.layoutWidth, height: this.layoutHeight };
   }
