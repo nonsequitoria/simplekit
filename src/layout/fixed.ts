@@ -12,11 +12,11 @@ export class FixedLayout implements LayoutMethod {
       // bounds that's needed to fit all elements
       newBounds.width = Math.max(
         newBounds.width,
-        el.x + el.minLayoutWidth
+        el.x + el.intrinsicWidth
       );
       newBounds.height = Math.max(
         newBounds.height,
-        el.y + el.minLayoutHeight
+        el.y + el.intrinsicHeight
       );
     });
 

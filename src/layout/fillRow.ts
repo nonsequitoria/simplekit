@@ -22,12 +22,12 @@ export class FillRowLayout implements LayoutMethod {
     // min layout width is sum of al element widths
     // with gaps between elements
     const totalWidth =
-      elements.reduce((acc, el) => acc + el.minLayoutWidth, 0) +
+      elements.reduce((acc, el) => acc + el.intrinsicWidth, 0) +
       (elements.length - 1) * this.gap;
 
     // height is height of tallest element
     const totalHeight = elements.reduce(
-      (acc, el) => Math.max(acc, el.minLayoutHeight),
+      (acc, el) => Math.max(acc, el.intrinsicHeight),
       0
     );
 
@@ -44,7 +44,7 @@ export class FillRowLayout implements LayoutMethod {
 
     // get space used by elements with fixed width
     const fixedElementsWidth = fixedElements.reduce(
-      (acc, el) => acc + el.minLayoutWidth,
+      (acc, el) => acc + el.intrinsicWidth,
       0
     );
 
@@ -85,11 +85,11 @@ export class FillRowLayout implements LayoutMethod {
       // calculate element size
       let w =
         el.fillWidth === 0
-          ? el.minLayoutWidth
+          ? el.intrinsicWidth
           : (el.fillWidth / fillTotal) * remaining;
 
       // elements can expand vertically too
-      let h = el.fillHeight === 0 ? el.minLayoutHeight : height;
+      let h = el.fillHeight === 0 ? el.intrinsicHeight : height;
 
       // layout the element in the allotted space
       el.layout(w, h);

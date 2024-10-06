@@ -13,13 +13,13 @@ export class CentredLayout implements LayoutMethod {
 
     // find the widest element
     const minWidth = elements.reduce(
-      (acc, el) => Math.max(acc, el.minLayoutWidth),
+      (acc, el) => Math.max(acc, el.intrinsicWidth),
       0
     );
 
     // find the tallest element
     const minHeight = elements.reduce(
-      (acc, el) => Math.max(acc, el.minLayoutHeight),
+      (acc, el) => Math.max(acc, el.intrinsicHeight),
       0
     );
 
@@ -36,8 +36,8 @@ export class CentredLayout implements LayoutMethod {
     // stacks all children in the centre of the container
     elements.forEach((el) => {
       // elements can fill the width or height of the parent
-      const w = el.fillWidth ? width : el.minLayoutWidth;
-      const h = el.fillHeight ? height : el.minLayoutHeight;
+      const w = el.fillWidth ? width : el.intrinsicWidth;
+      const h = el.fillHeight ? height : el.intrinsicHeight;
 
       // layout the element
       el.layout(w, h);
