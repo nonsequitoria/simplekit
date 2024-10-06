@@ -172,7 +172,6 @@ function runLoop(eventQueue: FundamentalEvent[], time: number) {
 
   // draw UI
   if (uiTreeRoot) {
-    // uiTreeRoot.doLayout();
     gc.clearRect(0, 0, gc.canvas.width, gc.canvas.height);
     uiTreeRoot.draw(gc);
   }
@@ -265,8 +264,12 @@ function setSKRoot(root: SKElement | null) {
   }
 }
 
-// flag to tell SimpleKit to run layout process next frame
+// flag to run layout process next frame
 let layoutRequested = false;
+// widgets call this to trigger layout next frame
+function invalidateLayout() {
+  layoutRequested = true;
+}
 
 function layoutRoot() {
   if (uiTreeRoot && gc) {
@@ -278,20 +281,11 @@ function layoutRoot() {
       uiTreeRoot.margin = 0;
     }
 
-    // layout the root and all children
-
-    // 1. measure pass to calculate "minimum size" of all widgets
+    // 1. calculate ”intrinsic size" of all widgets
     uiTreeRoot.measure();
-    // 2. layout pass to position and set size of all widgets
+    // 2. set position and size of all widgets
     uiTreeRoot.layout(gc.canvas.width, gc.canvas.height);
-
-    layoutRequested = false;
   }
-}
-
-// widgets call this to tell SimpleKit to run layout process next frame
-function invalidateLayout() {
-  layoutRequested = true;
 }
 
 import * as npmPackage from "../package.json";
