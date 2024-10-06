@@ -1,17 +1,17 @@
 import { insideHitTestRectangle } from "../utility";
-import { LayoutMethod, Size } from "../layout";
+import { Layout, LayoutMethod, Size } from "../layout";
 import { SKMouseEvent } from "../events";
 import { invalidateLayout } from "../imperative-mode";
 
 import { SKElement, SKElementProps } from "./element";
-import { makeFixedLayout } from "../layout/fixed";
+import { FixedLayout } from "../layout/fixed";
 
 type SKContainerProps = SKElementProps & {};
 
 export class SKContainer extends SKElement {
   constructor(elementProps: SKContainerProps = {}) {
     super(elementProps);
-    this._layoutMethod = makeFixedLayout();
+    this._layoutMethod = new FixedLayout();
   }
 
   //#region managing children
@@ -88,18 +88,13 @@ export class SKContainer extends SKElement {
   protected _layoutMethod: LayoutMethod;
   set layoutMethod(method: LayoutMethod | "default") {
     this._layoutMethod =
-      method !== "default" ? method : makeFixedLayout();
+      method !== "default" ? method : new Layout.FixedLayout();
     invalidateLayout();
   }
 
   measure(): void {
     if (this._children.length > 0) {
-      const size = this._layoutMethod(
-        this.paddingBox.width,
-        this.paddingBox.height,
-        this._children,
-        true
-      );
+      const size = this._layoutMethod.measure(this._children);
       this.contentWidth = size.width;
       this.contentHeight = size.height;
     }
@@ -114,7 +109,7 @@ export class SKContainer extends SKElement {
       // run the layout method
       const w = width - this.padding * 2 - this.margin * 2;
       const h = height - this.padding * 2 - this.margin * 2;
-      const size = this._layoutMethod(w, h, this._children);
+      this._layoutMethod.layout(w, h, this._children);
       console.log(
         `${this.id} layout bounding box is ${width} x ${height}`
       );
