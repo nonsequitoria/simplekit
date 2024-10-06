@@ -15,6 +15,15 @@ export const Layout = {
 
 export type Size = { width: number; height: number };
 
+export function sizeToString(
+  w: number | undefined,
+  h: number | undefined
+): string {
+  return `${w ? Math.round(w * 10) / 10 : w} x ${
+    h ? Math.round(h * 10) / 10 : h
+  }`;
+}
+
 // using strategy pattern for swapping layout methods
 export interface LayoutMethod {
   measure: (elements: SKElement[]) => Size;
