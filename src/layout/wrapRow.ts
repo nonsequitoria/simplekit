@@ -75,7 +75,9 @@ export class WrapRowLayout implements LayoutMethod {
 
     // warn if rows of elements overflow
     if (Settings.layoutWarnings && newBounds.height > height) {
-      console.warn(`vertical overflow`);
+      console.warn(
+        `${(newBounds.height - height).toFixed(1)} vertical overflow`
+      );
     }
 
     return newBounds;
