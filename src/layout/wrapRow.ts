@@ -20,13 +20,13 @@ export class WrapRowLayout implements LayoutMethod {
 
     // find the widest element
     const minWidth = elements.reduce(
-      (acc, el) => Math.max(acc, el.minLayoutWidth),
+      (acc, el) => Math.max(acc, el.intrinsicWidth),
       0
     );
 
     // find the tallest element
     const minHeight = elements.reduce(
-      (acc, el) => Math.max(acc, el.minLayoutHeight),
+      (acc, el) => Math.max(acc, el.intrinsicHeight),
       0
     );
 

@@ -46,8 +46,22 @@ export abstract class SKElement {
   }
 
   // top-left corner of element bounding box
-  x = 0;
-  y = 0;
+  private _x = 0;
+  public get x() {
+    return this._x;
+  }
+  public set x(value) {
+    this._x = value;
+    this.sizeChanged();
+  }
+  private _y = 0;
+  public get y() {
+    return this._y;
+  }
+  public set y(value) {
+    this._y = value;
+    this.sizeChanged();
+  }
 
   protected _width: number | undefined;
   set width(w: number | undefined) {
@@ -71,8 +85,6 @@ export abstract class SKElement {
     return this._height;
   }
 
-  // box: BoxModel = new BoxModel(this.recalculateBasis);
-
   //#region size and layout calculations
 
   // size calculation flag
@@ -82,9 +94,11 @@ export abstract class SKElement {
     invalidateLayout();
   }
 
-  contentWidth = 0;
-  contentHeight = 0;
+  protected contentWidth = 0;
+  protected contentHeight = 0;
 
+  // some widgets may need to update content size
+  // (e.g. to measure text in a button, or size of children after layout)
   updateContentSize() {
     if (Settings.debugLayout)
       console.log(
@@ -93,38 +107,41 @@ export abstract class SKElement {
   }
 
   // intrinsic size of element
-  minLayoutWidth = 0;
-  minLayoutHeight = 0;
+  protected _intrinsicWidth = 0;
+  get intrinsicWidth(): number {
+    return this._intrinsicWidth;
+  }
+  private _intrinsicHeight = 0;
+  get intrinsicHeight(): number {
+    return this._intrinsicHeight;
+  }
 
   // calculate the intrinsic size of the element
   measure() {
-    // if (this.recalculateSize) {
-    // console.log(` 💨💨 recalculateSize 💨💨 ${this.id}`);
-
     this.updateContentSize();
 
     // calculate intrinsic size
     if (this.width) {
-      this.minLayoutWidth = Math.max(this.width, 2 * this.padding);
+      this._intrinsicWidth = Math.max(this.width, 2 * this.padding);
     } else if (this.contentWidth) {
-      this.minLayoutWidth = this.contentWidth + 2 * this.padding;
+      this._intrinsicWidth = this.contentWidth + 2 * this.padding;
     } else {
-      this.minLayoutWidth = 2 * this.padding;
+      this._intrinsicWidth = 2 * this.padding;
     }
-    this.minLayoutWidth += 2 * this.margin;
+    this._intrinsicWidth += 2 * this.margin;
 
     if (this.height) {
-      this.minLayoutHeight = Math.max(this.height, 2 * this.padding);
+      this._intrinsicHeight = Math.max(this.height, 2 * this.padding);
     } else if (this.contentHeight) {
-      this.minLayoutHeight = this.contentHeight + 2 * this.padding;
+      this._intrinsicHeight = this.contentHeight + 2 * this.padding;
     } else {
-      this.minLayoutHeight = 2 * this.padding;
+      this._intrinsicHeight = 2 * this.padding;
     }
-    this.minLayoutHeight += 2 * this.margin;
+    this._intrinsicHeight += 2 * this.margin;
 
     if (Settings.debugLayout)
       console.log(
-        `1️⃣ measure ${this.id} -> ${this.minLayoutWidth} x ${this.minLayoutHeight}`
+        `1️⃣ measure ${this.id} -> ${this.intrinsicWidth} x ${this.intrinsicHeight}`
       );
   }
 
@@ -135,35 +152,34 @@ export abstract class SKElement {
     return this._fillWidth;
   }
   public set fillWidth(value) {
-    // this.recalculateSize = true;
-    invalidateLayout();
     this._fillWidth = value;
+    invalidateLayout();
+  }
+  private _fillHeight = 0;
+  public get fillHeight() {
+    return this._fillHeight;
+  }
+  public set fillHeight(value) {
+    this._fillHeight = value;
+    invalidateLayout();
   }
 
-  fillHeight = 0;
-
-  // size after layout
-  layoutWidth = 0;
-  layoutHeight = 0;
+  // width and height after layout
+  private _layoutWidth = 0;
+  get layoutWidth(): number {
+    return this._layoutWidth;
+  }
+  private _layoutHeight = 0;
+  get layoutHeight(): number {
+    return this._layoutHeight;
+  }
 
   layout(width?: number, height?: number): Size {
     if (Settings.debugLayout)
       console.log(`2️⃣ layout ${this.id} in ${width} x ${height}`);
 
-    this.layoutWidth = width ?? this.minLayoutWidth;
-    this.layoutHeight = height ?? this.minLayoutHeight;
-
-    // if (width === undefined) {
-    //   this.layoutWidth = this.minLayoutWidth;
-    // } else {
-    //   this.layoutWidth = width - 2 * this.padding; // + 2 * this.margin;
-    // }
-
-    // if (height === undefined) {
-    //   this.layoutHeight = this.minLayoutHeight;
-    // } else {
-    //   this.layoutHeight = height + 2 * this.padding; // + 2 * this.margin;
-    // }
+    this._layoutWidth = width ?? this.intrinsicWidth;
+    this._layoutHeight = height ?? this.intrinsicHeight;
 
     if (Settings.debugLayout)
       console.log(
@@ -370,7 +386,7 @@ export abstract class SKElement {
     //   width: this.widthLayout,
     //   this.height
     // }
-    return `width:${this._width} height:${this._height} margin:${this.margin} padding:${this.padding} basis:${this.minLayoutWidth}x${this.minLayoutHeight} layout:${this.layoutWidth}x${this.layoutHeight}`;
+    return `width:${this._width} height:${this._height} margin:${this.margin} padding:${this.padding} basis:${this.intrinsicWidth}x${this.intrinsicHeight} layout:${this.layoutWidth}x${this.layoutHeight}`;
   }
 
   public toString(): string {
