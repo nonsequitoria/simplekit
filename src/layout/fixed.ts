@@ -29,7 +29,7 @@ export class FixedLayout implements LayoutMethod {
 
     // layout all children and calculate new bounds
     elements.forEach((el) => {
-      el.layout(el.width, el.height);
+      el.layout();
 
       // warn if element is outside bounds
       if (
