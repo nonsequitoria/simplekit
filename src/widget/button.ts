@@ -23,9 +23,6 @@ export class SKButton extends SKElement {
   }
   set font(f: string) {
     this._font = f;
-    console.log(
-      `SKButton new font text = '${this.text}' ${this.width} x ${this.height}`
-    );
     this.sizeChanged();
   }
 
@@ -35,13 +32,12 @@ export class SKButton extends SKElement {
   }
   set text(t: string) {
     this._text = t;
-    console.log(
-      `SKButton text = '${this.text}' ${this.width} x ${this.height}`
-    );
     this.sizeChanged();
   }
 
   updateContentSize() {
+    if (!this.recalculateSize) return;
+
     const m = measureText(this.text, this._font);
 
     if (!m) {
@@ -51,6 +47,8 @@ export class SKButton extends SKElement {
 
     this.contentHeight = m.height;
     this.contentWidth = m.width;
+
+    this.recalculateSize = false;
   }
 
   handleMouseEvent(me: SKMouseEvent) {
