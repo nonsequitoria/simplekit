@@ -39,15 +39,21 @@ export class FillRowLayout implements LayoutMethod {
   }
 
   layout(width: number, height: number, elements: SKElement[]) {
-    // get total "basis" width
-    const basisTotal = elements.reduce(
+    // get fixed width elements
+    const fixedElements = elements.filter((el) => el.fillWidth === 0);
+
+    // get space used by elements with fixed width
+    const fixedElementsWidth = fixedElements.reduce(
       (acc, el) => acc + el.minLayoutWidth,
       0
     );
 
-    // calculate remaining space to distribute elements
+    // num of elements with fillWidth > 0
+    const fillElementNum = elements.length - fixedElements.length;
+
+    // calculate space to distribute elements
     const available = width - (elements.length - 1) * this.gap;
-    const remaining = available - basisTotal;
+    const remaining = available - fixedElementsWidth;
 
     if (Settings.debugLayout)
       console.log(
@@ -56,7 +62,7 @@ export class FillRowLayout implements LayoutMethod {
 
     if (Settings.layoutWarnings && remaining < 0) {
       console.warn(
-        `fillRowLayout: not enough space (container:${width} < children:${basisTotal}) `
+        `fillRowLayout: not enough space (container:${width} < children:${fixedElementsWidth}) `
       );
     }
 
@@ -77,17 +83,13 @@ export class FillRowLayout implements LayoutMethod {
       el.y = y;
 
       // calculate element size
-      let w = el.minLayoutWidth;
-      // expand or shrink element if fillWidth > 0
-      if (fillTotal > 0) {
-        w += (el.fillWidth / fillTotal) * remaining;
-      }
+      let w =
+        el.fillWidth === 0
+          ? el.minLayoutWidth
+          : (el.fillWidth / fillTotal) * remaining;
 
       // elements can expand vertically too
-      let h = el.minLayoutHeight;
-      if (el.fillHeight > 0) {
-        h = height;
-      }
+      let h = el.fillHeight === 0 ? el.minLayoutHeight : height;
 
       // layout the element in the allotted space
       el.layout(w, h);
