@@ -12,6 +12,7 @@ export class SKButton extends SKElement {
     super(elementProps);
     this.padding = Style.textPadding;
     this.text = text;
+    if (!this.width) this.width = 80;
   }
 
   state: "idle" | "hover" | "down" = "idle";
@@ -41,12 +42,7 @@ export class SKButton extends SKElement {
   }
 
   updateContentSize() {
-    // need this if w or h not specified
     const m = measureText(this.text, this._font);
-
-    // console.log(
-    //   `SKButton setContentSize ${this.text} ${m?.width} x ${m?.height}`
-    // );
 
     if (!m) {
       console.warn(`measureText failed in SKButton for ${this.text}`);

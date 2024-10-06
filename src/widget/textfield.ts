@@ -17,7 +17,18 @@ export class SKTextfield extends SKElement {
 
   state: "idle" | "hover" = "idle";
   focus = false;
-  font = Style.font;
+
+  private _font = Style.font;
+  get font() {
+    return this._font;
+  }
+  set font(f: string) {
+    this._font = f;
+    console.log(
+      `SKButton new font text = '${this.text}' ${this.width} x ${this.height}`
+    );
+    this.sizeChanged();
+  }
 
   protected _text = "";
   get text() {
@@ -25,12 +36,11 @@ export class SKTextfield extends SKElement {
   }
   set text(t: string) {
     this._text = t;
-    this.setMinimalSize(this.width, this.height);
+    this.sizeChanged();
   }
 
-  setMinimalSize(width?: number, height?: number) {
-    // need this if w or h not specified
-    const m = measureText(this.text || " ", this.font);
+  updateContentSize() {
+    const m = measureText(this.text, this._font);
 
     if (!m) {
       console.warn(
@@ -39,9 +49,9 @@ export class SKTextfield extends SKElement {
       return;
     }
 
-    this.height = height || m.height + this.padding * 2;
-    this.width = width || m.width + this.padding * 2;
-    // need to store this for cursor position
+    this.contentHeight = m.height;
+    this.contentWidth = m.width;
+
     this.textWidth = m.width;
   }
 

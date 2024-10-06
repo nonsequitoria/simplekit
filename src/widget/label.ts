@@ -31,7 +31,18 @@ export class SKLabel extends SKElement {
     this.border = "";
   }
 
-  font = Style.font;
+  private _font = Style.font;
+  get font() {
+    return this._font;
+  }
+  set font(f: string) {
+    this._font = f;
+    console.log(
+      `SKButton new font text = '${this.text}' ${this.width} x ${this.height}`
+    );
+    this.sizeChanged();
+  }
+
   align: LabelAlign;
 
   protected _text = "";
@@ -40,21 +51,20 @@ export class SKLabel extends SKElement {
   }
   set text(t: string) {
     this._text = t;
-    this.setMinimalSize(this.width, this.height);
+    // this.setMinimalSize(this.width, this.height);
+    this.sizeChanged();
   }
 
-  setMinimalSize(width?: number, height?: number) {
-    // need this if w or h not specified
-    const m = measureText(this.text || " ", this.font);
+  updateContentSize() {
+    const m = measureText(this.text, this.font);
 
     if (!m) {
       console.warn(`measureText failed in SKLabel for ${this.text}`);
       return;
     }
 
-    this.height = height || m.height + this.padding * 2;
-
-    this.width = width || m.width + this.padding * 2;
+    this.contentHeight = m.height;
+    this.contentWidth = m.width;
   }
 
   // no events on a label
