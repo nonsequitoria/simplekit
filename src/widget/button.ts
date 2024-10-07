@@ -8,8 +8,13 @@ import { requestMouseFocus } from "../dispatch";
 export type SKButtonProps = SKElementProps & { text?: string };
 
 export class SKButton extends SKElement {
-  constructor({ text = "", ...elementProps }: SKButtonProps = {}) {
-    super(elementProps);
+  constructor({
+    text = "",
+    fill = Style.defaultColour,
+    border = "black",
+    ...elementProps
+  }: SKButtonProps = {}) {
+    super({ fill, border, ...elementProps });
     this.padding = Style.textPadding;
     this.text = text;
     if (!this.width) this.width = 80;
@@ -107,8 +112,8 @@ export class SKButton extends SKElement {
     gc.beginPath();
     gc.roundRect(this.x, this.y, w, h, 4);
     gc.fillStyle =
-      this.state == "down" ? Style.highlightColour : "lightgrey";
-    gc.strokeStyle = "black";
+      this.state == "down" ? Style.highlightColour : this.fill;
+    gc.strokeStyle = this.border;
     // change fill to show down state
     gc.lineWidth = this.state == "down" ? 4 : 2;
     gc.fill();
@@ -117,7 +122,7 @@ export class SKButton extends SKElement {
 
     // button label
     gc.font = this._font;
-    gc.fillStyle = "black";
+    gc.fillStyle = this.border;
     gc.textAlign = "center";
     gc.textBaseline = "middle";
     gc.fillText(this.text, this.x + w / 2, this.y + h / 2);
