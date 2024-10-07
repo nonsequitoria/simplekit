@@ -47,12 +47,12 @@ export class WrapRowLayout implements LayoutMethod {
 
     elements.forEach((el) => {
       // layout the element
-      el.layout(el.width, el.height);
+      el.layout(el.intrinsicWidth, el.intrinsicHeight);
 
-      if (Settings.layoutWarnings && el.layoutWidth > width) {
+      if (Settings.layoutWarnings && el.intrinsicWidth > width) {
         // warn if element overflows
         console.warn(`element ${el.toString()} horizontal overflow`);
-      } else if (x + el.layoutWidth > width) {
+      } else if (x + el.intrinsicWidth > width) {
         // wrap to next row and clear rowHeight
         x = 0;
         y += rowHeight + this.gap;
@@ -64,12 +64,12 @@ export class WrapRowLayout implements LayoutMethod {
       el.y = y;
 
       // update the row height
-      rowHeight = Math.max(rowHeight, el.layoutHeight);
+      rowHeight = Math.max(rowHeight, el.intrinsicHeight);
       // get x ready for next element
-      x += el.layoutWidth + this.gap;
+      x += el.intrinsicWidth + this.gap;
 
       // update bounds that were actually used
-      newBounds.width = Math.max(newBounds.width, el.layoutWidth);
+      newBounds.width = Math.max(newBounds.width, el.intrinsicWidth);
       newBounds.height = Math.max(newBounds.height, y + rowHeight);
     });
 
