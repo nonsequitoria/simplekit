@@ -24,9 +24,6 @@ export class SKTextfield extends SKElement {
   }
   set font(f: string) {
     this._font = f;
-    console.log(
-      `SKButton new font text = '${this.text}' ${this.width} x ${this.height}`
-    );
     this.sizeChanged();
   }
 

@@ -37,9 +37,6 @@ export class SKLabel extends SKElement {
   }
   set font(f: string) {
     this._font = f;
-    console.log(
-      `SKLabel new font text = '${this.text}' ${this.width} x ${this.height}`
-    );
     this.sizeChanged();
   }
 

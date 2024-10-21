@@ -57,8 +57,6 @@ export class SKButton extends SKElement {
   }
 
   handleMouseEvent(me: SKMouseEvent) {
-    // console.log(`${this.text} ${me.type}`);
-
     switch (me.type) {
       case "mousedown":
         this.state = "down";
