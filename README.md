@@ -94,7 +94,7 @@ const button = new SKButton({
   text: "Click me!"
 });
 
-// Handle button clicks
+// Handle button click actions
 button.addEventListener("action", () => {
   console.log("🎉 Button clicked!");
 });
@@ -102,7 +102,7 @@ button.addEventListener("action", () => {
 // Add button to root
 root.addChild(button);
 
-// Set the container as the root widget
+// Use the root container as the widget tree root
 setSKRoot(root);
 
 // Start SimpleKit
