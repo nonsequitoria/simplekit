@@ -1,5 +1,5 @@
-import { insideHitTestRectangle, measureText } from "../utility";
-import { SKElement, SKElementProps } from "./element";
+import { measureText } from "../utility";
+import { SKElement, type SKElementProps } from "./element";
 import { Style } from "./style";
 import { SKEvent, SKMouseEvent } from "../events";
 

@@ -1,9 +1,7 @@
-import { Layout, LayoutMethod, Size } from "../layout";
+import { Layout, type LayoutMethod, type Size } from "../layout";
 import { invalidateLayout } from "../imperative-mode";
 
-import { SKElement, SKElementProps } from "./element";
-import { FixedLayout } from "../layout/fixed";
-import { Settings } from "../settings";
+import { SKElement, type SKElementProps } from "./element";
 
 type SKContainerProps = SKElementProps & {
   layoutMethod?: LayoutMethod | "default";

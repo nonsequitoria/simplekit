@@ -22,7 +22,7 @@ export type {
 //  - - - - - - - - - - - - - - - - - - - - - - -
 
 import {
-  FundamentalEvent,
+  type FundamentalEvent,
   createWindowingSystem,
   coalesceEvents,
 } from "./windowing-system";
@@ -31,7 +31,7 @@ import {
 import { SKEvent } from "./events";
 
 import {
-  EventTranslator,
+  type EventTranslator,
   fundamentalTranslator,
   clickTranslator,
   dblclickTranslator,

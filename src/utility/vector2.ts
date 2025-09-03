@@ -1,5 +1,11 @@
 export class Point2 {
-  constructor(public x: number, public y: number) {}
+  x: number;
+  y: number;
+
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
 
   add(v: Vector2): Point2 {
     return new Point2(this.x + v.x, this.y + v.y);
@@ -19,7 +25,13 @@ export function point(x: number, y: number): Point2 {
 }
 
 export class Vector2 {
-  constructor(public x: number, public y: number) {}
+  x: number;
+  y: number;
+
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+  }
 
   normalize(): Vector2 {
     const v = new Vector2(this.x, this.y);

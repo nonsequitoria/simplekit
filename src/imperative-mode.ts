@@ -33,7 +33,7 @@ export { requestKeyboardFocus, requestMouseFocus } from "./dispatch";
 //  - - - - - - - - - - - - - - - - - - - - - - -
 
 import {
-  FundamentalEvent,
+  type FundamentalEvent,
   createWindowingSystem,
   coalesceEvents,
 } from "./windowing-system";
@@ -45,7 +45,7 @@ import { SKEvent, SKKeyboardEvent, SKMouseEvent } from "./events";
 import { mouseDispatch, keyboardDispatch } from "./dispatch";
 
 import {
-  EventTranslator,
+  type EventTranslator,
   fundamentalTranslator,
   clickTranslator,
   dblclickTranslator,

@@ -1,7 +1,6 @@
 import { SKEvent, SKKeyboardEvent, SKMouseEvent } from "../events";
 
 import { Settings } from "../settings";
-import { Style } from "./style";
 import { insideHitTestRectangle } from "../utility";
 
 import {
@@ -9,7 +8,7 @@ import {
   requestKeyboardFocus,
 } from "../imperative-mode";
 
-import { Size, sizeToString } from "../layout";
+import { type Size, sizeToString } from "../layout";
 
 export type EventHandler = (me: SKEvent) => boolean | void;
 

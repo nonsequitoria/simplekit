@@ -1,7 +1,7 @@
 import { SKKeyboardEvent, SKMouseEvent } from "../events";
 import { measureText } from "../utility";
 import { requestKeyboardFocus } from "../dispatch";
-import { SKElement, SKElementProps } from "./element";
+import { SKElement, type SKElementProps } from "./element";
 import { Style } from "./style";
 
 export type SKTextfieldProps = SKElementProps & {

@@ -1,5 +1,5 @@
 import { SKElement } from "../widget";
-import { LayoutMethod, Size } from ".";
+import type { LayoutMethod, Size } from ".";
 import { Settings } from "../settings";
 
 type WrapLayoutProps = {

@@ -1,6 +1,6 @@
 import { Settings } from "../settings";
 import { SKElement } from "../widget";
-import { LayoutMethod, Size } from ".";
+import { type LayoutMethod } from ".";
 
 type FillLayoutProps = {
   gap?: number;

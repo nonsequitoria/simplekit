@@ -1,10 +1,13 @@
 import { SKKeyboardEvent } from "../events";
 import { measureText } from "../utility";
 
-import { EventHandler, SKElement, SKElementProps } from "./element";
+import {
+  type EventHandler,
+  SKElement,
+  type SKElementProps,
+} from "./element";
 import { Style } from "./style";
 import { SKMouseEvent } from "../events";
-import { SKEvent } from "../events";
 import { requestKeyboardFocus } from "../dispatch";
 
 type LabelAlign = "centre" | "left" | "right";
@@ -68,7 +71,7 @@ export class SKLabel extends SKElement {
   }
 
   // no events on a label
-  handleKeyboardEvent(ke: SKKeyboardEvent): boolean {
+  handleKeyboardEvent(_: SKKeyboardEvent): boolean {
     return false;
   }
 
@@ -83,7 +86,7 @@ export class SKLabel extends SKElement {
   }
 
   // no events on a label
-  handleMouseEventCapture(me: SKMouseEvent): boolean {
+  handleMouseEventCapture(_: SKMouseEvent): boolean {
     return false;
   }
 

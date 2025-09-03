@@ -1,4 +1,4 @@
-import { FundamentalEvent } from ".";
+import { type FundamentalEvent } from ".";
 
 /**
  * Coalesces some fundamental events into a single event of the same type

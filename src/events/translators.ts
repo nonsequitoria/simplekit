@@ -1,4 +1,4 @@
-import { FundamentalEvent } from "../windowing-system";
+import type { FundamentalEvent } from "../windowing-system";
 import { distance } from "../utility";
 
 // SimpleKit events
