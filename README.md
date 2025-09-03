@@ -162,7 +162,11 @@ Notes on this approach:
 
 ### 3. Git submodule
 
-If your repo is a collection of Node.js projects that all use SimpleKit, and you want them all to use exactly the same version of SimpleKit, then you can add SimpleKit as a *submodule*. This creates a "monorepo" with SimpleKit and all your projects:
+If your repo is a collection of Node.js projects that all use SimpleKit, and you want them all to use exactly the same version of SimpleKit, then you can add SimpleKit as a *submodule*. 
+
+A submodule is a reference to another Git repository inside your own, allowing you to include and track an external project within your repository while keeping its history separate.
+
+This creates a "monorepo" with SimpleKit and all your projects:
 
 ```
 monorepo/
@@ -172,7 +176,7 @@ monorepo/
 └── project3/
 ```
 
-#### Set up SimpleKit as a git submodule
+#### Initial Setup 
 
 To add SimpleKit as a submodule, execute this from the root of your monorepo:
 
@@ -180,26 +184,31 @@ To add SimpleKit as a submodule, execute this from the root of your monorepo:
 git submodule add https://github.com/nonsequitoria/simplekit.git simplekit
 ```
 
-**First-time setup**: Adding a submodule doesn't add all the code, it only adds a link. You need to initialize and update the submodule:
+Now SimpleKit code is easily accessible in the `simplekit/` folder, and you'll see it listed in VS Code's source control tab.
+
+#### Initialize after Cloning
+
+When you clone a monorepo with a submodule, the submodule's files won't be pulled without some additional commands. You need to initialize and update the submodule:
 
 ```sh
 git submodule init
 git submodule update
 ```
 
-**Streamlined updates**: Add a custom git alias to pull both the main repo and submodules:
+#### Keeping the SimpleKit submodule up to date
+
+**Setup**: Add a custom git alias to pull both the main repo and all submodules:
 
 ```sh
 git config --global alias.pullall '!git pull && git submodule update --init --recursive'
 ```
 
-**Daily workflow**: Update everything with one command:
+**Update**: Update everything with one command:
 
 ```sh
 git pullall
 ```
 
-Now SimpleKit code is easily accessible in the `simplekit/` folder, and you'll see it listed in VS Code's source control tab.
 
 #### To use the SimpleKit submodule in a project
 
@@ -213,7 +222,7 @@ With the recommended monorepo directory structure above, it's easy to add Simple
 }
 ```
 
-**Note**: The `file:../simplekit` path assumes your project is in a subdirectory of the monorepo root (like `project1/`, `project2/`, etc.). Adjust the path based on your actual directory structure.
+**Note**: The `file:../simplekit` path assumes your project is in a subdirectory of the monorepo root (like `project1/`, `project2/`, etc.). 
 
 ## License
 
