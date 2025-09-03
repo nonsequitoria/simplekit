@@ -1,6 +1,6 @@
 {
   "name": "simplekit",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A very simple user interface toolkit for teaching UI architecture.",
   "author": "Daniel Vogel",
   "license": "GPL-3.0-only",
