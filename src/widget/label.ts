@@ -10,9 +10,9 @@ import { Style } from "./style";
 import { SKMouseEvent } from "../events";
 import { requestKeyboardFocus } from "../dispatch";
 
-type LabelAlign = "centre" | "left" | "right";
+export type LabelAlign = "centre" | "left" | "right";
 
-type SKLabelProps = SKElementProps & {
+export type SKLabelProps = SKElementProps & {
   text?: string;
   align?: LabelAlign;
 };

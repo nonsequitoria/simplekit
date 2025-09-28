@@ -3,7 +3,7 @@ import { invalidateLayout } from "../imperative-mode";
 
 import { SKElement, type SKElementProps } from "./element";
 
-type SKContainerProps = SKElementProps & {
+export type SKContainerProps = SKElementProps & {
   layoutMethod?: LayoutMethod | "default";
 };
 
@@ -22,7 +22,7 @@ export class SKContainer extends SKElement {
 
   //#region managing children
 
-  private _children: SKElement[] = [];
+  protected _children: SKElement[] = [];
   get children(): readonly SKElement[] {
     return this._children;
   }
