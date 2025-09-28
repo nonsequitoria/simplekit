@@ -19,12 +19,8 @@ export const fundamentalTranslator = {
       case "mousedown":
       case "mouseup":
       case "mousemove":
-        return new SKMouseEvent(
-          fe.type,
-          fe.timeStamp,
-          fe.x || 0,
-          fe.y || 0
-        );
+        const { x = 0, y = 0 } = fe; // pull x and y with default 0
+        return new SKMouseEvent(fe.type, fe.timeStamp, x, y);
         break;
       case "keydown":
       case "keyup":
@@ -42,6 +38,7 @@ export const fundamentalTranslator = {
       case "null":
         return;
       default:
+        console.warn(`unhandled fundamental event type ${fe.type}`);
         return new SKEvent(fe.type, fe.timeStamp);
     }
   },
@@ -59,12 +56,17 @@ export const clickTranslator = {
 
   // returns a click event if found
   update(fe: FundamentalEvent): SKMouseEvent | undefined {
+    // only applies to fundamental mouse events (those with x,y)
+    if (fe.x === undefined || fe.y === undefined) {
+      return;
+    }
+
     switch (this.state) {
       case "IDLE":
         if (fe.type == "mousedown") {
           this.state = "DOWN";
-          this.startX = fe.x || 0;
-          this.startY = fe.y || 0;
+          this.startX = fe.x;
+          this.startY = fe.y;
           this.startTime = fe.timeStamp;
         }
         break;
@@ -73,20 +75,13 @@ export const clickTranslator = {
         if (fe.timeStamp - this.startTime > this.timeThreshold) {
           this.state = "IDLE";
         } else if (
-          fe.x &&
-          fe.y &&
           distance(fe.x, fe.y, this.startX, this.startY) >
-            this.movementThreshold
+          this.movementThreshold
         ) {
           this.state = "IDLE";
         } else if (fe.type == "mouseup") {
           this.state = "IDLE";
-          return new SKMouseEvent(
-            "click",
-            fe.timeStamp,
-            fe.x || 0,
-            fe.y || 0
-          );
+          return new SKMouseEvent("click", fe.timeStamp, fe.x, fe.y);
         }
         break;
     }
@@ -108,6 +103,11 @@ export const dblclickTranslator = {
   // returns a dblclick event if found
   // needs a click event as well, the fe event is for time
   update(fe: FundamentalEvent): SKMouseEvent | undefined {
+    // only applies to fundamental mouse events (those with x,y)
+    if (fe.x === undefined || fe.y === undefined) {
+      return;
+    }
+
     // update internal clickTranslator
     const e = this.internalClickTranslator.update(fe);
 
@@ -127,8 +127,8 @@ export const dblclickTranslator = {
           return new SKMouseEvent(
             "dblclick",
             fe.timeStamp,
-            fe.x || 0,
-            fe.y || 0
+            fe.x,
+            fe.y
           );
         }
         break;
@@ -140,19 +140,24 @@ export const dblclickTranslator = {
 export const dragTranslator = {
   state: "IDLE",
   // parameters for transitions
-  movementThreshold: 20,
+  movementThreshold: 10,
   // for tracking thresholds
   startX: 0,
   startY: 0,
 
   // returns a drag event if found
   update(fe: FundamentalEvent): SKMouseEvent | undefined {
+    // only applies to fundamental mouse events (those with x,y)
+    if (fe.x === undefined || fe.y === undefined) {
+      return;
+    }
+
     switch (this.state) {
       case "IDLE":
         if (fe.type == "mousedown") {
           this.state = "DOWN";
-          this.startX = fe.x || 0;
-          this.startY = fe.y || 0;
+          this.startX = fe.x;
+          this.startY = fe.y;
         }
         break;
 
@@ -161,38 +166,31 @@ export const dragTranslator = {
           this.state = "IDLE";
         } else if (
           fe.type == "mousemove" &&
-          fe.x &&
-          fe.y &&
           distance(fe.x, fe.y, this.startX, this.startY) >
             this.movementThreshold
         ) {
           this.state = "DRAG";
-          return {
-            type: "dragstart",
-            timeStamp: fe.timeStamp,
-            x: fe.x,
-            y: fe.y,
-          } as SKMouseEvent;
+          return new SKMouseEvent(
+            "dragstart",
+            fe.timeStamp,
+            fe.x,
+            fe.y
+          );
         }
 
         break;
 
       case "DRAG":
         if (fe.type == "mousemove") {
-          return {
-            type: "drag",
-            timeStamp: fe.timeStamp,
-            x: fe.x,
-            y: fe.y,
-          } as SKMouseEvent;
+          return new SKMouseEvent("drag", fe.timeStamp, fe.x, fe.y);
         } else if (fe.type == "mouseup") {
           this.state = "IDLE";
-          return {
-            type: "dragend",
-            timeStamp: fe.timeStamp,
-            x: fe.x,
-            y: fe.y,
-          } as SKMouseEvent;
+          return new SKMouseEvent(
+            "dragend",
+            fe.timeStamp,
+            fe.x,
+            fe.y
+          );
         }
 
         break;
