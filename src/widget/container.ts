@@ -58,6 +58,9 @@ export class SKContainer extends SKElement {
       const size = this._layoutMethod.measure(this._children);
       this.contentWidth = size.width;
       this.contentHeight = size.height;
+    } else {
+      this.contentWidth = 0;
+      this.contentHeight = 0;
     }
     super.measure();
   }
