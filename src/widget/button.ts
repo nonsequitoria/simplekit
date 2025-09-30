@@ -17,7 +17,6 @@ export class SKButton extends SKElement {
     super({ fill, border, ...elementProps });
     this.padding = Style.textPadding;
     this.text = text;
-    if (!this.width) this.width = 80;
   }
 
   state: "idle" | "hover" | "down" = "idle";
