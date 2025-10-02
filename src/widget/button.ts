@@ -19,9 +19,9 @@ export class SKButton extends SKElement {
     this.text = text;
   }
 
-  state: "idle" | "hover" | "down" = "idle";
+  protected state: "idle" | "hover" | "down" = "idle";
 
-  private _font = Style.font;
+  protected _font = Style.font;
   get font() {
     return this._font;
   }
@@ -39,7 +39,7 @@ export class SKButton extends SKElement {
     this.sizeChanged();
   }
 
-  updateContentSize() {
+  protected updateContentSize() {
     if (!this.recalculateSize) return;
 
     const m = measureText(this.text, this._font);

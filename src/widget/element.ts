@@ -106,7 +106,7 @@ export abstract class SKElement {
 
   // size calculation flag
   protected recalculateSize = false;
-  sizeChanged() {
+  protected sizeChanged() {
     this.recalculateSize = true;
     invalidateLayout();
   }
@@ -116,7 +116,7 @@ export abstract class SKElement {
 
   // some widgets may need to update content size
   // (e.g. to measure text in a button, or size of children after layout)
-  updateContentSize() {
+  protected updateContentSize() {
     if (
       Settings.debugLayout &&
       (this.contentWidth || this.contentHeight)

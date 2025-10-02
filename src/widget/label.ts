@@ -34,7 +34,7 @@ export class SKLabel extends SKElement {
     this.border = "";
   }
 
-  private _font = Style.font;
+  protected _font = Style.font;
   get font() {
     return this._font;
   }
@@ -54,7 +54,7 @@ export class SKLabel extends SKElement {
     this.sizeChanged();
   }
 
-  updateContentSize() {
+  protected updateContentSize() {
     if (!this.recalculateSize) return;
 
     const m = measureText(this.text, this.font);

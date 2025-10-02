@@ -15,10 +15,11 @@ export class SKTextfield extends SKElement {
     this.text = text;
   }
 
-  state: "idle" | "hover" = "idle";
-  focus = false;
+  protected state: "idle" | "hover" = "idle";
 
-  private _font = Style.font;
+  protected focus = false;
+
+  protected _font = Style.font;
   get font() {
     return this._font;
   }
@@ -36,7 +37,7 @@ export class SKTextfield extends SKElement {
     this.sizeChanged();
   }
 
-  updateContentSize() {
+  protected updateContentSize() {
     const m = measureText(this.text, this._font);
 
     if (!m) {
@@ -52,7 +53,7 @@ export class SKTextfield extends SKElement {
     this.textWidth = m.width;
   }
 
-  textWidth = 0;
+  protected textWidth = 0;
 
   protected applyEdit(text: string, key: string): string {
     if (key == "Backspace") {
