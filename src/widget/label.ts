@@ -15,23 +15,29 @@ export type LabelAlign = "centre" | "left" | "right";
 export type SKLabelProps = SKElementProps & {
   text?: string;
   align?: LabelAlign;
+  font?: string;
 };
 
 export class SKLabel extends SKElement {
   constructor({
     text = "?",
     align = "centre",
+    font = Style.font,
+    padding = Style.textPadding,
+    fill = "",
+    border = "",
     ...elementProps
   }: SKLabelProps = {}) {
-    super(elementProps);
+    super({
+      ...elementProps,
+      padding,
+      fill,
+      border,
+    });
 
-    this.padding = Style.textPadding;
     this.text = text;
     this.align = align;
-
-    // defaults
-    this.fill = "";
-    this.border = "";
+    this.font = font;
   }
 
   protected _font = Style.font;
