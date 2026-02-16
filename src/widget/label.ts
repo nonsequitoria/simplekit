@@ -23,18 +23,21 @@ export class SKLabel extends SKElement {
     text = "?",
     align = "centre",
     font = Style.font,
+    padding = Style.textPadding,
+    fill = "",
+    border = "",
     ...elementProps
   }: SKLabelProps = {}) {
-    super(elementProps);
+    super({
+      ...elementProps,
+      padding,
+      fill,
+      border,
+    });
 
-    this.padding = Style.textPadding;
     this.text = text;
     this.align = align;
     this.font = font;
-
-    // defaults
-    this.fill = "";
-    this.border = "";
   }
 
   protected _font = Style.font;
