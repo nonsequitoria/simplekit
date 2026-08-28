@@ -91,9 +91,9 @@ export class SKLabel extends SKElement {
   }
 
   addEventListener(
-    type: string,
-    handler: EventHandler,
-    capture?: boolean
+    _type: string,
+    _handler: EventHandler,
+    _capture?: boolean
   ): void {
     // no events on a label
     console.warn(`SKLabel does not support events`);
