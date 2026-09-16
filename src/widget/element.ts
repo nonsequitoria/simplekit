@@ -114,7 +114,22 @@ export abstract class SKElement {
     this._parent = parent;
   }
 
-  //#region size and layout calculations
+  // absolute position of element on the canvas (accounts for ancestor positions)
+  public get absoluteX(): number {
+    if (this.parent) {
+      return this.parent.absoluteX + this.x;
+    }
+    return this.x;
+  }
+
+  public get absoluteY(): number {
+    if (this.parent) {
+      return this.parent.absoluteY + this.y;
+    }
+    return this.y;
+  }
+
+    //#region size and layout calculations
 
   // size calculation flag
   protected recalculateSize = false;
